@@ -3,62 +3,80 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>InfantBites – Curated Baby Gear & Deals</title>
-  <meta name="description" content="Discover curated baby gear, compare trusted brands and unlock exclusive bundle deals with InfantBites.">
+  <title>InfantBites – Smarter Baby Shopping</title>
+  <meta name="description" content="Discover curated baby gear, verified reviews and exclusive bundles at InfantBites. Shop with confidence using our accessible, easy‑to‑navigate interface.">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
-    <p id="disclosure" role="note">Affiliate & Health Disclosure: Our recommendations may include affiliate links that can earn us a commission at no extra cost to you. Information is for general informational purposes and not medical advice.</p>
-    <h1>InfantBites</h1>
+    <p id="disclosure" role="note">Affiliate &amp; Health Disclosure: Some links on this site may earn us a commission at no extra cost to you. Content is for informational purposes only and not medical advice.</p>
+    <div class="branding">
+      <h1>InfantBites</h1>
+      <form role="search" aria-label="Product search">
+        <label for="search-input">Search</label>
+        <input id="search-input" name="q" type="search" placeholder="Search baby gear" />
+        <button type="submit">Go</button>
+      </form>
+    </div>
     <nav aria-label="Main navigation">
       <ul>
+        <li><a href="#feed">Feeding</a></li>
+        <li><a href="#sleep">Sleep</a></li>
+        <li><a href="#safety">Safety</a></li>
+        <li><a href="#toys">Toys</a></li>
         <li><a href="#deals">Deals</a></li>
-        <li><a href="#categories">Categories</a></li>
-        <li><a href="#reviews">Reviews</a></li>
       </ul>
     </nav>
-    <form role="search" aria-label="Product search">
-      <label for="search-input">Search products</label>
-      <input id="search-input" name="q" type="search" placeholder="Search baby gear" />
-      <button type="submit">Search</button>
-    </form>
   </header>
 
   <main>
     <section id="hero">
-      <h2>Smarter Baby‑Gear Shopping</h2>
-      <p>Find hand‑picked deals, trusted brands and exclusive bundles tailored to your baby’s age and needs.</p>
-      <a href="#categories">Browse Categories</a>
+      <h2>Welcome to Smarter Baby Shopping</h2>
+      <p>Find trusted baby products, compare prices and read verified reviews—all in one place.</p>
+      <a href="#deals" class="cta">Shop Featured Deals</a>
     </section>
 
-    <section id="categories">
-      <h2>Shop by Category</h2>
-      <ul>
-        <li><a href="#">Feeding</a></li>
-        <li><a href="#">Sleep</a></li>
-        <li><a href="#">Safety</a></li>
-        <li><a href="#">Toys</a></li>
-      </ul>
+    <section id="featured-products">
+      <h2>Featured Products</h2>
+      <div class="product-grid">
+        <article class="product" tabindex="0">
+          <img src="carrier.jpg" alt="Ergonomic baby carrier">
+          <h3>Ergonomic Baby Carrier</h3>
+          <p class="price">$89.99</p>
+          <p class="rating">Rating: 4.8/5</p>
+          <button type="button">View Details</button>
+        </article>
+        <article class="product" tabindex="0">
+          <img src="sleep-monitor.jpg" alt="Smart sleep monitor">
+          <h3>Smart Sleep Monitor</h3>
+          <p class="price">$129.99</p>
+          <p class="rating">Rating: 4.6/5</p>
+          <button type="button">View Details</button>
+        </article>
+      </div>
     </section>
 
-    <section id="deals">
-      <h2>Featured Deals</h2>
-      <article class="product" tabindex="0">
-        <h3>Ergonomic Baby Carrier</h3>
-        <img src="carrier.jpg" alt="Ergonomic baby carrier" />
-        <p>$89.99 – Rated 4.8/5</p>
-        <button type="button">View Deal</button>
-      </article>
-      <article class="product" tabindex="0">
-        <h3>Smart Sleep Monitor</h3>
-        <img src="sleep-monitor.jpg" alt="Smart sleep monitor" />
-        <p>$129.99 – Rated 4.6/5</p>
-        <button type="button">View Deal</button>
-      </article>
+    <section id="reviews">
+      <h2>What Parents Are Saying</h2>
+      <blockquote>
+        <p>“InfantBites helped me find the perfect sleep monitor in minutes. The reviews were spot‑on!”</p>
+        <cite>— Jamie, new parent</cite>
+      </blockquote>
+      <blockquote>
+        <p>“Great deals and fast checkout. I love the curated bundles!”</p>
+        <cite>— Alex, dad of two</cite>
+      </blockquote>
     </section>
   </main>
 
   <footer>
+    <nav aria-label="Footer">
+      <ul>
+        <li><a href="/privacy.html">Privacy Policy</a></li>
+        <li><a href="/terms.html">Terms of Use</a></li>
+        <li><a href="/support.html">Support</a></li>
+      </ul>
+    </nav>
     <p>&copy; 2025 InfantBites. All rights reserved.</p>
   </footer>
 </body>
