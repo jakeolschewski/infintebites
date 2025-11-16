@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>InfantBites Privacy Policy</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Privacy Policy</h1>
+  </header>
+  <main>
+    <p>This policy explains how InfantBites collects and uses information when you use our service. Our platform is designed with privacy and security in mind.</p>
+    <h2>Information We Collect</h2>
+    <ul>
+      <li>Baby’s age (in months) and your selected concern.</li>
+      <li>Optional email address if you choose to receive your plan via email.</li>
+      <li>Technical data such as IP address, browser type, and device information.</li>
+    </ul>
+    <h2>How We Use Your Information</h2>
+    <ul>
+      <li>To generate personalized plans based on your inputs.</li>
+      <li>To recommend relevant product bundles and track affiliate interactions.</li>
+      <li>To communicate with you if you provide an email address.</li>
+      <li>To analyze aggregated usage patterns to improve our service.</li>
+    </ul>
+    <h2>Children’s Privacy</h2>
+    <p>We do not knowingly collect personal information from children under 13. InfantBites is intended for parents and caregivers. Please do not submit personal data about a child except for age in months, which is treated as non-identifying.</p>
+    <h2>Your Rights</h2>
+    <p>You can request deletion or export of your data at any time. Use the form below to submit a request.</p>
+    <form id="privacy-request-form">
+      <label for="request-email">Email used (required)</label>
+      <input id="request-email" type="email" required>
+      <label for="request-type">Request type</label>
+      <select id="request-type" required>
+        <option value="export">Export my data</option>
+        <option value="delete">Delete my data</option>
+      </select>
+      <button type="submit">Submit Request</button>
+    </form>
+    <section id="privacy-response" aria-live="polite"></section>
+  </main>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('privacy-request-form');
+    const resp = document.getElementById('privacy-response');
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const email = document.getElementById('request-email').value;
+      const type = document.getElementById('request-type').value;
+      resp.textContent = 'Submitting request...';
+      try {
+        const res = await fetch('/api/privacy/request', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: email, type: type })
+        });
+        const data = await res.json();
+        resp.textContent = data.message || 'Your request has been received. We will respond via email.';
+      } catch (err) {
+        resp.textContent = 'There was an error processing your request.';
+      }
+    });
+  });
+  </script>
+</body>
+</html>
