@@ -1,0 +1,65 @@
+body {
+  font-family: system-ui, sans-serif;
+  line-height: 1.6;
+  margin: 0;
+  color: #222;
+  background-color: #ffffff;
+}
+header {
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-bottom: 1px solid #ddd;
+}
+header .disclosure {
+  font-size: 0.875rem;
+  color: #555;
+  margin-bottom: 0.5rem;
+}
+h1 {
+  margin: 0 0 0.5rem;
+  font-size: 2rem;
+}
+main {
+  padding: 1rem;
+  max-width: 720px;
+  margin: 0 auto;
+}
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+label {
+  font-weight: bold;
+}
+input,
+select,
+button,
+textarea {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+button {
+  background-color: #0069d9;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+}
+button:hover {
+  background-color: #0053ba;
+}
+section {
+  margin-top: 2rem;
+}
+.bundle {
+  border: 1px solid #ddd;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 4px;
+}
+.bundle h3 {
+  margin-top: 0;
+}
