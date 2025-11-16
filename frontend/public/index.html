@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>InfantBites – Personalized Plans & Bundle Deals</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "InfantBites",
+    "url": "https://infantbites.com",
+    "description": "InfantBites offers personalized baby care plans and curated product deals based on your baby's age and needs. Our platform simplifies parenting decisions through compliance-first recommendations.",
+    "publisher": {
+      "@type": "Organization",
+      "name": "InfantBites",
+      "url": "https://infantbites.com"
+    },
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https://infantbites.com/?age={age}&concern={concern}"
+      },
+      "query-input": ["required name=age", "required name=concern"]
+    }
+  }
+  </script>
+</head>
+<body>
+  <header>
+    <p class="disclosure">Affiliate &amp; Health Disclosure: Our recommendations may include affiliate links that can earn us a commission at no extra cost to you. Content is for general informational purposes only and is not medical advice.</p>
+    <h1>InfantBites</h1>
+  </header>
+  <main>
+    <p>Discover smarter baby care with InfantBites! Tell us your little one’s age and top concern, and we’ll instantly craft a bite‑sized plan with curated gear deals. Our simple tool cuts through clutter to spotlight the right products and actionable tips – without lengthy research. Ready to simplify your parenting journey? Get your personalized plan and unlock exclusive offers now!</p>
+    <form id="planner-form">
+      <label for="age">Baby Age (months)</label>
+      <input id="age" name="age" type="number" min="0" max="36" required>
+      <label for="concern">Main Concern</label>
+      <select id="concern" name="concern" required>
+        <option value="">Select</option>
+        <option value="feeding">Feeding &amp; Nutrition</option>
+        <option value="sleep">Sleep &amp; Schedules</option>
+        <option value="teething">Teething &amp; Comfort</option>
+        <option value="mobility">Mobility &amp; Safety</option>
+      </select>
+      <label for="email">Email (optional)</label>
+      <input id="email" name="email" type="email">
+      <button type="submit">Get My Plan</button>
+    </form>
+    <section id="plan-section" aria-live="polite"></section>
+    <section id="bundles-section" aria-live="polite"></section>
+  </main>
+  <footer>
+    <p>&copy; 2025 InfantBites. All rights reserved.</p>
+  </footer>
+  <script src="app.js"></script>
+</body>
+</html>
