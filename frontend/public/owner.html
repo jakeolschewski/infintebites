@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>InfantBites Owner Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Owner Dashboard</h1>
+  </header>
+  <main>
+    <form id="login-form">
+      <label for="password">Owner Password</label>
+      <input id="password" type="password" required>
+      <button type="submit">Login</button>
+    </form>
+    <section id="dashboard" hidden>
+      <h2>Metrics</h2>
+      <ul id="metrics-list"></ul>
+      <h2>Compliance Logs</h2>
+      <ul id="logs-list"></ul>
+      <h2>Growth Ideas</h2>
+      <ul id="growth-list"></ul>
+    </section>
+  </main>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('login-form');
+    const dashboard = document.getElementById('dashboard');
+    const metricsList = document.getElementById('metrics-list');
+    const logsList = document.getElementById('logs-list');
+    const growthList = document.getElementById('growth-list');
+    let token = null;
+
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const password = document.getElementById('password').value;
+      try {
+        const res = await fetch('/api/owner/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password: password })
+        });
+        const data = await res.json();
+        if (data.token) {
+          token = data.token;
+          form.hidden = true;
+          dashboard.hidden = false;
+          loadData();
+        } else {
+          alert('Invalid password.');
+        }
+      } catch (err) {
+        alert('Error connecting to server.');
+      }
+    });
+
+    async function loadData() {
+      try {
+        const metricsRes = await fetch('/api/owner/metrics', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        const metrics = await metricsRes.json();
+        metricsList.innerHTML = '';
+        for (const key in metrics) {
+          const li = document.createElement('li');
+          li.textContent = key + ': ' + metrics[key];
+          metricsList.appendChild(li);
+        }
+
+        const logsRes = await fetch('/api/owner/logs', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        const logs = await logsRes.json();
+        logsList.innerHTML = '';
+        logs.forEach(function(log) {
+          const li = document.createElement('li');
+          li.textContent = log;
+          logsList.appendChild(li);
+        });
+
+        const growthRes = await fetch('/api/owner/growth', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        const growth = await growthRes.json();
+        growthList.innerHTML = '';
+        growth.forEach(function(item) {
+          const li = document.createElement('li');
+          li.textContent = item;
+          growthList.appendChild(li);
+        });
+      } catch (err) {
+        alert('Failed to load dashboard data.');
+      }
+    }
+  });
+  </script>
+</body>
+</html>
