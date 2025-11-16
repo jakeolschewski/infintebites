@@ -1,61 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>InfantBites – Personalized Plans & Bundle Deals</title>
-  <link rel="stylesheet" href="style.css">
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "InfantBites",
-    "url": "https://infantbites.com",
-    "description": "InfantBites offers personalized baby care plans and curated product deals based on your baby's age and needs. Our platform simplifies parenting decisions through compliance-first recommendations.",
-    "publisher": {
-      "@type": "Organization",
-      "name": "InfantBites",
-      "url": "https://infantbites.com"
-    },
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": {
-        "@type": "EntryPoint",
-        "urlTemplate": "https://infantbites.com/?age={age}&concern={concern}"
-      },
-      "query-input": ["required name=age", "required name=concern"]
-    }
-  }
-  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InfantBites – Curated Baby Gear & Deals</title>
+  <meta name="description" content="Discover curated baby gear, compare trusted brands and unlock exclusive bundle deals with InfantBites.">
 </head>
 <body>
   <header>
-    <p class="disclosure">Affiliate &amp; Health Disclosure: Our recommendations may include affiliate links that can earn us a commission at no extra cost to you. Content is for general informational purposes only and is not medical advice.</p>
+    <p id="disclosure" role="note">Affiliate & Health Disclosure: Our recommendations may include affiliate links that can earn us a commission at no extra cost to you. Information is for general informational purposes and not medical advice.</p>
     <h1>InfantBites</h1>
-  </header>
-  <main>
-    <p>Discover smarter baby care with InfantBites! Tell us your little one’s age and top concern, and we’ll instantly craft a bite‑sized plan with curated gear deals. Our simple tool cuts through clutter to spotlight the right products and actionable tips – without lengthy research. Ready to simplify your parenting journey? Get your personalized plan and unlock exclusive offers now!</p>
-    <form id="planner-form">
-      <label for="age">Baby Age (months)</label>
-      <input id="age" name="age" type="number" min="0" max="36" required>
-      <label for="concern">Main Concern</label>
-      <select id="concern" name="concern" required>
-        <option value="">Select</option>
-        <option value="feeding">Feeding &amp; Nutrition</option>
-        <option value="sleep">Sleep &amp; Schedules</option>
-        <option value="teething">Teething &amp; Comfort</option>
-        <option value="mobility">Mobility &amp; Safety</option>
-      </select>
-      <label for="email">Email (optional)</label>
-      <input id="email" name="email" type="email">
-      <button type="submit">Get My Plan</button>
+    <nav aria-label="Main navigation">
+      <ul>
+        <li><a href="#deals">Deals</a></li>
+        <li><a href="#categories">Categories</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+      </ul>
+    </nav>
+    <form role="search" aria-label="Product search">
+      <label for="search-input">Search products</label>
+      <input id="search-input" name="q" type="search" placeholder="Search baby gear" />
+      <button type="submit">Search</button>
     </form>
-    <section id="plan-section" aria-live="polite"></section>
-    <section id="bundles-section" aria-live="polite"></section>
+  </header>
+
+  <main>
+    <section id="hero">
+      <h2>Smarter Baby‑Gear Shopping</h2>
+      <p>Find hand‑picked deals, trusted brands and exclusive bundles tailored to your baby’s age and needs.</p>
+      <a href="#categories">Browse Categories</a>
+    </section>
+
+    <section id="categories">
+      <h2>Shop by Category</h2>
+      <ul>
+        <li><a href="#">Feeding</a></li>
+        <li><a href="#">Sleep</a></li>
+        <li><a href="#">Safety</a></li>
+        <li><a href="#">Toys</a></li>
+      </ul>
+    </section>
+
+    <section id="deals">
+      <h2>Featured Deals</h2>
+      <article class="product" tabindex="0">
+        <h3>Ergonomic Baby Carrier</h3>
+        <img src="carrier.jpg" alt="Ergonomic baby carrier" />
+        <p>$89.99 – Rated 4.8/5</p>
+        <button type="button">View Deal</button>
+      </article>
+      <article class="product" tabindex="0">
+        <h3>Smart Sleep Monitor</h3>
+        <img src="sleep-monitor.jpg" alt="Smart sleep monitor" />
+        <p>$129.99 – Rated 4.6/5</p>
+        <button type="button">View Deal</button>
+      </article>
+    </section>
   </main>
+
   <footer>
     <p>&copy; 2025 InfantBites. All rights reserved.</p>
   </footer>
-  <script src="app.js"></script>
 </body>
 </html>
