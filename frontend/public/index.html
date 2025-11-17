@@ -1,22 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
+
+  <!-- Viewport & Rendering -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
   <!-- Primary SEO -->
-  <title>InfantBites – Smarter Baby Shopping, Curated Gear & Real Parent Reviews</title>
+  <title>InfantBites – Smarter Baby Shopping, Curated Baby Gear & Real Parent Reviews</title>
   <meta name="description"
-        content="InfantBites gives you curated baby gear, verified reviews, safety-first guides and handpicked deals so you can shop for your baby with confidence, not guesswork.">
-  <meta name="robots" content="index,follow">
+        content="InfantBites helps new parents cut through baby-product overload with curated shortlists, safety-first guides, real parent reviews and handpicked deals—so you can shop in minutes, not hours.">
+  <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
   <meta name="theme-color" content="#f9f5d4">
   <meta name="color-scheme" content="light dark">
+  <meta name="author" content="InfantBites">
+
+  <!-- Suggested keywords (fine to tweak or remove if you prefer) -->
+  <meta name="keywords"
+        content="baby gear,baby registry,newborn essentials,best baby products,baby product reviews,infant safety,InfantBites">
 
   <!-- Canonical -->
   <link rel="canonical" href="https://www.infantbites.com/">
 
-  <!-- Open Graph / Facebook -->
+  <!-- Favicons (adjust paths as needed) -->
+  <link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="/assets/favicon-192.png" sizes="192x192" type="image/png">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+
+  <!-- Social / Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="InfantBites – Smarter Baby Shopping">
   <meta property="og:description"
@@ -24,6 +36,9 @@
   <meta property="og:url" content="https://www.infantbites.com/">
   <meta property="og:site_name" content="InfantBites">
   <meta property="og:image" content="https://www.infantbites.com/assets/infantbites-og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="en_US">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
@@ -31,11 +46,18 @@
   <meta name="twitter:description"
         content="Compare trusted baby gear, read real parent reviews and shop curated bundles in one place.">
   <meta name="twitter:image" content="https://www.infantbites.com/assets/infantbites-og.jpg">
+  <meta name="twitter:site" content="@infantbites">
+  <meta name="twitter:creator" content="@infantbites">
 
-  <!-- Stylesheet -->
+  <!-- Performance hints (optional, update URLs as needed) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="image" href="/assets/hero-parent-baby-1x.jpg" imagesrcset="/assets/hero-parent-baby-2x.jpg 2x">
+
+  <!-- CSS -->
   <link rel="stylesheet" href="style.css">
 
-  <!-- Structured Data: WebSite, Organization, ItemList, FAQPage -->
+  <!-- Structured Data: WebSite, Organization, BreadcrumbList, SiteNavigationElement, ItemList, Products, FAQPage -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -67,6 +89,31 @@
         ]
       },
       {
+        "@type": "BreadcrumbList",
+        "@id": "https://www.infantbites.com/#breadcrumbs",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://www.infantbites.com/"
+          }
+        ]
+      },
+      {
+        "@type": "SiteNavigationElement",
+        "@id": "https://www.infantbites.com/#site-navigation",
+        "name": "Primary navigation",
+        "url": [
+          "https://www.infantbites.com/#feed",
+          "https://www.infantbites.com/#sleep",
+          "https://www.infantbites.com/#safety",
+          "https://www.infantbites.com/#toys",
+          "https://www.infantbites.com/#deals",
+          "https://www.infantbites.com/#reviews"
+        ]
+      },
+      {
         "@type": "ItemList",
         "@id": "https://www.infantbites.com/#featured-products",
         "name": "Featured Baby Products",
@@ -84,6 +131,56 @@
         ]
       },
       {
+        "@type": "Product",
+        "@id": "https://www.infantbites.com/#product-ergonomic-carrier",
+        "name": "Ergonomic Baby Carrier",
+        "image": "https://www.infantbites.com/carrier-800w.jpg",
+        "description": "A 4-in-1 ergonomic baby carrier with breathable mesh and fully adjustable straps for newborns through toddlers.",
+        "brand": {
+          "@type": "Brand",
+          "name": "Various"
+        },
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.8",
+          "reviewCount": "324",
+          "bestRating": "5",
+          "worstRating": "1"
+        },
+        "offers": {
+          "@type": "Offer",
+          "url": "https://affiliate.example.com/carrier",
+          "priceCurrency": "USD",
+          "price": "89.99",
+          "availability": "https://schema.org/InStock"
+        }
+      },
+      {
+        "@type": "Product",
+        "@id": "https://www.infantbites.com/#product-sleep-monitor",
+        "name": "Smart Sleep Monitor",
+        "image": "https://www.infantbites.com/sleep-monitor-800w.jpg",
+        "description": "App-connected smart baby sleep monitor that tracks heart rate, breathing and movement with customizable alerts.",
+        "brand": {
+          "@type": "Brand",
+          "name": "Various"
+        },
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.6",
+          "reviewCount": "198",
+          "bestRating": "5",
+          "worstRating": "1"
+        },
+        "offers": {
+          "@type": "Offer",
+          "url": "https://affiliate.example.com/sleep-monitor",
+          "priceCurrency": "USD",
+          "price": "129.99",
+          "availability": "https://schema.org/InStock"
+        }
+      },
+      {
         "@type": "FAQPage",
         "@id": "https://www.infantbites.com/#faq",
         "mainEntity": [
@@ -92,7 +189,7 @@
             "name": "How do you choose products?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "We compare product specs, safety info, parent reviews and pricing across major retailers, then feature products that balance safety, usability and value."
+              "text": "We compare product specs, safety information, recall history, parent reviews and pricing across major retailers. Then we feature products that balance safety, usability and value for real families."
             }
           },
           {
@@ -100,15 +197,15 @@
             "name": "Do affiliate links change what you recommend?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "No. Affiliate links never change which products we recommend or the price you pay. We clearly disclose affiliate relationships and prioritize clarity and usefulness."
+              "text": "No. Affiliate links never change which products we recommend or the price you pay. We show affiliate relationships clearly and keep our evaluation criteria separate from how we’re compensated."
             }
           },
           {
             "@type": "Question",
-            "name": "Is this medical advice?",
+            "name": "Is InfantBites medical advice?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "No. InfantBites does not provide medical advice, diagnosis or treatment. Always talk with your pediatrician or a qualified health provider about health-related decisions."
+              "text": "No. InfantBites does not provide medical advice, diagnosis or treatment. Our content is educational only. Always speak with your pediatrician or qualified health provider about health-related questions."
             }
           }
         ]
@@ -122,14 +219,35 @@
   <!-- Skip link for keyboard users -->
   <a href="#main-content" class="skip-link">Skip to main content</a>
 
+  <!-- Sticky top bar CTA (optional) -->
+  <div class="top-cta-bar" role="complementary" aria-label="Quick signup">
+    <p class="top-cta-text">
+      New here? Get a 3-minute newborn gear checklist in your inbox.
+    </p>
+    <a href="#newsletter" class="top-cta-link">Send it to me</a>
+  </div>
+
   <!-- ====== HEADER ===================================================== -->
   <header class="site-header" role="banner">
     <!-- Affiliate & Health Disclosure -->
-    <div id="disclosure" class="disclosure-banner" role="note">
-      <strong>Affiliate &amp; Health Disclosure:</strong>
-      Some links on this site may earn us a commission at no extra cost to you. Content is for informational purposes
-      only and is not medical advice. Always consult your pediatrician for health decisions.
-    </div>
+    <section id="disclosure"
+             class="disclosure-banner"
+             role="note"
+             aria-label="Affiliate and health disclosure">
+      <div class="disclosure-content">
+        <strong>Affiliate &amp; Health Disclosure:</strong>
+        <span>
+          Some links on this site may earn us a commission at no extra cost to you. Content is for informational
+          purposes only and is not medical advice. Always consult your pediatrician for health decisions.
+        </span>
+      </div>
+      <button type="button"
+              class="disclosure-close"
+              aria-label="Dismiss disclosure banner"
+              aria-controls="disclosure">
+        ✕
+      </button>
+    </section>
 
     <div class="header-inner">
       <!-- Branding -->
@@ -140,7 +258,7 @@
         </a>
       </div>
 
-      <!-- Primary CTA in header -->
+      <!-- Desktop primary CTA -->
       <a href="#newsletter" class="header-cta btn btn-outline">
         Get bite-sized baby gear tips
       </a>
@@ -148,7 +266,7 @@
       <!-- Mobile Nav Toggle -->
       <button class="nav-toggle"
               type="button"
-              aria-label="Toggle navigation"
+              aria-label="Toggle main navigation"
               aria-controls="main-nav"
               aria-expanded="false">
         <span class="nav-toggle-bar"></span>
@@ -157,7 +275,10 @@
       </button>
 
       <!-- Primary Navigation -->
-      <nav id="main-nav" class="main-nav" role="navigation" aria-label="Main navigation">
+      <nav id="main-nav"
+           class="main-nav"
+           role="navigation"
+           aria-label="Main navigation">
         <ul>
           <li><a href="#hero" aria-current="page">Home</a></li>
           <li><a href="#feed">Feeding</a></li>
@@ -172,12 +293,16 @@
 
     <!-- On-Page Search -->
     <div class="header-search">
-      <form id="site-search" class="search-form" role="search" aria-label="Product search">
+      <form id="site-search"
+            class="search-form"
+            role="search"
+            aria-label="Baby product search">
         <label for="search-input" class="visually-hidden">Search baby products</label>
         <input id="search-input"
                name="q"
                type="search"
                placeholder="Search baby gear (e.g. “travel stroller”, “bottle set”)"
+               inputmode="search"
                autocomplete="off"
                aria-describedby="search-help search-status"
                required>
@@ -196,29 +321,30 @@
     <section id="hero" class="hero" aria-labelledby="hero-title">
       <div class="hero-inner">
         <div class="hero-copy">
+          <p class="hero-eyebrow">Baby shopping, minus the overwhelm</p>
           <h1 id="hero-title">Shop for baby like you have a village behind you.</h1>
           <p class="hero-subtitle">
-            InfantBites turns endless product lists into clear, parent-tested picks so you can choose safer, smarter baby
-            gear in minutes—not hours.
+            InfantBites turns endless product lists into clear, parent-tested picks—so you can choose safer, smarter baby
+            gear in minutes, not hours.
           </p>
 
-          <div class="hero-actions">
+          <div class="hero-actions" aria-label="Primary actions">
             <a href="#featured-products" class="btn btn-primary">
               Browse Editor’s Picks
             </a>
-            <a href="#deals" class="btn btn-secondary">
-              Check Today’s Deals
+            <a href="#newsletter" class="btn btn-secondary">
+              Get the newborn checklist
             </a>
           </div>
 
           <ul class="hero-badges" aria-label="Reasons parents trust InfantBites">
-            <li>✔️ Curated lists by age &amp; stage</li>
+            <li>✔️ Curated by age &amp; stage</li>
             <li>✔️ Clear safety notes &amp; disclosures</li>
             <li>✔️ Handpicked deals from trusted retailers</li>
           </ul>
 
           <p class="hero-meta">
-            Trusted by <strong>thousands of new parents</strong> building their first registry and beyond.
+            Trusted by <strong>thousands of new parents</strong> building registries, upgrading gear and shopping on a budget.
           </p>
         </div>
 
@@ -230,28 +356,49 @@
               <li><a href="/checklists/first-3-months.html">First 3 months gear plan</a></li>
               <li><a href="/checklists/travel-gear.html">Travel &amp; on-the-go kit</a></li>
             </ul>
+            <p class="hero-note">Use as a registry blueprint—or a sanity-saving audit of what you already own.</p>
           </div>
         </aside>
+      </div>
+
+      <!-- Who it’s for quick chips -->
+      <div class="hero-persona-strip" aria-label="Who InfantBites is for">
+        <span class="persona-label">Made for:</span>
+        <ul class="persona-list">
+          <li>First-time parents</li>
+          <li>Registry builders</li>
+          <li>Budget-conscious families</li>
+          <li>Gift-givers &amp; baby shower planners</li>
+        </ul>
       </div>
     </section>
 
     <!-- HOW IT WORKS =================================================== -->
     <section id="how-it-works" class="section section-muted" aria-labelledby="how-title">
-      <div class="section-header">
+      <header class="section-header">
         <h2 id="how-title">How InfantBites helps you shop smarter</h2>
-      </div>
+        <p class="section-tagline">
+          From “I have 30 tabs open” to “I’m done in one nap-time.”
+        </p>
+      </header>
+
       <div class="how-grid">
         <article class="step-card">
-          <h3>1. Tell us what you’re shopping for</h3>
-          <p>Use the search bar or jump into categories like feeding, sleep or safety.</p>
+          <span class="step-label" aria-hidden="true">Step 1</span>
+          <h3>Tell us what you’re shopping for</h3>
+          <p>Use the search bar or jump into categories like feeding, sleep or safety. We keep language simple and jargons-free.</p>
         </article>
+
         <article class="step-card">
-          <h3>2. See curated, safety-first picks</h3>
-          <p>We highlight stand-out products with clear pros, cons and important safety callouts.</p>
+          <span class="step-label" aria-hidden="true">Step 2</span>
+          <h3>See curated, safety-first picks</h3>
+          <p>We highlight stand-out products with pros, cons and important safety callouts, plus when to skip something entirely.</p>
         </article>
+
         <article class="step-card">
-          <h3>3. Compare prices &amp; deals</h3>
-          <p>Quickly spot where to buy, what’s on sale and which bundles actually save you money.</p>
+          <span class="step-label" aria-hidden="true">Step 3</span>
+          <h3>Compare prices &amp; deals in one place</h3>
+          <p>Spot where to buy, what’s on sale and which bundles actually save you money—instead of just looking like a deal.</p>
         </article>
       </div>
     </section>
@@ -263,20 +410,21 @@
         <p class="section-tagline">High-performing baby gear parents love—and keep recommending.</p>
       </header>
 
-      <!-- Product filters (static; wire up with JS if you want live filtering) -->
+      <!-- Product filters -->
       <div class="product-filters" aria-label="Filter featured products">
-        <button type="button" class="filter-chip is-active" data-filter="all">All</button>
-        <button type="button" class="filter-chip" data-filter="carrier">Carriers</button>
-        <button type="button" class="filter-chip" data-filter="sleep">Sleep</button>
+        <button type="button" class="filter-chip is-active" data-filter="all" aria-pressed="true">All</button>
+        <button type="button" class="filter-chip" data-filter="carrier" aria-pressed="false">Carriers</button>
+        <button type="button" class="filter-chip" data-filter="sleep" aria-pressed="false">Sleep</button>
       </div>
 
-      <div class="product-grid">
+      <div class="product-grid" aria-live="polite">
         <!-- Product 1 -->
         <article class="product-card"
                  tabindex="0"
                  data-category="carrier"
                  itemscope
-                 itemtype="https://schema.org/Product">
+                 itemtype="https://schema.org/Product"
+                 aria-labelledby="product-carrier-title">
           <figure class="product-media">
             <img src="carrier-800w.jpg"
                  srcset="carrier-400w.jpg 400w, carrier-800w.jpg 800w"
@@ -289,7 +437,7 @@
           </figure>
 
           <div class="product-body">
-            <h3 class="product-title" itemprop="name">Ergonomic Baby Carrier</h3>
+            <h3 id="product-carrier-title" class="product-title" itemprop="name">Ergonomic Baby Carrier</h3>
             <p class="product-summary" itemprop="description">
               A 4-in-1 carrier with breathable mesh and fully adjustable straps for newborns through toddlers.
             </p>
@@ -327,7 +475,7 @@
                rel="nofollow noopener"
                target="_blank"
                itemprop="url"
-               aria-label="View details and buying options for Ergonomic Baby Carrier in a new tab">
+               aria-label="View details and buying options for Ergonomic Baby Carrier (opens in a new tab)">
               View Details &amp; Retailers
             </a>
           </div>
@@ -338,7 +486,8 @@
                  tabindex="0"
                  data-category="sleep"
                  itemscope
-                 itemtype="https://schema.org/Product">
+                 itemtype="https://schema.org/Product"
+                 aria-labelledby="product-sleep-monitor-title">
           <figure class="product-media">
             <img src="sleep-monitor-800w.jpg"
                  srcset="sleep-monitor-400w.jpg 400w, sleep-monitor-800w.jpg 800w"
@@ -351,7 +500,7 @@
           </figure>
 
           <div class="product-body">
-            <h3 class="product-title" itemprop="name">Smart Sleep Monitor</h3>
+            <h3 id="product-sleep-monitor-title" class="product-title" itemprop="name">Smart Sleep Monitor</h3>
             <p class="product-summary" itemprop="description">
               Real-time app-connected monitoring for heart rate, breathing and movement, with custom alerts.
             </p>
@@ -389,13 +538,11 @@
                rel="nofollow noopener"
                target="_blank"
                itemprop="url"
-               aria-label="View details and buying options for Smart Sleep Monitor in a new tab">
+               aria-label="View details and buying options for Smart Sleep Monitor (opens in a new tab)">
               View Details &amp; Retailers
             </a>
           </div>
         </article>
-
-        <!-- You can add more product cards here following the same structure -->
       </div>
     </section>
 
@@ -519,11 +666,13 @@
       </div>
     </section>
 
-    <!-- COMPARISON SNAPSHOT (simple table) ============================== -->
+    <!-- COMPARISON SNAPSHOT ============================================ -->
     <section class="section section-muted" aria-labelledby="compare-title">
-      <div class="section-header">
+      <header class="section-header">
         <h2 id="compare-title">Why shop with InfantBites?</h2>
-      </div>
+        <p class="section-tagline">We design every guide to save you time, money and mental energy.</p>
+      </header>
+
       <div class="table-wrapper" role="group" aria-label="Comparison of InfantBites vs. typical shopping">
         <table class="compare-table">
           <thead>
@@ -537,7 +686,7 @@
             <tr>
               <th scope="row">Time spent researching</th>
               <td>Dozens of tabs, mixed-quality reviews</td>
-              <td>Curated, shortlists with pros &amp; cons</td>
+              <td>Curated shortlists with pros &amp; cons</td>
             </tr>
             <tr>
               <th scope="row">Safety info</th>
@@ -548,6 +697,11 @@
               <th scope="row">Understanding total cost</th>
               <td>Hard to compare across retailers</td>
               <td>Side-by-side prices &amp; deal highlights</td>
+            </tr>
+            <tr>
+              <th scope="row">Affiliate transparency</th>
+              <td>Unclear which links are monetized</td>
+              <td>Upfront affiliate &amp; medical disclaimers</td>
             </tr>
           </tbody>
         </table>
@@ -562,13 +716,15 @@
 
       <div class="faq-accordion" role="list">
         <article class="faq-item" role="listitem">
-          <button class="faq-toggle"
-                  type="button"
-                  aria-expanded="false"
-                  aria-controls="faq-1-body"
-                  id="faq-1-label">
-            How do you choose products?
-          </button>
+          <h3>
+            <button class="faq-toggle"
+                    type="button"
+                    aria-expanded="false"
+                    aria-controls="faq-1-body"
+                    id="faq-1-label">
+              How do you choose products?
+            </button>
+          </h3>
           <div id="faq-1-body"
                class="faq-body"
                role="region"
@@ -582,13 +738,15 @@
         </article>
 
         <article class="faq-item" role="listitem">
-          <button class="faq-toggle"
-                  type="button"
-                  aria-expanded="false"
-                  aria-controls="faq-2-body"
-                  id="faq-2-label">
-            Do affiliate links change what you recommend?
-          </button>
+          <h3>
+            <button class="faq-toggle"
+                    type="button"
+                    aria-expanded="false"
+                    aria-controls="faq-2-body"
+                    id="faq-2-label">
+              Do affiliate links change what you recommend?
+            </button>
+          </h3>
           <div id="faq-2-body"
                class="faq-body"
                role="region"
@@ -602,13 +760,15 @@
         </article>
 
         <article class="faq-item" role="listitem">
-          <button class="faq-toggle"
-                  type="button"
-                  aria-expanded="false"
-                  aria-controls="faq-3-body"
-                  id="faq-3-label">
-            Is InfantBites medical advice?
-          </button>
+          <h3>
+            <button class="faq-toggle"
+                    type="button"
+                    aria-expanded="false"
+                    aria-controls="faq-3-body"
+                    id="faq-3-label">
+              Is InfantBites medical advice?
+            </button>
+          </h3>
           <div id="faq-3-body"
                class="faq-body"
                role="region"
@@ -625,12 +785,12 @@
 
     <!-- NEWSLETTER / EMAIL CAPTURE ===================================== -->
     <section id="newsletter" class="section newsletter-section" aria-labelledby="newsletter-title">
-      <div class="section-header">
+      <header class="section-header">
         <h2 id="newsletter-title">Get InfantBites in your inbox</h2>
         <p class="section-tagline">
           Bite-sized baby gear advice, shortlists and deal alerts—no spam, no overwhelm.
         </p>
-      </div>
+      </header>
 
       <form class="newsletter-form" aria-label="Email newsletter signup">
         <div class="newsletter-fields">
@@ -654,7 +814,7 @@
   <footer class="site-footer" role="contentinfo">
     <div class="footer-inner">
       <div class="footer-brand">
-        <a href="/" class="logo-link">
+        <a href="/" class="logo-link" aria-label="InfantBites home">
           <span class="logo-mark" aria-hidden="true">🍼</span>
           <span class="logo-text">InfantBites</span>
         </a>
@@ -687,89 +847,132 @@
 
   <!-- ====== JAVASCRIPT ================================================= -->
   <script>
+    // Helper: safe localStorage access
+    function ibStorageAvailable() {
+      try {
+        const testKey = "__ib_test__";
+        localStorage.setItem(testKey, "1");
+        localStorage.removeItem(testKey);
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    const ibHasStorage = ibStorageAvailable();
+
+    // Affiliate / health disclosure close + persist
+    (function () {
+      const banner = document.getElementById("disclosure");
+      const closeBtn = banner ? banner.querySelector(".disclosure-close") : null;
+      const STORAGE_KEY = "infantbites_disclosure_dismissed";
+
+      if (!banner || !closeBtn) return;
+
+      if (ibHasStorage && localStorage.getItem(STORAGE_KEY) === "true") {
+        banner.hidden = true;
+        banner.setAttribute("aria-hidden", "true");
+        return;
+      }
+
+      closeBtn.addEventListener("click", function () {
+        banner.hidden = true;
+        banner.setAttribute("aria-hidden", "true");
+        if (ibHasStorage) {
+          localStorage.setItem(STORAGE_KEY, "true");
+        }
+      });
+    })();
+
     // Accessible mobile nav toggle
     (function () {
-      const navToggle = document.querySelector('.nav-toggle');
-      const nav = document.getElementById('main-nav');
+      const navToggle = document.querySelector(".nav-toggle");
+      const nav = document.getElementById("main-nav");
 
       if (!navToggle || !nav) return;
 
-      navToggle.addEventListener('click', () => {
-        const expanded = navToggle.getAttribute('aria-expanded') === 'true';
-        navToggle.setAttribute('aria-expanded', String(!expanded));
-        nav.classList.toggle('is-open', !expanded);
+      navToggle.addEventListener("click", function () {
+        const expanded = navToggle.getAttribute("aria-expanded") === "true";
+        navToggle.setAttribute("aria-expanded", String(!expanded));
+        nav.classList.toggle("is-open", !expanded);
       });
     })();
 
     // Search handling (front-end placeholder)
     (function () {
-      const form = document.getElementById('site-search');
+      const form = document.getElementById("site-search");
       if (!form) return;
 
-      const input = document.getElementById('search-input');
-      const status = document.getElementById('search-status');
+      const input = document.getElementById("search-input");
+      const status = document.getElementById("search-status");
 
-      form.addEventListener('submit', (event) => {
+      form.addEventListener("submit", function (event) {
         event.preventDefault();
         const query = input.value.trim();
 
         if (!query) {
-          status.textContent = 'Please enter a product or keyword to search.';
+          status.textContent = "Please enter a product or keyword to search.";
           input.focus();
           return;
         }
 
-        status.textContent = 'Opening search results in a new tab…';
+        status.textContent = "Opening search results in a new tab…";
 
         // TODO: replace with your internal search route when available
-        const url = `https://www.google.com/search?q=${encodeURIComponent(query)}+site:infantbites.com`;
-        window.open(url, '_blank', 'noopener');
+        const url = "https://www.google.com/search?q=" +
+          encodeURIComponent(query + " site:infantbites.com");
+        window.open(url, "_blank", "noopener");
       });
     })();
 
-    // FAQ accordion
+    // FAQ accordion (accessible)
     (function () {
-      const toggles = document.querySelectorAll('.faq-toggle');
-      toggles.forEach((btn) => {
-        btn.addEventListener('click', () => {
-          const expanded = btn.getAttribute('aria-expanded') === 'true';
-          const bodyId = btn.getAttribute('aria-controls');
-          const body = document.getElementById(bodyId);
+      const toggles = document.querySelectorAll(".faq-toggle");
+      if (!toggles.length) return;
 
+      toggles.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          const expanded = btn.getAttribute("aria-expanded") === "true";
+          const bodyId = btn.getAttribute("aria-controls");
+          const body = document.getElementById(bodyId);
           if (!body) return;
 
-          btn.setAttribute('aria-expanded', String(!expanded));
+          btn.setAttribute("aria-expanded", String(!expanded));
           body.hidden = expanded;
         });
       });
     })();
 
-    // Product filter chips (optional enhancement)
+    // Product filter chips
     (function () {
-      const chips = document.querySelectorAll('.filter-chip');
-      const cards = document.querySelectorAll('.product-card');
+      const chips = document.querySelectorAll(".filter-chip");
+      const cards = document.querySelectorAll(".product-card");
+      const grid = document.querySelector(".product-grid");
 
-      if (!chips.length || !cards.length) return;
+      if (!chips.length || !cards.length || !grid) return;
 
-      chips.forEach((chip) => {
-        chip.addEventListener('click', () => {
-          const filter = chip.getAttribute('data-filter');
+      chips.forEach(function (chip) {
+        chip.addEventListener("click", function () {
+          const filter = chip.getAttribute("data-filter");
 
-          chips.forEach((c) => c.classList.remove('is-active'));
-          chip.classList.add('is-active');
-
-          cards.forEach((card) => {
-            const category = card.getAttribute('data-category');
-            if (!filter || filter === 'all' || category === filter) {
-              card.hidden = false;
-            } else {
-              card.hidden = true;
-            }
+          chips.forEach(function (c) {
+            const isActive = c === chip;
+            c.classList.toggle("is-active", isActive);
+            c.setAttribute("aria-pressed", String(isActive));
           });
+
+          let visibleCount = 0;
+          cards.forEach(function (card) {
+            const category = card.getAttribute("data-category");
+            const shouldShow = !filter || filter === "all" || category === filter;
+            card.hidden = !shouldShow;
+            if (shouldShow) visibleCount++;
+          });
+
+          grid.setAttribute("data-visible-count", String(visibleCount));
         });
       });
     })();
   </script>
 </body>
-
 </html>
