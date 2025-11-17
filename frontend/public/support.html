@@ -1,45 +1,1536 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>InfantBites Support</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <header>
-    <h1>Support</h1>
-  </header>
-  <main>
-    <p>Have a question or feedback? We're here to help! Please describe your concern and we'll respond soon.</p>
-    <form id="support-form">
-      <label for="message">Your message</label>
-      <textarea id="message" required></textarea>
-      <button type="submit">Send</button>
-    </form>
-    <section id="support-response" aria-live="polite"></section>
-  </main>
-  <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('support-form');
-    const responseSection = document.getElementById('support-response');
-    form.addEventListener('submit', async function(e) {
-      e.preventDefault();
-      const message = document.getElementById('message').value;
-      responseSection.textContent = 'Sending...';
-      try {
-        const res = await fetch('/api/support/ask', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: message })
-        });
-        const data = await res.json();
-        responseSection.textContent = data.reply || 'Thanks! We will get back to you soon.';
-      } catch (err) {
-        responseSection.textContent = 'There was an error submitting your request. Please try again later.';
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>InfantBites – AI Support Assistant</title>
+
+  <meta
+    name="description"
+    content="Chat with the InfantBites AI Support Assistant or send a message directly to our team."
+  />
+
+  <!-- You can move all styles to style.css if you prefer -->
+  <style>
+    :root {
+      --bg: #f4f5fb;
+      --bg-alt: #ffffff;
+      --bg-subtle: #f9fafb;
+      --primary: #4c7df0;
+      --primary-soft: rgba(76, 125, 240, 0.1);
+      --primary-strong: #1d4ed8;
+      --accent: #f97316;
+      --danger: #ef4444;
+      --text-main: #0f172a;
+      --text-muted: #6b7280;
+      --border-subtle: #e5e7eb;
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-pill: 999px;
+      --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.14);
+      --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+    }
+
+    [data-theme="dark"] {
+      --bg: #020617;
+      --bg-alt: #020617;
+      --bg-subtle: #020617;
+      --primary-soft: rgba(96, 165, 250, 0.15);
+      --text-main: #e5e7eb;
+      --text-muted: #9ca3af;
+      --border-subtle: #1f2937;
+      --shadow-soft: 0 22px 50px rgba(0, 0, 0, 0.75);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body.support-body {
+      margin: 0;
+      font-family: var(--font-sans);
+      background: radial-gradient(circle at top left, #dbeafe 0, var(--bg) 40%, var(--bg) 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+
+    .support-header {
+      padding: 1.25rem 1.5rem 0.75rem;
+    }
+
+    .support-header-inner {
+      max-width: 1140px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .support-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+    }
+
+    .support-logo {
+      width: 42px;
+      height: 42px;
+      border-radius: var(--radius-pill);
+      background: conic-gradient(
+        from 180deg,
+        #4f46e5,
+        #22c55e,
+        #f97316,
+        #0ea5e9,
+        #4f46e5
+      );
+      padding: 2px;
+      box-shadow: 0 14px 40px rgba(79, 70, 229, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .support-logo-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: inherit;
+      background: #0b1020;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #e5e7eb;
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: 0.04em;
+    }
+
+    .support-title {
+      margin: 0;
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+
+    .support-subtitle {
+      margin: 0.15rem 0 0;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .pill-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.25rem 0.55rem;
+      border-radius: var(--radius-pill);
+      background: rgba(22, 163, 74, 0.12);
+      color: #16a34a;
+      font-size: 0.75rem;
+    }
+
+    .pill-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: var(--radius-pill);
+      background: #22c55e;
+    }
+
+    .theme-toggle {
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-subtle);
+      background: rgba(15, 23, 42, 0.03);
+      padding: 0.3rem 0.6rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      cursor: pointer;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .theme-toggle span[aria-hidden="true"] {
+      font-size: 0.95rem;
+    }
+
+    .support-main {
+      flex: 1;
+      max-width: 1140px;
+      margin: 0 auto 1.5rem;
+      padding: 0 1.5rem 1.5rem;
+      display: grid;
+      grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.1fr);
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 920px) {
+      .support-main {
+        grid-template-columns: minmax(0, 1fr);
+        padding: 0 1rem 1.25rem;
       }
-    });
-  });
+      .header-right {
+        display: none;
+      }
+    }
+
+    .support-card {
+      background: var(--bg-alt);
+      border-radius: 1.35rem;
+      box-shadow: var(--shadow-soft);
+      padding: 1.2rem 1.3rem;
+      min-height: 0;
+      position: relative;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+    }
+
+    .support-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      border: 1px solid rgba(96, 165, 250, 0.2);
+      pointer-events: none;
+      mix-blend-mode: soft-light;
+      opacity: 0.45;
+    }
+
+    .support-card-inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+
+    .support-chat-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-bottom: 0.9rem;
+    }
+
+    .support-chat-title {
+      font-size: 1rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .sparkle {
+      font-size: 1.1rem;
+    }
+
+    .support-chat-subtext {
+      margin: 0.15rem 0 0;
+      font-size: 0.83rem;
+      color: var(--text-muted);
+    }
+
+    .mode-toggle {
+      display: inline-flex;
+      align-items: center;
+      border-radius: var(--radius-pill);
+      padding: 0.1rem;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-subtle);
+      font-size: 0.75rem;
+    }
+
+    .mode-toggle button {
+      border-radius: var(--radius-pill);
+      border: none;
+      background: transparent;
+      padding: 0.22rem 0.6rem;
+      font-size: 0.74rem;
+      cursor: pointer;
+      color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.17rem;
+    }
+
+    .mode-toggle button.active {
+      background: var(--primary-soft);
+      color: var(--primary-strong);
+      font-weight: 500;
+    }
+
+    .mode-toggle button span[aria-hidden="true"] {
+      font-size: 0.9rem;
+    }
+
+    .support-suggestions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin: 0.4rem 0 0.8rem;
+    }
+
+    .chip {
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-subtle);
+      padding: 0.25rem 0.7rem;
+      font-size: 0.8rem;
+      background: var(--bg-subtle);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: background 0.15s ease, transform 0.1s ease, border-color 0.15s ease,
+        color 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .chip:hover {
+      background: var(--primary-soft);
+      border-color: #bfdbfe;
+      transform: translateY(-1px);
+      color: var(--primary-strong);
+    }
+
+    .support-chat-window {
+      flex: 1;
+      border-radius: 1.1rem;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      padding: 0.8rem;
+      margin-top: 0.15rem;
+      background: radial-gradient(circle at top left, rgba(129, 140, 248, 0.12), var(--bg-subtle) 50%);
+      overflow-y: auto;
+      max-height: 430px;
+      scroll-behavior: smooth;
+    }
+
+    .chat-message {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.65rem;
+    }
+
+    .chat-message.user {
+      justify-content: flex-end;
+    }
+
+    .chat-message.assistant {
+      justify-content: flex-start;
+    }
+
+    .chat-avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: var(--radius-pill);
+      background: #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+      flex-shrink: 0;
+    }
+
+    [data-theme="dark"] .chat-avatar {
+      background: #111827;
+      color: #e5e7eb;
+    }
+
+    .chat-avatar.assistant {
+      background: radial-gradient(circle at top left, #4f46e5, #60a5fa);
+      color: #f9fafb;
+    }
+
+    .chat-avatar.user {
+      background: radial-gradient(circle at top left, #fb7185, #fb923c);
+      color: #fff7ed;
+    }
+
+    .chat-bubble {
+      max-width: 78%;
+      padding: 0.55rem 0.7rem;
+      border-radius: 1rem;
+      font-size: 0.87rem;
+      line-height: 1.4;
+      position: relative;
+      word-wrap: break-word;
+      white-space: pre-wrap;
+      backdrop-filter: blur(10px);
+    }
+
+    .assistant .chat-bubble {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 1rem 1rem 1rem 0.5rem;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+    }
+
+    [data-theme="dark"] .assistant .chat-bubble {
+      background: rgba(15, 23, 42, 0.97);
+    }
+
+    .user .chat-bubble {
+      background: linear-gradient(135deg, #4f46e5, #2563eb);
+      color: #e5e7eb;
+      border-radius: 1rem 1rem 0.5rem 1rem;
+    }
+
+    .chat-meta {
+      margin-top: 0.25rem;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    .assistant .chat-meta {
+      text-align: left;
+    }
+
+    .user .chat-meta {
+      text-align: right;
+    }
+
+    .typing-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.18rem;
+      padding: 0.4rem 0.6rem;
+      border-radius: var(--radius-pill);
+      background: rgba(148, 163, 184, 0.35);
+    }
+
+    .typing-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: var(--radius-pill);
+      background: #e5e7eb;
+      animation: bounce 1.4s infinite ease-in-out;
+    }
+
+    .typing-dot:nth-child(2) {
+      animation-delay: 0.18s;
+    }
+
+    .typing-dot:nth-child(3) {
+      animation-delay: 0.36s;
+    }
+
+    @keyframes bounce {
+      0%,
+      80%,
+      100% {
+        transform: scale(0.6);
+        opacity: 0.5;
+      }
+      40% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .support-input-row {
+      margin-top: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .support-input-row textarea {
+      resize: none;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      padding: 0.6rem 0.7rem;
+      font-size: 0.9rem;
+      min-height: 60px;
+      max-height: 120px;
+      font-family: var(--font-sans);
+      outline: none;
+      transition: border 0.12s ease, box-shadow 0.12s ease, background 0.12s ease,
+        transform 0.06s ease;
+      background: rgba(255, 255, 255, 0.95);
+    }
+
+    [data-theme="dark"] .support-input-row textarea {
+      background: rgba(15, 23, 42, 0.95);
+    }
+
+    .support-input-row textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.5);
+      transform: translateY(-0.5px);
+    }
+
+    .support-input-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .input-hint {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .char-counter {
+      font-variant-numeric: tabular-nums;
+      opacity: 0.9;
+    }
+
+    .btn-primary {
+      border-radius: var(--radius-pill);
+      background: linear-gradient(135deg, #4c7df0, #2563eb);
+      color: #f9fafb;
+      font-size: 0.85rem;
+      padding: 0.45rem 1.05rem;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      box-shadow: 0 10px 30px rgba(37, 99, 235, 0.55);
+      transition: transform 0.1s ease, box-shadow 0.1s ease, opacity 0.12s ease;
+      white-space: nowrap;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 32px rgba(37, 99, 235, 0.65);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: default;
+      box-shadow: none;
+      transform: none;
+    }
+
+    .btn-ghost {
+      border-radius: var(--radius-pill);
+      padding: 0.3rem 0.6rem;
+      border: none;
+      background: transparent;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .btn-ghost:hover {
+      background: rgba(148, 163, 184, 0.18);
+    }
+
+    .support-response {
+      margin-top: 0.35rem;
+      min-height: 0.9rem;
+      font-size: 0.8rem;
+    }
+
+    .alert {
+      border-radius: 0.75rem;
+      padding: 0.5rem 0.7rem;
+      font-size: 0.8rem;
+      margin-top: 0.15rem;
+    }
+
+    .alert-success {
+      background: #ecfdf3;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+    }
+
+    .alert-error {
+      background: #fef2f2;
+      color: #b91c1c;
+      border: 1px solid #fecaca;
+    }
+
+    [data-theme="dark"] .alert-success {
+      background: rgba(22, 163, 74, 0.18);
+      border-color: rgba(21, 128, 61, 0.7);
+      color: #bbf7d0;
+    }
+
+    [data-theme="dark"] .alert-error {
+      background: rgba(220, 38, 38, 0.18);
+      border-color: rgba(239, 68, 68, 0.8);
+      color: #fecaca;
+    }
+
+    .rating-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 0.3rem;
+    }
+
+    .rating-bar button {
+      border-radius: var(--radius-pill);
+      border: 1px solid transparent;
+      background: transparent;
+      padding: 0.12rem 0.5rem;
+      cursor: pointer;
+      font-size: 0.8rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.2rem;
+      color: inherit;
+    }
+
+    .rating-bar button:hover {
+      border-color: rgba(148, 163, 184, 0.7);
+      background: rgba(148, 163, 184, 0.12);
+    }
+
+    .rating-bar button.active {
+      border-color: rgba(96, 165, 250, 0.8);
+      color: var(--primary-strong);
+      background: var(--primary-soft);
+    }
+
+    .offline-banner {
+      position: fixed;
+      inset-inline: 0;
+      top: 0;
+      display: none;
+      z-index: 50;
+      text-align: center;
+      font-size: 0.77rem;
+      padding: 0.2rem 0.5rem;
+      background: #f97316;
+      color: #111827;
+    }
+
+    .offline-banner.visible {
+      display: block;
+    }
+
+    .support-meta h2 {
+      margin: 0 0 0.6rem;
+      font-size: 0.96rem;
+      font-weight: 600;
+    }
+
+    .support-meta p {
+      margin: 0;
+      font-size: 0.83rem;
+      color: var(--text-muted);
+    }
+
+    .support-meta-section {
+      margin-top: 0.9rem;
+      padding-top: 0.7rem;
+      border-top: 1px dashed rgba(148, 163, 184, 0.6);
+    }
+
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .form-label {
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    .form-input,
+    .form-select {
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      padding: 0.45rem 0.7rem;
+      font-size: 0.83rem;
+      outline: none;
+      background: rgba(15, 23, 42, 0.01);
+      transition: border 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+      color: var(--text-main);
+    }
+
+    .form-input:focus,
+    .form-select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.4);
+      background: rgba(255, 255, 255, 0.95);
+    }
+
+    [data-theme="dark"] .form-input,
+    [data-theme="dark"] .form-select {
+      background: #020617;
+    }
+
+    [data-theme="dark"] .form-input:focus,
+    [data-theme="dark"] .form-select:focus {
+      background: #020617;
+    }
+
+    .form-error {
+      font-size: 0.75rem;
+      color: var(--danger);
+      min-height: 0.9rem;
+    }
+
+    .form-help-text {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .form-required {
+      color: var(--danger);
+    }
+
+    .file-field {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.78rem;
+      margin-top: 0.15rem;
+    }
+
+    .file-field input[type="file"] {
+      font-size: 0.75rem;
+    }
+
+    .file-name {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      max-width: 160px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .support-faq-list {
+      list-style: none;
+      padding: 0;
+      margin: 0.4rem 0 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.28rem;
+      font-size: 0.8rem;
+    }
+
+    .support-faq-list a {
+      color: #2563eb;
+      text-decoration: none;
+    }
+
+    .support-faq-list a:hover {
+      text-decoration: underline;
+    }
+
+    .support-footer {
+      text-align: center;
+      padding: 0.75rem 1rem 1.5rem;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
+</head>
+<body class="support-body" data-theme="light">
+  <!-- Offline banner -->
+  <div id="offline-banner" class="offline-banner" aria-live="polite">
+    You’re offline. Messages will send once you’re back online.
+  </div>
+
+  <header class="support-header">
+    <div class="support-header-inner">
+      <div class="support-brand">
+        <div class="support-logo" aria-hidden="true">
+          <div class="support-logo-inner">IB</div>
+        </div>
+        <div>
+          <h1 class="support-title">InfantBites Support Assistant</h1>
+          <p class="support-subtitle">
+            AI-powered help, with a human team behind the scenes.
+          </p>
+        </div>
+      </div>
+      <div class="header-right">
+        <span class="pill-badge">
+          <span class="pill-dot"></span>
+          AI online
+        </span>
+        <span>Avg AI response time: &lt; 10 seconds</span>
+        <button id="theme-toggle" class="theme-toggle" type="button">
+          <span aria-hidden="true">🌞</span>
+          <span id="theme-label">Light</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="support-main" role="main">
+    <!-- LEFT: AI CHAT EXPERIENCE -->
+    <section class="support-card" aria-label="AI support chat">
+      <div class="support-card-inner">
+        <div class="support-chat-header">
+          <div>
+            <div class="support-chat-title">
+              <span class="sparkle">✨</span> Ask the InfantBites AI
+            </div>
+            <p class="support-chat-subtext">
+              Describe your problem in natural language. The assistant will answer,
+              and can summarize everything for our human team if needed.
+            </p>
+          </div>
+
+          <div class="mode-toggle" aria-label="Choose how your request is handled">
+            <button
+              type="button"
+              id="mode-ai-first"
+              class="active"
+              data-mode="ai_first"
+            >
+              <span aria-hidden="true">🤖</span> AI &amp; human
+            </button>
+            <button
+              type="button"
+              id="mode-human-only"
+              data-mode="human_only"
+            >
+              <span aria-hidden="true">👤</span> Human only
+            </button>
+          </div>
+        </div>
+
+        <div class="support-suggestions" aria-label="Suggested questions">
+          <button class="chip" data-suggest="I’m having trouble logging into my InfantBites account.">
+            Login help
+          </button>
+          <button class="chip" data-suggest="I have a question about my InfantBites subscription and billing.">
+            Billing question
+          </button>
+          <button class="chip" data-suggest="Something isn’t working as expected in the app.">
+            Report a bug
+          </button>
+          <button class="chip" data-suggest="I’d like to request a new feature or improvement.">
+            Feature request
+          </button>
+          <button class="chip" data-suggest="I’m not sure how to use a specific InfantBites feature.">
+            How do I…?
+          </button>
+        </div>
+
+        <!-- Chat window -->
+        <div
+          id="chat-window"
+          class="support-chat-window"
+          aria-live="polite"
+          aria-label="Support conversation"
+        ></div>
+
+        <!-- Input area -->
+        <form id="support-chat-form" class="support-input-row" autocomplete="off">
+          <label class="visually-hidden" for="chat-input">Your message</label>
+          <textarea
+            id="chat-input"
+            name="message"
+            maxlength="2000"
+            placeholder="Ask a question or describe what you need help with…"
+            required
+          ></textarea>
+
+          <div class="support-input-footer">
+            <div class="input-hint">
+              <span>Enter to send, Shift+Enter for a new line.</span>
+              <span class="char-counter" id="char-counter">0 / 2000</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:0.25rem;">
+              <button type="button" id="clear-thread" class="btn-ghost">
+                🧹 Clear chat
+              </button>
+              <button type="submit" id="chat-submit" class="btn-primary">
+                <span id="chat-submit-text">Send</span>
+                <span aria-hidden="true">↗</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="file-field">
+            <label for="attachment" class="form-label" style="font-weight:400;">
+              Screenshot (optional):
+            </label>
+            <input type="file" id="attachment" accept="image/*" />
+            <span id="file-name" class="file-name"></span>
+          </div>
+        </form>
+
+        <div id="support-response" class="support-response" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- RIGHT: USER INFO + META -->
+    <aside class="support-card" aria-label="Contact details and quick links">
+      <div class="support-card-inner support-meta">
+        <h2>Your details</h2>
+        <p>
+          Add your info so we can reach out if the AI needs to hand things off to our support team.
+        </p>
+
+        <form id="support-meta-form" novalidate>
+          <div class="support-meta-section">
+            <div class="form-field">
+              <label for="name" class="form-label">Name (optional)</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                class="form-input"
+                autocomplete="name"
+                placeholder="Your name"
+              />
+            </div>
+
+            <div class="form-field">
+              <label for="email" class="form-label">
+                Email <span class="form-required">*</span>
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                class="form-input"
+                autocomplete="email"
+                placeholder="you@example.com"
+                required
+                aria-required="true"
+              />
+              <p class="form-help-text">
+                Only used to contact you about this conversation.
+              </p>
+              <p class="form-error" id="email-error" role="alert" aria-live="polite"></p>
+            </div>
+
+            <div class="form-field">
+              <label for="topic" class="form-label">Topic</label>
+              <select id="topic" name="topic" class="form-select">
+                <option value="">Select a topic</option>
+                <option value="account">Account &amp; login</option>
+                <option value="billing">Billing &amp; subscriptions</option>
+                <option value="technical">Technical issue / bug</option>
+                <option value="content">Feeding content / guidance</option>
+                <option value="feature">Feature request</option>
+                <option value="other">Something else</option>
+              </select>
+            </div>
+          </div>
+        </form>
+
+        <div class="support-meta-section" aria-labelledby="faq-heading">
+          <h2 id="faq-heading">Quick help</h2>
+          <ul class="support-faq-list">
+            <li><a href="/help/getting-started">Getting started with InfantBites</a></li>
+            <li><a href="/help/account">Account &amp; login help</a></li>
+            <li><a href="/help/billing">Billing &amp; subscriptions</a></li>
+            <li><a href="/help/troubleshooting">Troubleshooting common issues</a></li>
+            <li><a href="/help/privacy">Privacy &amp; data</a></li>
+          </ul>
+        </div>
+
+        <div class="support-meta-section">
+          <h2>What happens with my chat?</h2>
+          <p style="margin-top:0.2rem;">
+            The assistant uses your messages and metadata (topic, email, optional name) to:
+          </p>
+          <ul class="support-faq-list">
+            <li>Generate an AI answer tailored to your question.</li>
+            <li>Summarize key details for the human support team if needed.</li>
+            <li>Speed up follow-ups by sending context, not just a one-line ticket.</li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <footer class="support-footer">
+    &copy; <span id="current-year"></span> InfantBites. All rights reserved.
+  </footer>
+
+  <script>
+    (function () {
+      const STORAGE_KEY = 'infantbites_support_thread_v2';
+      const THEME_KEY = 'infantbites_support_theme';
+
+      class SupportChat {
+        constructor() {
+          // Core elements
+          this.chatWindow = document.getElementById('chat-window');
+          this.chatForm = document.getElementById('support-chat-form');
+          this.chatInput = document.getElementById('chat-input');
+          this.chatSubmit = document.getElementById('chat-submit');
+          this.chatSubmitText = document.getElementById('chat-submit-text');
+          this.clearThreadBtn = document.getElementById('clear-thread');
+          this.responseSection = document.getElementById('support-response');
+          this.charCounter = document.getElementById('char-counter');
+          this.attachmentInput = document.getElementById('attachment');
+          this.fileNameSpan = document.getElementById('file-name');
+
+          // Meta
+          this.nameInput = document.getElementById('name');
+          this.emailInput = document.getElementById('email');
+          this.topicInput = document.getElementById('topic');
+          this.emailError = document.getElementById('email-error');
+
+          // Mode
+          this.modeAI = document.getElementById('mode-ai-first');
+          this.modeHuman = document.getElementById('mode-human-only');
+          this.currentMode = 'ai_first';
+
+          // Misc
+          this.suggestionChips = document.querySelectorAll('.chip');
+          this.offlineBanner = document.getElementById('offline-banner');
+          this.typingNode = null;
+          this.isSending = false;
+          this.conversation = this.loadConversation();
+
+          this.bindEvents();
+          this.renderInitialConversation();
+          this.setupTheme();
+        }
+
+        bindEvents() {
+          // Theme toggle
+          const themeToggle = document.getElementById('theme-toggle');
+          if (themeToggle) {
+            themeToggle.addEventListener('click', () => this.toggleTheme());
+          }
+
+          // Offline / online
+          window.addEventListener('online', () => this.updateOfflineState());
+          window.addEventListener('offline', () => this.updateOfflineState());
+          this.updateOfflineState();
+
+          // Message input: enter to send, char counter
+          this.chatInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+              e.preventDefault();
+              this.chatForm.requestSubmit();
+            }
+          });
+
+          this.chatInput.addEventListener('input', () => this.updateCharCounter());
+
+          // Attachment
+          this.attachmentInput.addEventListener('change', () =>
+            this.updateFileName()
+          );
+
+          // Form submission
+          this.chatForm.addEventListener('submit', (e) => this.handleSubmit(e));
+
+          // Clear thread
+          this.clearThreadBtn.addEventListener('click', () => {
+            if (!this.conversation.length) return;
+            this.clearConversation();
+          });
+
+          // Suggestions
+          this.suggestionChips.forEach((chip) => {
+            chip.addEventListener('click', () => {
+              const text =
+                chip.getAttribute('data-suggest') ||
+                chip.textContent.trim();
+              this.chatInput.value = text;
+              this.chatInput.focus();
+              this.updateCharCounter();
+              this.chatInput.selectionStart = this.chatInput.selectionEnd =
+                text.length;
+            });
+          });
+
+          // Meta form validation
+          this.emailInput.addEventListener('blur', () => this.validateEmail());
+          this.modeAI.addEventListener('click', () => this.setMode('ai_first'));
+          this.modeHuman.addEventListener('click', () =>
+            this.setMode('human_only')
+          );
+
+          // Footer year
+          const yearEl = document.getElementById('current-year');
+          if (yearEl) {
+            yearEl.textContent = new Date().getFullYear();
+          }
+        }
+
+        // THEME
+        setupTheme() {
+          const saved = localStorage.getItem(THEME_KEY);
+          const body = document.body;
+          const themeToggle = document.getElementById('theme-toggle');
+          const themeLabel = document.getElementById('theme-label');
+
+          const applyTheme = (theme) => {
+            body.setAttribute('data-theme', theme);
+            if (themeToggle && themeLabel) {
+              if (theme === 'dark') {
+                themeToggle.querySelector('span[aria-hidden="true"]').textContent =
+                  '🌙';
+                themeLabel.textContent = 'Dark';
+              } else {
+                themeToggle.querySelector('span[aria-hidden="true"]').textContent =
+                  '🌞';
+                themeLabel.textContent = 'Light';
+              }
+            }
+          };
+
+          if (saved === 'dark' || saved === 'light') {
+            applyTheme(saved);
+          } else {
+            applyTheme('light');
+          }
+        }
+
+        toggleTheme() {
+          const body = document.body;
+          const current = body.getAttribute('data-theme') || 'light';
+          const next = current === 'light' ? 'dark' : 'light';
+          body.setAttribute('data-theme', next);
+          localStorage.setItem(THEME_KEY, next);
+          this.setupTheme();
+        }
+
+        // OFFLINE / ONLINE
+        updateOfflineState() {
+          const online = navigator.onLine;
+          if (!online) {
+            this.offlineBanner.classList.add('visible');
+          } else {
+            this.offlineBanner.classList.remove('visible');
+          }
+        }
+
+        // STORAGE
+        loadConversation() {
+          try {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (raw) return JSON.parse(raw);
+          } catch (_) {}
+          return [];
+        }
+
+        saveConversation() {
+          try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(this.conversation));
+          } catch (_) {}
+        }
+
+        clearConversation() {
+          this.conversation = [];
+          this.saveConversation();
+          this.chatWindow.innerHTML = '';
+          this.responseSection.innerHTML = '';
+          this.addAssistantMessage(
+            "I’ve cleared this thread. 👌\n\nYou can start a new question whenever you’re ready.",
+            'Thread reset'
+          );
+        }
+
+        // UI HELPERS
+        scrollToBottom() {
+          this.chatWindow.scrollTop = this.chatWindow.scrollHeight;
+        }
+
+        setLoading(loading) {
+          this.isSending = loading;
+          this.chatSubmit.disabled = loading;
+          this.chatSubmitText.textContent = loading ? 'Sending…' : 'Send';
+        }
+
+        updateCharCounter() {
+          const max = this.chatInput.getAttribute('maxlength') || 2000;
+          const current = this.chatInput.value.length;
+          this.charCounter.textContent = current + ' / ' + max;
+        }
+
+        updateFileName() {
+          const file = this.attachmentInput.files[0];
+          if (!file) {
+            this.fileNameSpan.textContent = '';
+            return;
+          }
+          this.fileNameSpan.textContent = file.name;
+        }
+
+        showAlertSuccess(message) {
+          this.responseSection.innerHTML =
+            '<div class="alert alert-success" role="status">' +
+            (message || 'Message sent to support.') +
+            '</div>';
+        }
+
+        showAlertError(message) {
+          this.responseSection.innerHTML =
+            '<div class="alert alert-error" role="alert">' +
+            (message ||
+              'There was a problem sending your message. Please try again shortly.') +
+            '</div>';
+        }
+
+        showTypingIndicator() {
+          if (this.typingNode) return;
+          this.typingNode = document.createElement('div');
+          this.typingNode.className = 'chat-message assistant';
+
+          const avatar = document.createElement('div');
+          avatar.className = 'chat-avatar assistant';
+          avatar.textContent = 'AI';
+
+          const bubbleWrap = document.createElement('div');
+          const bubble = document.createElement('div');
+          bubble.className = 'chat-bubble';
+
+          const indicator = document.createElement('div');
+          indicator.className = 'typing-indicator';
+          indicator.innerHTML = `
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+          `;
+          bubble.appendChild(indicator);
+          bubbleWrap.appendChild(bubble);
+
+          this.typingNode.appendChild(avatar);
+          this.typingNode.appendChild(bubbleWrap);
+          this.chatWindow.appendChild(this.typingNode);
+          this.scrollToBottom();
+        }
+
+        hideTypingIndicator() {
+          if (this.typingNode && this.typingNode.parentNode) {
+            this.typingNode.parentNode.removeChild(this.typingNode);
+          }
+          this.typingNode = null;
+        }
+
+        validateEmail() {
+          this.emailError.textContent = '';
+          this.emailInput.removeAttribute('aria-invalid');
+
+          const value = this.emailInput.value.trim();
+          if (!value) {
+            this.emailError.textContent =
+              'Please enter your email so we can follow up if needed.';
+            this.emailInput.setAttribute('aria-invalid', 'true');
+            return false;
+          }
+          const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!re.test(value)) {
+            this.emailError.textContent = 'Please enter a valid email address.';
+            this.emailInput.setAttribute('aria-invalid', 'true');
+            return false;
+          }
+          return true;
+        }
+
+        setMode(mode) {
+          this.currentMode = mode;
+          if (mode === 'ai_first') {
+            this.modeAI.classList.add('active');
+            this.modeHuman.classList.remove('active');
+          } else {
+            this.modeAI.classList.remove('active');
+            this.modeHuman.classList.add('active');
+          }
+        }
+
+        // MESSAGES
+        renderMessage(msg) {
+          const wrapper = document.createElement('div');
+          wrapper.className = `chat-message ${msg.role}`;
+
+          const avatar = document.createElement('div');
+          avatar.className = `chat-avatar ${msg.role}`;
+          avatar.textContent = msg.role === 'assistant' ? 'AI' : 'You';
+
+          const bubbleWrap = document.createElement('div');
+          const bubble = document.createElement('div');
+          bubble.className = 'chat-bubble';
+          bubble.textContent = msg.content;
+
+          bubbleWrap.appendChild(bubble);
+
+          if (msg.meta) {
+            const meta = document.createElement('div');
+            meta.className = 'chat-meta';
+            meta.textContent = msg.meta;
+            bubbleWrap.appendChild(meta);
+          }
+
+          // Ratings only on last assistant message
+          if (msg.role === 'assistant' && msg.id === this.getLastAssistantId()) {
+            const ratingBar = this.createRatingBar(msg.id);
+            bubbleWrap.appendChild(ratingBar);
+          }
+
+          if (msg.role === 'assistant') {
+            wrapper.appendChild(avatar);
+            wrapper.appendChild(bubbleWrap);
+          } else {
+            wrapper.appendChild(bubbleWrap);
+            wrapper.appendChild(avatar);
+          }
+
+          this.chatWindow.appendChild(wrapper);
+        }
+
+        createRatingBar(messageId) {
+          const container = document.createElement('div');
+          container.className = 'rating-bar';
+          container.dataset.messageId = messageId;
+
+          const label = document.createElement('span');
+          label.textContent = 'Was this helpful?';
+          container.appendChild(label);
+
+          const upBtn = document.createElement('button');
+          upBtn.type = 'button';
+          upBtn.innerHTML = '<span aria-hidden="true">👍</span><span>Yes</span>';
+
+          const downBtn = document.createElement('button');
+          downBtn.type = 'button';
+          downBtn.innerHTML = '<span aria-hidden="true">👎</span><span>No</span>';
+
+          upBtn.addEventListener('click', () =>
+            this.handleRating(messageId, 'up', upBtn, downBtn)
+          );
+          downBtn.addEventListener('click', () =>
+            this.handleRating(messageId, 'down', upBtn, downBtn)
+          );
+
+          container.appendChild(upBtn);
+          container.appendChild(downBtn);
+          return container;
+        }
+
+        handleRating(messageId, direction, upBtn, downBtn) {
+          upBtn.classList.toggle('active', direction === 'up');
+          downBtn.classList.toggle('active', direction === 'down');
+
+          // Best-effort rating API; failures are silently ignored
+          try {
+            fetch('/api/support/rate', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                messageId: messageId,
+                rating: direction,
+                source: 'support_web_chat'
+              })
+            }).catch(() => {});
+          } catch (_) {}
+        }
+
+        addUserMessage(text) {
+          const trimmed = text.trim();
+          if (!trimmed) return null;
+          const msg = {
+            id: 'm_' + Date.now() + '_' + Math.random().toString(16).slice(2),
+            role: 'user',
+            content: trimmed,
+            timestamp: Date.now()
+          };
+          this.conversation.push(msg);
+          this.renderMessage(msg);
+          this.saveConversation();
+          this.scrollToBottom();
+          return msg;
+        }
+
+        addAssistantMessage(text, meta) {
+          const msg = {
+            id: 'm_' + Date.now() + '_' + Math.random().toString(16).slice(2),
+            role: 'assistant',
+            content: text,
+            meta: meta || null,
+            timestamp: Date.now()
+          };
+          this.conversation.push(msg);
+          // re-render last assistant with rating
+          this.chatWindow.innerHTML = '';
+          this.conversation.forEach((m) => this.renderMessage(m));
+          this.saveConversation();
+          this.scrollToBottom();
+          return msg;
+        }
+
+        getLastAssistantId() {
+          for (let i = this.conversation.length - 1; i >= 0; i--) {
+            if (this.conversation[i].role === 'assistant') {
+              return this.conversation[i].id;
+            }
+          }
+          return null;
+        }
+
+        renderInitialConversation() {
+          if (!this.conversation.length) {
+            this.addAssistantMessage(
+              "Hi! I’m the InfantBites AI assistant. 👋\n\n" +
+                "You can ask me anything about your InfantBites account, billing, technical issues, or how the app works.\n\n" +
+                "If needed, I’ll package everything up and send it to our human support team with context."
+            );
+          } else {
+            this.chatWindow.innerHTML = '';
+            this.conversation.forEach((msg) => this.renderMessage(msg));
+            this.scrollToBottom();
+          }
+          this.updateCharCounter();
+        }
+
+        async handleSubmit(e) {
+          e.preventDefault();
+          if (this.isSending) return;
+
+          const message = this.chatInput.value.trim();
+          if (!message) return;
+
+          if (!this.validateEmail()) {
+            this.showAlertError(
+              'Please add a valid email so our team can follow up if needed.'
+            );
+            return;
+          }
+
+          // Add user message
+          this.addUserMessage(message);
+          this.chatInput.value = '';
+          this.updateCharCounter();
+          this.responseSection.innerHTML = '';
+
+          // Prepare payload
+          const payload = {
+            message: message,
+            history: this.conversation.map((m) => ({
+              role: m.role,
+              content: m.content
+            })),
+            metadata: {
+              name: this.nameInput.value.trim() || null,
+              email: this.emailInput.value.trim() || null,
+              topic: this.topicInput.value || null,
+              mode: this.currentMode,
+              hasAttachment: !!this.attachmentInput.files[0],
+              attachmentName: this.attachmentInput.files[0]
+                ? this.attachmentInput.files[0].name
+                : null,
+              source: 'support_web_chat'
+            }
+          };
+
+          // Note: if you want to actually upload the file, you'd adapt this
+          // to use FormData instead of JSON.
+
+          this.setLoading(true);
+          this.showTypingIndicator();
+
+          try {
+            const res = await fetch('/api/support/ask', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+
+            let data = {};
+            try {
+              data = await res.json();
+            } catch (_) {
+              // ignore JSON parse error; will fallback to generic messaging
+            }
+
+            this.hideTypingIndicator();
+
+            if (!res.ok) {
+              const msg =
+                (data && (data.error || data.message)) ||
+                'I couldn’t reach the support service. Please try again shortly.';
+              this.addAssistantMessage(
+                "Hmm, I wasn’t able to send your request to our servers.\n\n" +
+                  "You can try again in a moment, or email us directly if this keeps happening.",
+                'Network / API error'
+              );
+              this.showAlertError(msg);
+              return;
+            }
+
+            const replyText =
+              data && data.reply
+                ? data.reply
+                : "Thanks! I’ve captured your message and shared it with our team. We’ll review and get back to you if needed.";
+
+            const meta =
+              data && data.escalated
+                ? 'AI answer + escalated to human support'
+                : this.currentMode === 'human_only'
+                ? 'Forwarded to human support'
+                : 'AI-generated response';
+
+            this.addAssistantMessage(replyText, meta);
+
+            if (data && data.escalated) {
+              this.showAlertSuccess(
+                'Your conversation has been shared with our support team. You’ll hear back via email.'
+              );
+            } else if (this.currentMode === 'human_only') {
+              this.showAlertSuccess(
+                'Your message has been queued for a human support agent.'
+              );
+            } else {
+              this.showAlertSuccess(
+                'AI response generated. If you still need help, add more details or ask a follow-up question.'
+              );
+            }
+          } catch (err) {
+            console.error('Support chat error:', err);
+            this.hideTypingIndicator();
+            this.addAssistantMessage(
+              "I’m having trouble connecting to the support service right now. 😕\n\n" +
+                "Please check your connection and try again, or email us if it keeps failing.",
+              'Network error'
+            );
+            this.showAlertError(
+              'Network error while submitting your request. Please check your connection and try again.'
+            );
+          } finally {
+            this.setLoading(false);
+            // Clear attachment selection after sending
+            this.attachmentInput.value = '';
+            this.updateFileName();
+          }
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', function () {
+        new SupportChat();
+      });
+    })();
   </script>
 </body>
 </html>
