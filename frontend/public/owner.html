@@ -1,101 +1,1709 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>InfantBites Owner Dashboard</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>InfantBites – Owner Dashboard</title>
+
+  <!-- Chart.js for visualizations -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    :root {
+      --bg: #f4f5fb;
+      --bg-elevated: #ffffff;
+      --bg-elevated-soft: #f9fafb;
+      --bg-header: #0f172a;
+      --bg-sidebar: #020617;
+
+      --primary: #4f46e5;
+      --primary-soft: rgba(79, 70, 229, 0.1);
+      --primary-strong: #4338ca;
+
+      --accent: #16a34a;
+      --accent-soft: rgba(22, 163, 74, 0.12);
+
+      --border-subtle: rgba(148, 163, 184, 0.5);
+      --border-strong: rgba(148, 163, 184, 0.8);
+
+      --text-main: #0f172a;
+      --text-muted: #6b7280;
+      --text-invert: #f9fafb;
+
+      --danger: #ef4444;
+      --danger-soft: rgba(239, 68, 68, 0.14);
+      --warning: #f59e0b;
+      --warning-soft: rgba(245, 158, 11, 0.18);
+
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-pill: 999px;
+
+      --shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.18);
+      --shadow-subtle: 0 12px 25px rgba(15, 23, 42, 0.06);
+
+      --transition-fast: 0.18s ease;
+      --transition-med: 0.26s ease;
+
+      --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+    }
+
+    /* DARK THEME */
+    [data-theme="dark"] {
+      --bg: #020617;
+      --bg-elevated: #020617;
+      --bg-elevated-soft: #020617;
+      --bg-header: #020617;
+      --bg-sidebar: #020617;
+      --text-main: #e5e7eb;
+      --text-muted: #9ca3af;
+      --border-subtle: rgba(55, 65, 81, 0.9);
+      --border-strong: rgba(75, 85, 99, 1);
+      --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.75);
+      --shadow-subtle: 0 10px 24px rgba(0, 0, 0, 0.7);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font-sans);
+      background: radial-gradient(circle at top left, #e0f2fe, var(--bg));
+      color: var(--text-main);
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      overflow: hidden;
+    }
+
+    .app-shell {
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1fr);
+      min-height: calc(100vh - 0px);
+    }
+
+    @media (max-width: 900px) {
+      .app-shell {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* HEADER */
+
+    header {
+      background: var(--bg-header);
+      color: var(--text-invert);
+      padding: 0.75rem 1.5rem;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.8);
+      z-index: 20;
+    }
+
+    .header-inner {
+      max-width: 1300px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .logo-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 16px;
+      background: radial-gradient(circle at 20% 20%, #a855f7, #4f46e5);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      font-size: 1rem;
+      box-shadow: 0 12px 30px rgba(129, 140, 248, 0.7);
+    }
+
+    .header-text h1 {
+      margin: 0;
+      font-size: 1.15rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .header-text p {
+      margin: 0;
+      font-size: 0.8rem;
+      opacity: 0.8;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.82rem;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      border-radius: var(--radius-pill);
+      padding: 0.2rem 0.7rem;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: rgba(15, 23, 42, 0.3);
+    }
+
+    .pill-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.4);
+    }
+
+    .pill-dot.offline {
+      background: var(--danger);
+      box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.5);
+    }
+
+    .theme-toggle {
+      border-radius: 999px;
+      padding: 0.25rem;
+      background: transparent;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      cursor: pointer;
+      color: #e5e7eb;
+      font-size: 0.8rem;
+      transition: background var(--transition-fast), border-color var(--transition-fast),
+        transform var(--transition-fast);
+    }
+
+    .theme-toggle span {
+      display: inline-flex;
+      width: 20px;
+      height: 20px;
+      border-radius: 999px;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .theme-toggle:hover {
+      background: rgba(15, 23, 42, 0.85);
+      transform: translateY(-1px);
+    }
+
+    /* SIDEBAR */
+
+    .sidebar {
+      background: var(--bg-sidebar);
+      color: var(--text-invert);
+      padding: 1.2rem 1.1rem;
+      border-right: 1px solid rgba(15, 23, 42, 0.8);
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.9);
+      position: relative;
+      z-index: 10;
+    }
+
+    .sidebar-top {
+      font-size: 0.8rem;
+      color: rgba(148, 163, 184, 0.85);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid rgba(31, 41, 55, 1);
+    }
+
+    .nav-list {
+      list-style: none;
+      margin: 0.3rem 0 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .nav-item button {
+      width: 100%;
+      text-align: left;
+      border-radius: 999px;
+      border: none;
+      background: transparent;
+      color: rgba(209, 213, 219, 0.9);
+      padding: 0.45rem 0.7rem;
+      font-size: 0.88rem;
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      cursor: pointer;
+      transition: background var(--transition-fast), color var(--transition-fast),
+        transform var(--transition-fast);
+    }
+
+    .nav-item-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      background: rgba(15, 23, 42, 0.8);
+    }
+
+    .nav-item button:hover {
+      background: rgba(15, 23, 42, 0.95);
+      transform: translateX(1px);
+    }
+
+    .nav-item button[aria-current="page"] {
+      background: rgba(79, 70, 229, 0.1);
+      color: #e5e7eb;
+      box-shadow: inset 0 0 0 1px rgba(129, 140, 248, 0.5);
+    }
+
+    .sidebar-bottom {
+      margin-top: auto;
+      font-size: 0.75rem;
+      color: rgba(148, 163, 184, 0.85);
+    }
+
+    .sidebar-bottom strong {
+      display: block;
+      font-size: 0.8rem;
+      margin-bottom: 0.2rem;
+    }
+
+    /* MAIN CONTENT */
+
+    .content-shell {
+      position: relative;
+      padding: 1.2rem 1.5rem 1.8rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      height: calc(100vh - 60px);
+      overflow: hidden;
+    }
+
+    .content-scroll {
+      height: 100%;
+      overflow: auto;
+      padding-right: 0.2rem;
+    }
+
+    .breadcrumb {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+    }
+
+    .breadcrumb span {
+      opacity: 0.7;
+    }
+
+    .page-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 0.7rem;
+    }
+
+    .page-title-row h2 {
+      margin: 0;
+      font-size: 1.3rem;
+    }
+
+    .page-title-row p {
+      margin: 0.22rem 0 0;
+      font-size: 0.86rem;
+      color: var(--text-muted);
+    }
+
+    .page-title-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.8rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      border-radius: var(--radius-pill);
+      padding: 0.45rem 0.95rem;
+      border: 1px solid transparent;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 0.02em;
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast),
+        background-color var(--transition-fast), border-color var(--transition-fast),
+        opacity var(--transition-fast);
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #4f46e5, #ec4899);
+      color: #ffffff;
+      box-shadow: 0 12px 30px rgba(79, 70, 229, 0.7);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 34px rgba(79, 70, 229, 0.9);
+    }
+
+    .btn-subtle {
+      background: rgba(148, 163, 184, 0.08);
+      border-color: rgba(148, 163, 184, 0.5);
+      color: var(--text-main);
+    }
+
+    .btn-subtle:hover:not(:disabled) {
+      background: rgba(148, 163, 184, 0.18);
+    }
+
+    .btn-danger {
+      background: var(--danger-soft);
+      color: var(--danger);
+      border-color: rgba(248, 113, 113, 0.6);
+    }
+
+    .btn-danger:hover:not(:disabled) {
+      background: rgba(248, 113, 113, 0.3);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: default;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .btn-icon {
+      font-size: 1rem;
+    }
+
+    .muted-pill {
+      padding: 0.2rem 0.6rem;
+      border-radius: var(--radius-pill);
+      border: 1px dashed var(--border-subtle);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* GRID LAYOUT */
+
+    .grid-main {
+      display: grid;
+      grid-template-columns: minmax(0, 2.3fr) minmax(0, 2.1fr);
+      gap: 1.2rem;
+      align-items: flex-start;
+    }
+
+    @media (max-width: 900px) {
+      .content-shell {
+        padding-inline: 1rem;
+      }
+
+      .grid-main {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--bg-elevated);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-subtle);
+      border: 1px solid var(--border-subtle);
+      padding: 1rem 1rem 0.85rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px dashed rgba(148, 163, 184, 0.6);
+      margin-bottom: 0.35rem;
+    }
+
+    .card-header h3 {
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    .card-header span {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .card-body {
+      padding-top: 0.4rem;
+    }
+
+    .card-footer {
+      margin-top: 0.4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      gap: 0.4rem;
+    }
+
+    .badge-mini {
+      border-radius: var(--radius-pill);
+      padding: 0.15rem 0.6rem;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      font-size: 0.7rem;
+    }
+
+    /* LOGIN CARD OVERRIDE */
+    #login-card {
+      max-width: 430px;
+      margin: 1.8rem auto;
+      background: radial-gradient(circle at top left, #eef2ff, #ffffff);
+    }
+
+    .login-field {
+      margin-bottom: 0.85rem;
+    }
+
+    .login-field label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+    }
+
+    .login-field input[type="password"] {
+      width: 100%;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-subtle);
+      padding: 0.55rem 0.7rem;
+      font-size: 0.9rem;
+      outline: none;
+      background: var(--bg-elevated-soft);
+      transition: border-color var(--transition-fast),
+        box-shadow var(--transition-fast), background-color var(--transition-fast);
+    }
+
+    .login-field input[type="password"]:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-soft);
+      background: #ffffff;
+    }
+
+    .helper-text {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .messages {
+      margin-top: 0.5rem;
+      min-height: 1.1em;
+      font-size: 0.8rem;
+    }
+
+    .msg {
+      border-radius: var(--radius-pill);
+      padding: 0.3rem 0.65rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .msg-icon {
+      font-size: 1rem;
+    }
+
+    .msg-error {
+      background: var(--danger-soft);
+      color: var(--danger);
+      border: 1px solid rgba(248, 113, 113, 0.7);
+    }
+
+    .msg-success {
+      background: var(--accent-soft);
+      color: var(--accent);
+      border: 1px solid rgba(74, 222, 128, 0.8);
+    }
+
+    .msg-info {
+      background: var(--primary-soft);
+      color: var(--primary-strong);
+      border: 1px solid rgba(129, 140, 248, 0.8);
+    }
+
+    /* METRICS GRID */
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+      gap: 0.65rem;
+    }
+
+    .metric-card {
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: var(--bg-elevated-soft);
+      padding: 0.55rem 0.6rem;
+    }
+
+    .metric-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 0.2rem;
+    }
+
+    .metric-value {
+      font-size: 1.05rem;
+      font-weight: 600;
+    }
+
+    .metric-trend {
+      font-size: 0.75rem;
+      margin-top: 0.15rem;
+    }
+
+    .metric-trend.positive {
+      color: var(--accent);
+    }
+
+    .metric-trend.negative {
+      color: var(--danger);
+    }
+
+    .metric-trend.neutral {
+      color: var(--text-muted);
+    }
+
+    /* LISTS */
+
+    .list {
+      list-style: none;
+      padding: 0;
+      margin: 0.2rem 0 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+    }
+
+    .list-item {
+      padding: 0.45rem 0.6rem;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(229, 231, 235, 0.9);
+      background: var(--bg-elevated-soft);
+    }
+
+    .list-item small {
+      display: block;
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      margin-top: 0.18rem;
+    }
+
+    .empty-state {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-align: center;
+      padding: 0.6rem 0.4rem 0.3rem;
+    }
+
+    .filter-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.8rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 0.45rem;
+    }
+
+    .filter-row select {
+      font-size: 0.78rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-elevated-soft);
+      color: var(--text-main);
+    }
+
+    /* CHART AREA */
+
+    .chart-container {
+      position: relative;
+      width: 100%;
+      height: 210px;
+      margin-top: 0.5rem;
+    }
+
+    /* SKELETONS */
+
+    .skeleton {
+      background: linear-gradient(
+        90deg,
+        rgba(148, 163, 184, 0.2),
+        rgba(148, 163, 184, 0.05),
+        rgba(148, 163, 184, 0.2)
+      );
+      background-size: 200% 100%;
+      animation: pulse 1.4s ease-in-out infinite;
+      border-radius: 999px;
+    }
+
+    .skeleton-block {
+      border-radius: var(--radius-md);
+      height: 48px;
+      margin-bottom: 0.4rem;
+    }
+
+    @keyframes pulse {
+      0% {
+        background-position: -200% 0;
+      }
+      100% {
+        background-position: 200% 0;
+      }
+    }
+
+    /* TOASTS */
+
+    .toast-container {
+      position: fixed;
+      bottom: 0.9rem;
+      right: 0.9rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      z-index: 50;
+    }
+
+    .toast {
+      border-radius: var(--radius-md);
+      padding: 0.5rem 0.7rem;
+      font-size: 0.8rem;
+      box-shadow: var(--shadow-subtle);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      opacity: 0;
+      transform: translateY(8px);
+      animation: toast-in 0.25s forwards;
+    }
+
+    .toast-success {
+      background: var(--accent-soft);
+      color: var(--accent);
+      border: 1px solid rgba(74, 222, 128, 0.8);
+    }
+
+    .toast-error {
+      background: var(--danger-soft);
+      color: var(--danger);
+      border: 1px solid rgba(248, 113, 113, 0.85);
+    }
+
+    .toast-info {
+      background: var(--primary-soft);
+      color: var(--primary-strong);
+      border: 1px solid rgba(129, 140, 248, 0.85);
+    }
+
+    .toast-close {
+      margin-left: auto;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    @keyframes toast-in {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* HIDDEN HANDLER */
+    [hidden] {
+      display: none !important;
+    }
+  </style>
 </head>
 <body>
   <header>
-    <h1>Owner Dashboard</h1>
+    <div class="header-inner">
+      <div class="header-left">
+        <div class="logo-mark">IB</div>
+        <div class="header-text">
+          <h1>InfantBites Owner Dashboard</h1>
+          <p>Secure, private view across performance, compliance & growth.</p>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="pill" id="session-pill">
+          <span class="pill-dot offline" id="session-dot"></span>
+          <span id="session-text">Logged out</span>
+        </div>
+        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle theme">
+          <span id="theme-icon">🌙</span>
+          <span id="theme-label">Dark</span>
+        </button>
+        <button class="btn btn-danger" id="logout-btn" type="button" hidden>
+          <span class="btn-icon">⇦</span> Logout
+        </button>
+      </div>
+    </div>
   </header>
-  <main>
-    <form id="login-form">
-      <label for="password">Owner Password</label>
-      <input id="password" type="password" required>
-      <button type="submit">Login</button>
-    </form>
-    <section id="dashboard" hidden>
-      <h2>Metrics</h2>
-      <ul id="metrics-list"></ul>
-      <h2>Compliance Logs</h2>
-      <ul id="logs-list"></ul>
-      <h2>Growth Ideas</h2>
-      <ul id="growth-list"></ul>
-    </section>
-  </main>
+
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Owner navigation">
+      <div class="sidebar-top">Owner Views</div>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <button type="button" data-view="overview" aria-current="page">
+            <span class="nav-item-icon">🏠</span>
+            Overview
+          </button>
+        </li>
+        <li class="nav-item">
+          <button type="button" data-view="compliance">
+            <span class="nav-item-icon">🛡️</span>
+            Compliance Logs
+          </button>
+        </li>
+        <li class="nav-item">
+          <button type="button" data-view="growth">
+            <span class="nav-item-icon">📈</span>
+            Growth Ideas
+          </button>
+        </li>
+        <li class="nav-item">
+          <button type="button" data-view="settings">
+            <span class="nav-item-icon">⚙️</span>
+            Session & Settings
+          </button>
+        </li>
+      </ul>
+      <div class="sidebar-bottom">
+        <strong>Shortcuts</strong>
+        <div>Press <code>R</code> to refresh, <code>L</code> to logout.</div>
+      </div>
+    </aside>
+
+    <main class="content-shell">
+      <div class="content-scroll">
+        <!-- LOGIN PAGE -->
+        <section id="login-view">
+          <div class="breadcrumb">
+            <span>Owner</span> · <strong>Authentication</strong>
+          </div>
+          <div class="card" id="login-card" aria-labelledby="login-heading">
+            <div class="card-header">
+              <div>
+                <h3 id="login-heading">Owner Login</h3>
+                <span>Private credentials required to unlock the InfantBites console.</span>
+              </div>
+              <div class="badge-mini">Owner-only access</div>
+            </div>
+            <div class="card-body">
+              <form id="login-form" novalidate>
+                <div class="login-field">
+                  <label for="password">Owner password</label>
+                  <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    autocomplete="current-password"
+                    placeholder="••••••••"
+                    required
+                    minlength="4"
+                  />
+                  <div class="helper-text">
+                    This access is audited. Do not share or reuse on non-owner devices.
+                  </div>
+                </div>
+                <button id="login-submit" class="btn btn-primary" type="submit">
+                  <span id="login-submit-text">Log In</span>
+                </button>
+                <div class="messages" id="login-messages" aria-live="polite"></div>
+              </form>
+            </div>
+            <div class="card-footer">
+              <span class="muted-pill">Encrypted bearer token session.</span>
+              <span>Idle sessions may auto-expire for safety.</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- DASHBOARD PAGE -->
+        <section id="dashboard-view" hidden aria-live="polite">
+          <div class="breadcrumb">
+            <span>Owner</span> · <strong id="breadcrumb-label">Overview</strong>
+          </div>
+
+          <div class="page-title-row">
+            <div>
+              <h2 id="page-title">Right now at InfantBites</h2>
+              <p id="page-subtitle">
+                Live view across performance, compliance trails, and upcoming growth bets.
+              </p>
+            </div>
+            <div class="page-title-actions">
+              <div class="muted-pill">
+                Last updated: <span id="last-updated">—</span>
+              </div>
+              <button id="refresh-btn" class="btn btn-subtle" type="button">
+                <span class="btn-icon">⟳</span> Refresh
+              </button>
+            </div>
+          </div>
+
+          <div class="grid-main">
+            <!-- LEFT: METRICS + CHART -->
+            <section class="card" aria-labelledby="metrics-title">
+              <div class="card-header">
+                <div>
+                  <h3 id="metrics-title">Key metrics</h3>
+                  <span>Core health indicators with auto-refresh every 60s.</span>
+                </div>
+                <div class="badge-mini" id="metrics-count-label">—</div>
+              </div>
+              <div class="card-body" id="metrics-body">
+                <!-- Skeleton while loading -->
+                <div id="metrics-skeleton">
+                  <div class="metrics-grid">
+                    <div class="skeleton-block skeleton"></div>
+                    <div class="skeleton-block skeleton"></div>
+                    <div class="skeleton-block skeleton"></div>
+                    <div class="skeleton-block skeleton"></div>
+                  </div>
+                </div>
+
+                <div class="metrics-grid" id="metrics-grid" hidden></div>
+                <div class="empty-state" id="metrics-empty" hidden>
+                  No metrics returned from the server.
+                </div>
+
+                <div class="chart-container" id="chart-section" hidden>
+                  <canvas id="metrics-chart" aria-label="Metrics chart" role="img"></canvas>
+                </div>
+              </div>
+              <div class="card-footer">
+                <span class="badge-mini">Green trend = improving, red = needs attention.</span>
+                <span>Use this as your single source of truth during reviews.</span>
+              </div>
+            </section>
+
+            <!-- RIGHT: LOGS + GROWTH -->
+            <section class="card" aria-labelledby="cg-title">
+              <div class="card-header">
+                <div>
+                  <h3 id="cg-title">Compliance & growth feed</h3>
+                  <span>What changed and where you’re pushing growth next.</span>
+                </div>
+                <div class="badge-mini">Owner annotations</div>
+              </div>
+              <div class="card-body">
+                <div class="filter-row">
+                  <span>Filter view</span>
+                  <select id="log-filter">
+                    <option value="all">Show everything</option>
+                    <option value="compliance">Compliance only</option>
+                    <option value="growth">Growth only</option>
+                  </select>
+                </div>
+                <div>
+                  <strong style="font-size:0.83rem;">Compliance logs</strong>
+                  <ul class="list" id="logs-list"></ul>
+                  <div class="empty-state" id="logs-empty" hidden>
+                    No compliance entries returned.
+                  </div>
+                </div>
+
+                <div style="margin-top:0.5rem;">
+                  <strong style="font-size:0.83rem;">Growth ideas</strong>
+                  <ul class="list" id="growth-list"></ul>
+                  <div class="empty-state" id="growth-empty" hidden>
+                    No growth ideas returned.
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer">
+                <span class="badge-mini">Use as a “what changed & what’s next” journal.</span>
+                <span>Pair this with internal notes or a growth doc if needed.</span>
+              </div>
+            </section>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <!-- TOASTS -->
+  <div class="toast-container" id="toast-container"></div>
+
   <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('login-form');
-    const dashboard = document.getElementById('dashboard');
-    const metricsList = document.getElementById('metrics-list');
-    const logsList = document.getElementById('logs-list');
-    const growthList = document.getElementById('growth-list');
-    let token = null;
+    (function () {
+      "use strict";
 
-    form.addEventListener('submit', async function(e) {
-      e.preventDefault();
-      const password = document.getElementById('password').value;
-      try {
-        const res = await fetch('/api/owner/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ password: password })
+      const state = {
+        token: null,
+        autoRefreshId: null,
+        metricsChart: null,
+        theme: "light",
+        currentView: "overview",
+      };
+
+      const els = {
+        // Global
+        root: document.documentElement,
+        loginView: document.getElementById("login-view"),
+        dashboardView: document.getElementById("dashboard-view"),
+        breadcrumbLabel: document.getElementById("breadcrumb-label"),
+        pageTitle: document.getElementById("page-title"),
+        pageSubtitle: document.getElementById("page-subtitle"),
+
+        // Session / header
+        sessionDot: document.getElementById("session-dot"),
+        sessionText: document.getElementById("session-text"),
+        logoutBtn: document.getElementById("logout-btn"),
+
+        // Theme
+        themeToggle: document.getElementById("theme-toggle"),
+        themeIcon: document.getElementById("theme-icon"),
+        themeLabel: document.getElementById("theme-label"),
+
+        // Nav
+        navButtons: Array.from(
+          document.querySelectorAll(".nav-item button[data-view]")
+        ),
+
+        // Login
+        loginForm: document.getElementById("login-form"),
+        password: document.getElementById("password"),
+        loginSubmit: document.getElementById("login-submit"),
+        loginSubmitText: document.getElementById("login-submit-text"),
+        loginMessages: document.getElementById("login-messages"),
+
+        // Dashboard controls
+        refreshBtn: document.getElementById("refresh-btn"),
+        lastUpdated: document.getElementById("last-updated"),
+
+        // Metrics
+        metricsGrid: document.getElementById("metrics-grid"),
+        metricsEmpty: document.getElementById("metrics-empty"),
+        metricsSkeleton: document.getElementById("metrics-skeleton"),
+        metricsBody: document.getElementById("metrics-body"),
+        metricsCountLabel: document.getElementById("metrics-count-label"),
+        chartSection: document.getElementById("chart-section"),
+        metricsChartCanvas: document.getElementById("metrics-chart"),
+
+        // Logs & growth
+        logsList: document.getElementById("logs-list"),
+        logsEmpty: document.getElementById("logs-empty"),
+        growthList: document.getElementById("growth-list"),
+        growthEmpty: document.getElementById("growth-empty"),
+        logFilter: document.getElementById("log-filter"),
+
+        // Toasts
+        toastContainer: document.getElementById("toast-container"),
+      };
+
+      document.addEventListener("DOMContentLoaded", init);
+
+      /* ========= INIT ========= */
+
+      function init() {
+        wireEvents();
+        hydrateTheme();
+      }
+
+      function wireEvents() {
+        els.loginForm.addEventListener("submit", handleLogin);
+        els.logoutBtn.addEventListener("click", handleLogout);
+        els.refreshBtn.addEventListener("click", handleManualRefresh);
+        els.themeToggle.addEventListener("click", toggleTheme);
+        els.logFilter.addEventListener("change", applyFilter);
+
+        els.navButtons.forEach((btn) =>
+          btn.addEventListener("click", () => switchView(btn.dataset.view))
+        );
+
+        // Keyboard shortcuts
+        document.addEventListener("keydown", (e) => {
+          if (e.target && ["INPUT", "TEXTAREA"].includes(e.target.tagName)) return;
+          if (e.key === "r" || e.key === "R") {
+            if (!els.dashboardView.hidden) handleManualRefresh();
+          } else if (e.key === "l" || e.key === "L") {
+            if (state.token) handleLogout();
+          }
         });
-        const data = await res.json();
-        if (data.token) {
-          token = data.token;
-          form.hidden = true;
-          dashboard.hidden = false;
-          loadData();
+      }
+
+      /* ========= THEME ========= */
+
+      function hydrateTheme() {
+        const stored = localStorage.getItem("ib-owner-theme");
+        if (stored === "light" || stored === "dark") {
+          state.theme = stored;
+        }
+        applyTheme();
+      }
+
+      function applyTheme() {
+        document.documentElement.setAttribute("data-theme", state.theme);
+        const isDark = state.theme === "dark";
+        els.themeIcon.textContent = isDark ? "☀️" : "🌙";
+        els.themeLabel.textContent = isDark ? "Light" : "Dark";
+      }
+
+      function toggleTheme() {
+        state.theme = state.theme === "light" ? "dark" : "light";
+        localStorage.setItem("ib-owner-theme", state.theme);
+        applyTheme();
+        showToast("info", `Switched to ${state.theme} mode.`);
+      }
+
+      /* ========= AUTH ========= */
+
+      async function handleLogin(event) {
+        event.preventDefault();
+        clearMessage(els.loginMessages);
+
+        const password = els.password.value.trim();
+        if (!password) {
+          showMessage(els.loginMessages, "error", "Please enter the owner password.");
+          els.password.focus();
+          return;
+        }
+
+        setLoginLoading(true);
+
+        try {
+          const res = await fetch("/api/owner/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ password }),
+          });
+
+          if (!res.ok) {
+            showMessage(
+              els.loginMessages,
+              "error",
+              res.status === 401 ? "Invalid password." : "Login failed. Please try again."
+            );
+            showToast("error", "Login failed.");
+            return;
+          }
+
+          const data = await res.json();
+          if (data && data.token) {
+            state.token = data.token;
+            transitionToDashboard();
+            showMessage(
+              els.loginMessages,
+              "success",
+              "Login successful. Loading your owner dashboard…"
+            );
+            showToast("success", "Owner session started.");
+            await loadAllData();
+            startAutoRefresh();
+          } else {
+            showMessage(els.loginMessages, "error", "Invalid login response from server.");
+          }
+        } catch (error) {
+          console.error(error);
+          showMessage(
+            els.loginMessages,
+            "error",
+            "Error connecting to server. Please check your network."
+          );
+          showToast("error", "Network error during login.");
+        } finally {
+          setLoginLoading(false);
+        }
+      }
+
+      function handleLogout() {
+        stopAutoRefresh();
+        state.token = null;
+        destroyMetricsChart();
+
+        els.dashboardView.hidden = true;
+        els.loginView.hidden = false;
+        els.logoutBtn.hidden = true;
+
+        // Session pill
+        els.sessionDot.classList.add("offline");
+        els.sessionText.textContent = "Logged out";
+
+        clearMessage(els.loginMessages);
+        els.password.value = "";
+        els.password.focus();
+        showMessage(els.loginMessages, "info", "You have been logged out.");
+        showToast("info", "Session ended.");
+      }
+
+      function handleUnauthorized() {
+        if (!state.token) return;
+        state.token = null;
+        stopAutoRefresh();
+        els.dashboardView.hidden = true;
+        els.loginView.hidden = true; // briefly hide to avoid flicker
+        els.loginView.hidden = false;
+        els.logoutBtn.hidden = true;
+
+        els.sessionDot.classList.add("offline");
+        els.sessionText.textContent = "Session expired";
+
+        showMessage(
+          els.loginMessages,
+          "error",
+          "Session expired or unauthorized. Please log in again."
+        );
+        showToast("error", "Session expired – log in again.");
+        els.password.focus();
+      }
+
+      function transitionToDashboard() {
+        els.loginView.hidden = true;
+        els.dashboardView.hidden = false;
+        els.logoutBtn.hidden = false;
+        els.sessionDot.classList.remove("offline");
+        els.sessionText.textContent = "Owner session active";
+      }
+
+      function setLoginLoading(isLoading) {
+        els.loginSubmit.disabled = isLoading;
+        els.password.disabled = isLoading;
+        els.loginSubmitText.textContent = isLoading ? "Checking…" : "Log In";
+      }
+
+      /* ========= VIEW SWITCH ========= */
+
+      function switchView(view) {
+        state.currentView = view;
+        els.navButtons.forEach((btn) => {
+          btn.setAttribute(
+            "aria-current",
+            btn.dataset.view === view ? "page" : "false"
+          );
+        });
+
+        const labels = {
+          overview: {
+            breadcrumb: "Overview",
+            title: "Right now at InfantBites",
+            subtitle:
+              "Live view across performance, compliance trails, and upcoming growth bets.",
+          },
+          compliance: {
+            breadcrumb: "Compliance logs",
+            title: "Compliance trail",
+            subtitle:
+              "Operational changes, incidents and checks that need your attention.",
+          },
+          growth: {
+            breadcrumb: "Growth ideas",
+            title: "Growth roadmap stream",
+            subtitle:
+              "Owner and team-sourced bets you’re considering or actively testing.",
+          },
+          settings: {
+            breadcrumb: "Session & settings",
+            title: "Session & safety",
+            subtitle:
+              "Owner session details, auto-refresh and theme preferences.",
+          },
+        };
+
+        const config = labels[view] || labels.overview;
+        els.breadcrumbLabel.textContent = config.breadcrumb;
+        els.pageTitle.textContent = config.title;
+        els.pageSubtitle.textContent = config.subtitle;
+
+        // For now, main layout is the same, but we adjust filter / scroll behavior.
+        if (view === "compliance") {
+          els.logFilter.value = "compliance";
+        } else if (view === "growth") {
+          els.logFilter.value = "growth";
         } else {
-          alert('Invalid password.');
+          els.logFilter.value = "all";
         }
-      } catch (err) {
-        alert('Error connecting to server.');
-      }
-    });
+        applyFilter();
 
-    async function loadData() {
-      try {
-        const metricsRes = await fetch('/api/owner/metrics', {
-          headers: { 'Authorization': 'Bearer ' + token }
+        if (view === "settings") {
+          showToast(
+            "info",
+            "Settings are controlled via theme toggle, auto-refresh and shortcuts (R, L)."
+          );
+        }
+      }
+
+      /* ========= FETCH HELPERS ========= */
+
+      async function fetchWithAuth(path) {
+        if (!state.token) throw new Error("No auth token available");
+
+        const res = await fetch(path, {
+          headers: { Authorization: "Bearer " + state.token },
         });
-        const metrics = await metricsRes.json();
-        metricsList.innerHTML = '';
-        for (const key in metrics) {
-          const li = document.createElement('li');
-          li.textContent = key + ': ' + metrics[key];
-          metricsList.appendChild(li);
+
+        if (res.status === 401) {
+          handleUnauthorized();
+          throw new Error("Unauthorized");
         }
 
-        const logsRes = await fetch('/api/owner/logs', {
-          headers: { 'Authorization': 'Bearer ' + token }
+        if (!res.ok) {
+          const text = await res.text().catch(() => "");
+          throw new Error(text || "Request failed: " + res.status);
+        }
+
+        return res.json();
+      }
+
+      /* ========= LOAD DATA ========= */
+
+      async function loadAllData() {
+        showMetricsSkeleton(true);
+        try {
+          const [metrics, logs, growth] = await Promise.all([
+            fetchWithAuth("/api/owner/metrics"),
+            fetchWithAuth("/api/owner/logs"),
+            fetchWithAuth("/api/owner/growth"),
+          ]);
+
+          renderMetrics(metrics || {});
+          renderLogs(logs || []);
+          renderGrowth(growth || []);
+
+          setLastUpdated();
+        } catch (error) {
+          console.error(error);
+          showToast("error", "Failed to load dashboard data.");
+          showMessage(
+            els.loginMessages,
+            "error",
+            "Failed to load dashboard data. Try refreshing."
+          );
+        } finally {
+          showMetricsSkeleton(false);
+        }
+      }
+
+      function setLastUpdated() {
+        const now = new Date();
+        els.lastUpdated.textContent = now.toLocaleString(undefined, {
+          month: "short",
+          day: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
         });
-        const logs = await logsRes.json();
-        logsList.innerHTML = '';
-        logs.forEach(function(log) {
-          const li = document.createElement('li');
-          li.textContent = log;
-          logsList.appendChild(li);
+      }
+
+      function startAutoRefresh() {
+        stopAutoRefresh();
+        state.autoRefreshId = setInterval(loadAllData, 60_000);
+      }
+
+      function stopAutoRefresh() {
+        if (state.autoRefreshId) {
+          clearInterval(state.autoRefreshId);
+          state.autoRefreshId = null;
+        }
+      }
+
+      async function handleManualRefresh() {
+        els.refreshBtn.disabled = true;
+        els.refreshBtn.textContent = "Refreshing…";
+        try {
+          await loadAllData();
+          showToast("success", "Dashboard refreshed.");
+        } finally {
+          els.refreshBtn.disabled = false;
+          els.refreshBtn.textContent = "⟳ Refresh";
+        }
+      }
+
+      /* ========= RENDER: METRICS ========= */
+
+      function showMetricsSkeleton(isLoading) {
+        els.metricsSkeleton.hidden = !isLoading;
+        if (isLoading) {
+          els.metricsGrid.hidden = true;
+          els.metricsEmpty.hidden = true;
+          els.chartSection.hidden = true;
+        }
+      }
+
+      function renderMetrics(metrics) {
+        els.metricsGrid.innerHTML = "";
+        const keys = Object.keys(metrics || {});
+        const total = keys.length;
+
+        els.metricsCountLabel.textContent = total
+          ? `${total} metrics`
+          : "No metrics";
+
+        if (!total) {
+          els.metricsGrid.hidden = true;
+          els.metricsEmpty.hidden = false;
+          els.chartSection.hidden = true;
+          destroyMetricsChart();
+          return;
+        }
+
+        els.metricsEmpty.hidden = true;
+        els.metricsGrid.hidden = false;
+
+        const numericEntries = [];
+        keys.forEach((key) => {
+          const raw = metrics[key];
+          const value =
+            typeof raw === "number"
+              ? raw
+              : typeof raw === "string" && !isNaN(parseFloat(raw))
+              ? parseFloat(raw)
+              : raw;
+
+          const card = document.createElement("div");
+          card.className = "metric-card";
+
+          const labelEl = document.createElement("div");
+          labelEl.className = "metric-label";
+          labelEl.textContent = prettifyKey(key);
+
+          const valueEl = document.createElement("div");
+          valueEl.className = "metric-value";
+          valueEl.textContent = formatValue(raw);
+
+          const trendEl = document.createElement("div");
+          trendEl.className = "metric-trend neutral";
+
+          if (typeof value === "number") {
+            numericEntries.push({ key, value });
+            if (value > 0) {
+              trendEl.classList.remove("neutral");
+              trendEl.classList.add("positive");
+              trendEl.textContent = "▲ Healthy trend";
+            } else if (value < 0) {
+              trendEl.classList.remove("neutral");
+              trendEl.classList.add("negative");
+              trendEl.textContent = "▼ Needs attention";
+            } else {
+              trendEl.textContent = "— Stable";
+            }
+          } else {
+            trendEl.textContent = "";
+          }
+
+          card.appendChild(labelEl);
+          card.appendChild(valueEl);
+          if (trendEl.textContent) card.appendChild(trendEl);
+          els.metricsGrid.appendChild(card);
         });
 
-        const growthRes = await fetch('/api/owner/growth', {
-          headers: { 'Authorization': 'Bearer ' + token }
-        });
-        const growth = await growthRes.json();
-        growthList.innerHTML = '';
-        growth.forEach(function(item) {
-          const li = document.createElement('li');
-          li.textContent = item;
-          growthList.appendChild(li);
-        });
-      } catch (err) {
-        alert('Failed to load dashboard data.');
+        if (window.Chart && numericEntries.length >= 2) {
+          els.chartSection.hidden = false;
+          renderMetricsChart(numericEntries);
+        } else {
+          els.chartSection.hidden = true;
+          destroyMetricsChart();
+        }
       }
-    }
-  });
+
+      function renderMetricsChart(entries) {
+        const labels = entries.map((e) => prettifyKey(e.key));
+        const values = entries.map((e) => e.value);
+
+        if (state.metricsChart) {
+          state.metricsChart.destroy();
+          state.metricsChart = null;
+        }
+
+        const ctx = els.metricsChartCanvas.getContext("2d");
+        state.metricsChart = new Chart(ctx, {
+          type: "line",
+          data: {
+            labels,
+            datasets: [
+              {
+                label: "Metric value",
+                data: values,
+                tension: 0.35,
+                fill: true,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                display: false,
+              },
+            },
+            scales: {
+              x: {
+                ticks: {
+                  maxRotation: 0,
+                  minRotation: 0,
+                  autoSkip: true,
+                  maxTicksLimit: 5,
+                  font: { size: 10 },
+                },
+                grid: { display: false },
+              },
+              y: {
+                ticks: {
+                  font: { size: 10 },
+                },
+                grid: { display: true },
+              },
+            },
+          },
+        });
+      }
+
+      function destroyMetricsChart() {
+        if (state.metricsChart) {
+          state.metricsChart.destroy();
+          state.metricsChart = null;
+        }
+      }
+
+      /* ========= RENDER: LOGS ========= */
+
+      function renderLogs(logs) {
+        els.logsList.innerHTML = "";
+        const normalized = (logs || []).map((log) => {
+          if (typeof log === "string") {
+            return { message: log, timestamp: null, severity: null };
+          }
+          return {
+            message: log.message || JSON.stringify(log),
+            timestamp: log.timestamp || null,
+            severity: log.severity || null,
+          };
+        });
+
+        if (!normalized.length) {
+          els.logsEmpty.hidden = false;
+          return;
+        }
+
+        els.logsEmpty.hidden = true;
+
+        normalized.forEach((entry) => {
+          const li = document.createElement("li");
+          li.className = "list-item";
+          li.dataset.type = "compliance";
+
+          const main = document.createElement("div");
+          main.textContent = entry.message;
+          li.appendChild(main);
+
+          const metaParts = [];
+          if (entry.severity) metaParts.push("Severity: " + entry.severity);
+          if (entry.timestamp) metaParts.push(formatTimestamp(entry.timestamp));
+
+          if (metaParts.length) {
+            const meta = document.createElement("small");
+            meta.textContent = metaParts.join(" · ");
+            li.appendChild(meta);
+          }
+
+          els.logsList.appendChild(li);
+        });
+
+        applyFilter();
+      }
+
+      /* ========= RENDER: GROWTH ========= */
+
+      function renderGrowth(items) {
+        els.growthList.innerHTML = "";
+        const normalized = (items || []).map((item) => {
+          if (typeof item === "string") {
+            return { idea: item, owner: null, status: null };
+          }
+          return {
+            idea: item.idea || JSON.stringify(item),
+            owner: item.owner || null,
+            status: item.status || null,
+          };
+        });
+
+        if (!normalized.length) {
+          els.growthEmpty.hidden = false;
+          return;
+        }
+
+        els.growthEmpty.hidden = true;
+
+        normalized.forEach((entry) => {
+          const li = document.createElement("li");
+          li.className = "list-item";
+          li.dataset.type = "growth";
+
+          const main = document.createElement("div");
+          main.textContent = entry.idea;
+          li.appendChild(main);
+
+          const metaParts = [];
+          if (entry.owner) metaParts.push("Owner: " + entry.owner);
+          if (entry.status) metaParts.push("Status: " + entry.status);
+
+          if (metaParts.length) {
+            const meta = document.createElement("small");
+            meta.textContent = metaParts.join(" · ");
+            li.appendChild(meta);
+          }
+
+          els.growthList.appendChild(li);
+        });
+
+        applyFilter();
+      }
+
+      /* ========= FILTERING ========= */
+
+      function applyFilter() {
+        const filter = els.logFilter.value;
+
+        const toggleItems = (listEl, type) => {
+          Array.from(listEl.children).forEach((li) => {
+            if (!filter || filter === "all") {
+              li.hidden = false;
+              return;
+            }
+            li.hidden = li.dataset.type !== type;
+          });
+        };
+
+        toggleItems(els.logsList, "compliance");
+        toggleItems(els.growthList, "growth");
+      }
+
+      /* ========= TOASTS & MESSAGES ========= */
+
+      function showMessage(element, type, text) {
+        if (!element) return;
+        element.innerHTML = "";
+        if (!text) return;
+
+        const wrapper = document.createElement("div");
+        wrapper.className = `msg msg-${type}`;
+        const icon = document.createElement("span");
+        icon.className = "msg-icon";
+
+        if (type === "error") icon.textContent = "⚠️";
+        else if (type === "success") icon.textContent = "✅";
+        else icon.textContent = "ℹ️";
+
+        const body = document.createElement("span");
+        body.textContent = text;
+
+        wrapper.appendChild(icon);
+        wrapper.appendChild(body);
+        element.appendChild(wrapper);
+      }
+
+      function clearMessage(element) {
+        if (element) element.innerHTML = "";
+      }
+
+      function showToast(type, text, timeout = 3500) {
+        if (!els.toastContainer) return;
+        const toast = document.createElement("div");
+        toast.className = `toast toast-${type}`;
+        const icon = document.createElement("span");
+
+        icon.textContent =
+          type === "error" ? "⚠️" : type === "success" ? "✅" : "ℹ️";
+
+        const body = document.createElement("span");
+        body.textContent = text;
+
+        const close = document.createElement("button");
+        close.className = "toast-close";
+        close.type = "button";
+        close.textContent = "×";
+        close.addEventListener("click", () => {
+          toast.remove();
+        });
+
+        toast.appendChild(icon);
+        toast.appendChild(body);
+        toast.appendChild(close);
+
+        els.toastContainer.appendChild(toast);
+
+        if (timeout > 0) {
+          setTimeout(() => {
+            toast.remove();
+          }, timeout);
+        }
+      }
+
+      /* ========= UTILITIES ========= */
+
+      function prettifyKey(key) {
+        if (!key) return "";
+        return key
+          .replace(/[_-]+/g, " ")
+          .replace(/\b\w/g, (c) => c.toUpperCase());
+      }
+
+      function formatValue(value) {
+        if (typeof value === "number") {
+          const abs = Math.abs(value);
+          if (abs >= 1_000_000) return (value / 1_000_000).toFixed(1) + "M";
+          if (abs >= 1_000) return (value / 1_000).toFixed(1) + "k";
+          return value.toString();
+        }
+        return String(value);
+      }
+
+      function formatTimestamp(ts) {
+        try {
+          const date = new Date(ts);
+          if (Number.isNaN(date.getTime())) return ts;
+          return date.toLocaleString(undefined, {
+            month: "short",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+          });
+        } catch {
+          return ts;
+        }
+      }
+    })();
   </script>
 </body>
 </html>
