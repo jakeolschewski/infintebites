@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-US">
 <head>
   <meta charset="UTF-8">
 
   <!-- Viewport & Rendering -->
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
   <!-- Primary SEO -->
@@ -15,8 +15,6 @@
   <meta name="theme-color" content="#f9f5d4">
   <meta name="color-scheme" content="light dark">
   <meta name="author" content="InfantBites">
-
-  <!-- Suggested keywords (fine to tweak or remove if you prefer) -->
   <meta name="keywords"
         content="baby gear,baby registry,newborn essentials,best baby products,baby product reviews,infant safety,InfantBites">
 
@@ -49,10 +47,12 @@
   <meta name="twitter:site" content="@infantbites">
   <meta name="twitter:creator" content="@infantbites">
 
-  <!-- Performance hints (optional, update URLs as needed) -->
+  <!-- Performance hints (update URLs as needed) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preload" as="image" href="/assets/hero-parent-baby-1x.jpg" imagesrcset="/assets/hero-parent-baby-2x.jpg 2x">
+  <link rel="preload" as="image" href="/assets/hero-parent-baby-1x.jpg"
+        imagesrcset="/assets/hero-parent-baby-2x.jpg 2x">
+  <link rel="preload" href="style.css" as="style">
 
   <!-- CSS -->
   <link rel="stylesheet" href="style.css">
@@ -219,7 +219,7 @@
   <!-- Skip link for keyboard users -->
   <a href="#main-content" class="skip-link">Skip to main content</a>
 
-  <!-- Sticky top bar CTA (optional) -->
+  <!-- Sticky top bar CTA -->
   <div class="top-cta-bar" role="complementary" aria-label="Quick signup">
     <p class="top-cta-text">
       New here? Get a 3-minute newborn gear checklist in your inbox.
@@ -232,7 +232,7 @@
     <!-- Affiliate & Health Disclosure -->
     <section id="disclosure"
              class="disclosure-banner"
-             role="note"
+             role="status"
              aria-label="Affiliate and health disclosure">
       <div class="disclosure-content">
         <strong>Affiliate &amp; Health Disclosure:</strong>
@@ -386,7 +386,7 @@
         <article class="step-card">
           <span class="step-label" aria-hidden="true">Step 1</span>
           <h3>Tell us what you’re shopping for</h3>
-          <p>Use the search bar or jump into categories like feeding, sleep or safety. We keep language simple and jargons-free.</p>
+          <p>Use the search bar or jump into categories like feeding, sleep or safety. We keep language simple and jargon-free.</p>
         </article>
 
         <article class="step-card">
@@ -411,7 +411,7 @@
       </header>
 
       <!-- Product filters -->
-      <div class="product-filters" aria-label="Filter featured products">
+      <div class="product-filters" aria-label="Filter featured products" role="toolbar">
         <button type="button" class="filter-chip is-active" data-filter="all" aria-pressed="true">All</button>
         <button type="button" class="filter-chip" data-filter="carrier" aria-pressed="false">Carriers</button>
         <button type="button" class="filter-chip" data-filter="sleep" aria-pressed="false">Sleep</button>
@@ -472,7 +472,7 @@
 
             <a href="https://affiliate.example.com/carrier"
                class="btn btn-primary"
-               rel="nofollow noopener"
+               rel="nofollow noopener noreferrer"
                target="_blank"
                itemprop="url"
                aria-label="View details and buying options for Ergonomic Baby Carrier (opens in a new tab)">
@@ -535,7 +535,7 @@
 
             <a href="https://affiliate.example.com/sleep-monitor"
                class="btn btn-primary"
-               rel="nofollow noopener"
+               rel="nofollow noopener noreferrer"
                target="_blank"
                itemprop="url"
                aria-label="View details and buying options for Smart Sleep Monitor (opens in a new tab)">
@@ -792,7 +792,7 @@
         </p>
       </header>
 
-      <form class="newsletter-form" aria-label="Email newsletter signup">
+      <form class="newsletter-form" aria-label="Email newsletter signup" novalidate>
         <div class="newsletter-fields">
           <label for="newsletter-email" class="visually-hidden">Email address</label>
           <input id="newsletter-email"
@@ -846,7 +846,7 @@
   </footer>
 
   <!-- ====== JAVASCRIPT ================================================= -->
-  <script>
+  <script defer>
     // Helper: safe localStorage access
     function ibStorageAvailable() {
       try {
@@ -861,118 +861,120 @@
 
     const ibHasStorage = ibStorageAvailable();
 
-    // Affiliate / health disclosure close + persist
-    (function () {
-      const banner = document.getElementById("disclosure");
-      const closeBtn = banner ? banner.querySelector(".disclosure-close") : null;
-      const STORAGE_KEY = "infantbites_disclosure_dismissed";
+    document.addEventListener("DOMContentLoaded", function () {
+      // Affiliate / health disclosure close + persist
+      (function () {
+        const banner = document.getElementById("disclosure");
+        const closeBtn = banner ? banner.querySelector(".disclosure-close") : null;
+        const STORAGE_KEY = "infantbites_disclosure_dismissed";
 
-      if (!banner || !closeBtn) return;
+        if (!banner || !closeBtn) return;
 
-      if (ibHasStorage && localStorage.getItem(STORAGE_KEY) === "true") {
-        banner.hidden = true;
-        banner.setAttribute("aria-hidden", "true");
-        return;
-      }
-
-      closeBtn.addEventListener("click", function () {
-        banner.hidden = true;
-        banner.setAttribute("aria-hidden", "true");
-        if (ibHasStorage) {
-          localStorage.setItem(STORAGE_KEY, "true");
-        }
-      });
-    })();
-
-    // Accessible mobile nav toggle
-    (function () {
-      const navToggle = document.querySelector(".nav-toggle");
-      const nav = document.getElementById("main-nav");
-
-      if (!navToggle || !nav) return;
-
-      navToggle.addEventListener("click", function () {
-        const expanded = navToggle.getAttribute("aria-expanded") === "true";
-        navToggle.setAttribute("aria-expanded", String(!expanded));
-        nav.classList.toggle("is-open", !expanded);
-      });
-    })();
-
-    // Search handling (front-end placeholder)
-    (function () {
-      const form = document.getElementById("site-search");
-      if (!form) return;
-
-      const input = document.getElementById("search-input");
-      const status = document.getElementById("search-status");
-
-      form.addEventListener("submit", function (event) {
-        event.preventDefault();
-        const query = input.value.trim();
-
-        if (!query) {
-          status.textContent = "Please enter a product or keyword to search.";
-          input.focus();
+        if (ibHasStorage && localStorage.getItem(STORAGE_KEY) === "true") {
+          banner.hidden = true;
+          banner.setAttribute("aria-hidden", "true");
           return;
         }
 
-        status.textContent = "Opening search results in a new tab…";
-
-        // TODO: replace with your internal search route when available
-        const url = "https://www.google.com/search?q=" +
-          encodeURIComponent(query + " site:infantbites.com");
-        window.open(url, "_blank", "noopener");
-      });
-    })();
-
-    // FAQ accordion (accessible)
-    (function () {
-      const toggles = document.querySelectorAll(".faq-toggle");
-      if (!toggles.length) return;
-
-      toggles.forEach(function (btn) {
-        btn.addEventListener("click", function () {
-          const expanded = btn.getAttribute("aria-expanded") === "true";
-          const bodyId = btn.getAttribute("aria-controls");
-          const body = document.getElementById(bodyId);
-          if (!body) return;
-
-          btn.setAttribute("aria-expanded", String(!expanded));
-          body.hidden = expanded;
+        closeBtn.addEventListener("click", function () {
+          banner.hidden = true;
+          banner.setAttribute("aria-hidden", "true");
+          if (ibHasStorage) {
+            localStorage.setItem(STORAGE_KEY, "true");
+          }
         });
-      });
-    })();
+      })();
 
-    // Product filter chips
-    (function () {
-      const chips = document.querySelectorAll(".filter-chip");
-      const cards = document.querySelectorAll(".product-card");
-      const grid = document.querySelector(".product-grid");
+      // Accessible mobile nav toggle
+      (function () {
+        const navToggle = document.querySelector(".nav-toggle");
+        const nav = document.getElementById("main-nav");
 
-      if (!chips.length || !cards.length || !grid) return;
+        if (!navToggle || !nav) return;
 
-      chips.forEach(function (chip) {
-        chip.addEventListener("click", function () {
-          const filter = chip.getAttribute("data-filter");
-
-          chips.forEach(function (c) {
-            const isActive = c === chip;
-            c.classList.toggle("is-active", isActive);
-            c.setAttribute("aria-pressed", String(isActive));
-          });
-
-          let visibleCount = 0;
-          cards.forEach(function (card) {
-            const category = card.getAttribute("data-category");
-            const shouldShow = !filter || filter === "all" || category === filter;
-            card.hidden = !shouldShow;
-            if (shouldShow) visibleCount++;
-          });
-
-          grid.setAttribute("data-visible-count", String(visibleCount));
+        navToggle.addEventListener("click", function () {
+          const expanded = navToggle.getAttribute("aria-expanded") === "true";
+          navToggle.setAttribute("aria-expanded", String(!expanded));
+          nav.classList.toggle("is-open", !expanded);
         });
-      });
-    })();
+      })();
+
+      // Search handling (front-end placeholder)
+      (function () {
+        const form = document.getElementById("site-search");
+        if (!form) return;
+
+        const input = document.getElementById("search-input");
+        const status = document.getElementById("search-status");
+
+        form.addEventListener("submit", function (event) {
+          event.preventDefault();
+          const query = input.value.trim();
+
+          if (!query) {
+            status.textContent = "Please enter a product or keyword to search.";
+            input.focus();
+            return;
+          }
+
+          status.textContent = "Opening search results in a new tab…";
+
+          // TODO: replace with your internal search route when available
+          const url = "https://www.google.com/search?q=" +
+            encodeURIComponent(query + " site:infantbites.com");
+          window.open(url, "_blank", "noopener,noreferrer");
+        });
+      })();
+
+      // FAQ accordion (accessible)
+      (function () {
+        const toggles = document.querySelectorAll(".faq-toggle");
+        if (!toggles.length) return;
+
+        toggles.forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            const expanded = btn.getAttribute("aria-expanded") === "true";
+            const bodyId = btn.getAttribute("aria-controls");
+            const body = document.getElementById(bodyId);
+            if (!body) return;
+
+            btn.setAttribute("aria-expanded", String(!expanded));
+            body.hidden = expanded;
+          });
+        });
+      })();
+
+      // Product filter chips
+      (function () {
+        const chips = document.querySelectorAll(".filter-chip");
+        const cards = document.querySelectorAll(".product-card");
+        const grid = document.querySelector(".product-grid");
+
+        if (!chips.length || !cards.length || !grid) return;
+
+        chips.forEach(function (chip) {
+          chip.addEventListener("click", function () {
+            const filter = chip.getAttribute("data-filter");
+
+            chips.forEach(function (c) {
+              const isActive = c === chip;
+              c.classList.toggle("is-active", isActive);
+              c.setAttribute("aria-pressed", String(isActive));
+            });
+
+            let visibleCount = 0;
+            cards.forEach(function (card) {
+              const category = card.getAttribute("data-category");
+              const shouldShow = !filter || filter === "all" || category === filter;
+              card.hidden = !shouldShow;
+              if (shouldShow) visibleCount++;
+            });
+
+            grid.setAttribute("data-visible-count", String(visibleCount));
+          });
+        });
+      })();
+    });
   </script>
 </body>
 </html>
