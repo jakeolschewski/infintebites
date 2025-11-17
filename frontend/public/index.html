@@ -1,24 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- SEO / Search Engine -->
+  <meta name="description"
+        content="Discover curated baby gear, verified reviews and exclusive bundles at InfantBites. Shop with confidence using our accessible, easy‑to‑navigate interface.">
+  <link rel="canonical" href="https://www.infantbites.com/">
+
+  <!-- Page title -->
   <title>InfantBites – Smarter Baby Shopping</title>
-  <meta name="description" content="Discover curated baby gear, verified reviews and exclusive bundles at InfantBites. Shop with confidence using our accessible, easy‑to‑navigate interface.">
+
+  <!-- Stylesheet -->
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-  <header>
-    <p id="disclosure" role="note">Affiliate &amp; Health Disclosure: Some links on this site may earn us a commission at no extra cost to you. Content is for informational purposes only and not medical advice.</p>
+  <!-- ====== HEADER ===================================================== -->
+  <header role="banner" id="top">
+    <!-- Affiliate & Health Disclosure – accessible note -->
+    <p id="disclosure" role="note"
+       style="background:#f9f5d4; padding:0.75rem 1rem; font-size:.875rem;">
+      Affiliate & Health Disclosure: Some links on this site may earn us a commission at no extra cost to you. Content is for informational purposes only and not medical advice.
+    </p>
+
+    <!-- Branding & Search -->
     <div class="branding">
       <h1>InfantBites</h1>
-      <form role="search" aria-label="Product search">
-        <label for="search-input">Search</label>
-        <input id="search-input" name="q" type="search" placeholder="Search baby gear" />
+
+      <!-- Search form – keyboard focusable -->
+      <form role="search" aria-label="Product search" id="site-search"
+            onsubmit="return handleSearch(event);" style="display:flex;gap:.5rem;">
+        <label for="search-input" class="visually-hidden">Search</label>
+        <input id="search-input" name="q" type="search"
+               placeholder="Search baby gear" autocomplete="off"
+               aria-describedby="search-help">
+        <small id="search-help" style="display:none;">Press Enter to search.</small>
         <button type="submit">Go</button>
       </form>
     </div>
-    <nav aria-label="Main navigation">
+
+    <!-- Main Navigation -->
+    <nav role="navigation" aria-label="Main navigation">
       <ul>
         <li><a href="#feed">Feeding</a></li>
         <li><a href="#sleep">Sleep</a></li>
@@ -29,39 +54,61 @@
     </nav>
   </header>
 
-  <main>
-    <section id="hero">
-      <h2>Welcome to Smarter Baby Shopping</h2>
+  <!-- ====== MAIN ======================================================= -->
+  <main role="main" class="layout">
+    <!-- Hero Section -->
+    <section id="hero" aria-labelledby="hero-title">
+      <h2 id="hero-title">Welcome to Smarter Baby Shopping</h2>
       <p>Find trusted baby products, compare prices and read verified reviews—all in one place.</p>
       <a href="#deals" class="cta">Shop Featured Deals</a>
     </section>
 
-    <section id="featured-products">
-      <h2>Featured Products</h2>
+    <!-- Featured Products -->
+    <section id="featured-products" aria-labelledby="products-title">
+      <h2 id="products-title">Featured Products</h2>
       <div class="product-grid">
+        <!-- Product 1 -->
         <article class="product" tabindex="0">
-          <img src="carrier.jpg" alt="Ergonomic baby carrier">
+          <img src="carrier.jpg"
+               alt="Ergonomic baby carrier – 4‑in‑1 adjustable straps and breathable mesh"
+               srcset="carrier-400w.jpg 400w, carrier-800w.jpg 800w"
+               sizes="(max-width: 600px) 100vw, 33.333%">
+
           <h3>Ergonomic Baby Carrier</h3>
           <p class="price">$89.99</p>
-          <p class="rating">Rating: 4.8/5</p>
-          <button type="button">View Details</button>
+          <p class="rating" aria-label="Rating 4.8 out of 5">Rating: 4.8/5</p>
+          <a href="https://affiliate.example.com/carrier"
+             class="btn-primary" rel="nofollow noopener" target="_blank"
+             aria-label="View details for Ergonomic Baby Carrier">View Details</a>
         </article>
+
+        <!-- Product 2 -->
         <article class="product" tabindex="0">
-          <img src="sleep-monitor.jpg" alt="Smart sleep monitor">
+          <img src="sleep-monitor.jpg"
+               alt="Smart sleep monitor – tracks baby’s heart rate, breathing and movement"
+               srcset="sleep-monitor-400w.jpg 400w, sleep-monitor-800w.jpg 800w"
+               sizes="(max-width: 600px) 100vw, 33.333%">
+
           <h3>Smart Sleep Monitor</h3>
           <p class="price">$129.99</p>
-          <p class="rating">Rating: 4.6/5</p>
-          <button type="button">View Details</button>
+          <p class="rating" aria-label="Rating 4.6 out of 5">Rating: 4.6/5</p>
+          <a href="https://affiliate.example.com/sleep-monitor"
+             class="btn-primary" rel="nofollow noopener" target="_blank"
+             aria-label="View details for Smart Sleep Monitor">View Details</a>
         </article>
+
+        <!-- Add more products as needed -->
       </div>
     </section>
 
-    <section id="reviews">
-      <h2>What Parents Are Saying</h2>
+    <!-- Reviews Section -->
+    <section id="reviews" aria-labelledby="reviews-title">
+      <h2 id="reviews-title">What Parents Are Saying</h2>
       <blockquote>
         <p>“InfantBites helped me find the perfect sleep monitor in minutes. The reviews were spot‑on!”</p>
         <cite>— Jamie, new parent</cite>
       </blockquote>
+
       <blockquote>
         <p>“Great deals and fast checkout. I love the curated bundles!”</p>
         <cite>— Alex, dad of two</cite>
@@ -69,15 +116,34 @@
     </section>
   </main>
 
-  <footer>
-    <nav aria-label="Footer">
+  <!-- ====== FOOTER ===================================================== -->
+  <footer role="contentinfo" class="site-footer">
+    <nav aria-label="Footer navigation">
       <ul>
         <li><a href="/privacy.html">Privacy Policy</a></li>
         <li><a href="/terms.html">Terms of Use</a></li>
         <li><a href="/support.html">Support</a></li>
       </ul>
     </nav>
+
     <p>&copy; 2025 InfantBites. All rights reserved.</p>
   </footer>
+
+  <!-- ====== JAVASCRIPT ================================================= -->
+  <script>
+    /* Simple search handler – keeps the form accessible */
+    function handleSearch(e) {
+      e.preventDefault();
+      const query = document.getElementById('search-input').value.trim();
+      if (!query) {
+        alert('Please enter a search term.');
+        return false;
+      }
+      // Example: redirect to a Google search; replace with your own logic
+      const url = `https://www.google.com/search?q=${encodeURIComponent(query)}+site:infantbites.com`;
+      window.open(url, '_blank');
+    }
+  </script>
 </body>
+
 </html>
