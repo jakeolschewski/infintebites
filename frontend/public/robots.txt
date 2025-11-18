@@ -1,26 +1,118 @@
+# =========================================
 # robots.txt for https://infantbites.com
-# Goal: Maximize SEO & crawl efficiency while protecting APIs
+# Purpose: Maximize SEO, crawl efficiency &
+#          protect APIs / sensitive endpoints.
 # Last updated: 2025-11-17
+# =========================================
 
 User-agent: *
-# Protect non-HTML endpoints
-Disallow: /api/
 
-# --- Duplicate / tracking parameter control ---
-# These rules help avoid wasting crawl budget on the same page with tracking params
+########################################
+# 1) SECURITY / SENSITIVE AREAS
+# Block non-public or non-SEO areas.
+########################################
+
+# Core backend / APIs
+Disallow: /api/
+Disallow: /internal/
+Disallow: /private/
+Disallow: /backend/
+Disallow: /service/
+Disallow: /server/
+
+# Auth & account
+Disallow: /admin/
+Disallow: /admin-panel/
+Disallow: /auth/
+Disallow: /login/
+Disallow: /logout/
+Disallow: /register/
+Disallow: /signup/
+Disallow: /account/
+Disallow: /user/
+Disallow: /profile/
+
+# Commerce / transactional (not meant for search)
+Disallow: /cart/
+Disallow: /checkout/
+Disallow: /order/
+Disallow: /orders/
+Disallow: /payment/
+Disallow: /billing/
+Disallow: /subscriptions/
+
+# Drafts, previews, test areas
+Disallow: /draft/
+Disallow: /drafts/
+Disallow: /staging/
+Disallow: /test/
+Disallow: /tests/
+Disallow: /tmp/
+Disallow: /temp/
+Disallow: /*/preview/
+Disallow: /*?*preview=
+
+
+########################################
+# 2) CLEAN UP DUPLICATE / TRACKING URLs
+# These rules stop bots from crawling
+# the same content with tracking params.
+########################################
+
+# --- UTM & campaign ---
 Disallow: /*?*utm_source=
 Disallow: /*?*utm_medium=
 Disallow: /*?*utm_campaign=
 Disallow: /*?*utm_term=
 Disallow: /*?*utm_content=
+Disallow: /*?*utm_id=
+
+# --- Ad platforms & click IDs ---
 Disallow: /*?*gclid=
+Disallow: /*?*wbraid=
+Disallow: /*?*gbraid=
 Disallow: /*?*fbclid=
+Disallow: /*?*msclkid=
+Disallow: /*?*ttclid=
+Disallow: /*?*yclid=
+
+# --- Referral & affiliate clutter ---
 Disallow: /*?*ref=
+Disallow: /*?*ref_=
+Disallow: /*?*refid=
+Disallow: /*?*affiliate=
+Disallow: /*?*affid=
+Disallow: /*?*aff=
+Disallow: /*?*partner=
+Disallow: /*?*coupon=
+Disallow: /*?*promo=
+Disallow: /*?*campaign_id=
+
+# --- Session / tracking IDs (non-canonical) ---
 Disallow: /*?*session=
 Disallow: /*?*sessionid=
+Disallow: /*?*sid=
+Disallow: /*?*phpsessid=
+Disallow: /*?*hsCtaTracking=
+Disallow: /*?*_hsenc=
+Disallow: /*?*_hsmi=
+Disallow: /*?*mc_eid=
+Disallow: /*?*mc_cid=
+Disallow: /*?*vero_id=
+Disallow: /*?*_bta_tid=
+Disallow: /*?*_bta_c=
 
-# --- Make sure resources needed for rendering are crawlable ---
-# This helps Google and other modern bots fully render your pages
+# NOTE:
+# Only high-duplication / tracking parameters are blocked.
+# Canonical URLs should be the "clean" versions without these params.
+
+
+########################################
+# 3) RENDERING RESOURCES (VERY IMPORTANT)
+# Make sure Google & modern bots can fully
+# render pages (JS, CSS, fonts, images, etc.)
+########################################
+
 Allow: /*.js$
 Allow: /*.css$
 Allow: /*.png$
@@ -29,11 +121,140 @@ Allow: /*.jpeg$
 Allow: /*.gif$
 Allow: /*.webp$
 Allow: /*.svg$
+Allow: /*.ico$
+Allow: /*.json$
 Allow: /*.woff$
 Allow: /*.woff2$
+Allow: /*.ttf$
+Allow: /*.eot$
 
-# Fallback: allow everything else
+# If you serve assets from /static/, /assets/, or /cdn/, keep them open:
+Allow: /static/
+Allow: /assets/
+Allow: /cdn/
+
+
+########################################
+# 4) HIGH-VALUE SEO SECTIONS (PRIORITY HINT)
+# These paths are likely core SEO content.
+# Keeping them clean + crawlable matters.
+########################################
+
+# Core topical / money pages
+Allow: /blog/
+Allow: /blogs/
+Allow: /recipes/
+Allow: /guides/
+Allow: /articles/
+Allow: /products/
+Allow: /collections/
+
+# If you have pagination on these sections,
+# rely on rel=prev/next or internal linking
+# for crawl guidance (not robots.txt blocking).
+
+
+########################################
+# 5) OPTIONAL: LOW-VALUE / THIN PAGES
+# Uncomment if these exist and are NOT useful
+# for search users (e.g. internal search).
+########################################
+
+# Internal search results
+# Disallow: /search
+# Disallow: /*?*s=
+# Disallow: /*?*q=
+
+# Tag pages you consider thin / duplicate:
+# Disallow: /tag/
+# Disallow: /tags/
+
+# Filter/sort URLs that explode combinations:
+# Be careful: only block if categories are
+# still discoverable via clean URLs.
+# Disallow: /*?*filter=
+# Disallow: /*?*sort=
+# Disallow: /*?*order=
+
+
+########################################
+# 6) SPECIAL BOT HANDLING (OPTIONAL)
+# Use only if you specifically want to tune
+# behavior of certain bots.
+########################################
+
+# --- Google Ads crawler (for landing page checks) ---
+User-agent: AdsBot-Google
+Disallow: /api/
+Disallow: /internal/
+Disallow: /private/
+Disallow: /backend/
+Disallow: /admin/
+Disallow: /cart/
+Disallow: /checkout/
+Disallow: /order/
+Disallow: /orders/
+Disallow: /payment/
+Disallow: /billing/
+Disallow: /subscriptions/
 Allow: /
 
-# --- Sitemaps ---
+# --- Image-specific bot (keep media crawlable) ---
+User-agent: Googlebot-Image
+Disallow: /api/
+Disallow: /internal/
+Disallow: /private/
+Disallow: /backend/
+Allow: /images/
+Allow: /img/
+Allow: /media/
+Allow: /uploads/
+Allow: /wp-content/uploads/
+Allow: /*.jpg$
+Allow: /*.jpeg$
+Allow: /*.png$
+Allow: /*.webp$
+Allow: /*.gif$
+Allow: /*.svg$
+Allow: /
+
+# --- GPTBot (LLM training) ---
+# Relax or restrict depending on your data policy.
+User-agent: GPTBot
+Allow: /
+# To restrict model training on your content, use:
+# Disallow: /
+
+
+########################################
+# 7) FALLBACK: ALLOW EVERYTHING ELSE
+########################################
+
+# As long as it's not explicitly Disallowed above,
+# bots are allowed to crawl and index it.
+User-agent: *
+Allow: /
+
+
+########################################
+# 8) SITEMAPS
+# Make sure these URLs actually exist.
+########################################
+
 Sitemap: https://infantbites.com/sitemap.xml
+
+# If you use segmented sitemaps, list them too:
+# Sitemap: https://infantbites.com/sitemap-index.xml
+# Sitemap: https://infantbites.com/sitemap-pages.xml
+# Sitemap: https://infantbites.com/sitemap-blog.xml
+# Sitemap: https://infantbites.com/sitemap-products.xml
+
+
+########################################
+# 9) NOTES & MAINTENANCE
+########################################
+# - Do NOT try to use "noindex" here; Google ignores it in robots.txt.
+# - Use canonical tags and proper internal linking for consolidation.
+# - Anytime you add major new sections (e.g. /apps/, /kids-snacks/),
+#   ensure they’re not accidentally blocked here.
+########################################
