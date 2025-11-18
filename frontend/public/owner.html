@@ -4,9 +4,13 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>InfantBites – Owner Dashboard</title>
+  <meta
+    name="description"
+    content="InfantBites owner console for secure performance, compliance, and growth insights."
+  />
 
   <!-- Chart.js for visualizations -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 
   <style>
     :root {
@@ -17,7 +21,7 @@
       --bg-sidebar: #020617;
 
       --primary: #4f46e5;
-      --primary-soft: rgba(79, 70, 229, 0.1);
+      --primary-soft: rgba(79, 70, 229, 0.12);
       --primary-strong: #4338ca;
 
       --accent: #16a34a;
@@ -47,6 +51,12 @@
 
       --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
         sans-serif;
+
+      --space-xs: 0.25rem;
+      --space-sm: 0.5rem;
+      --space-md: 0.75rem;
+      --space-lg: 1rem;
+      --space-xl: 1.5rem;
     }
 
     /* DARK THEME */
@@ -271,9 +281,9 @@
     }
 
     .nav-item button[aria-current="page"] {
-      background: rgba(79, 70, 229, 0.1);
+      background: rgba(79, 70, 229, 0.18);
       color: #e5e7eb;
-      box-shadow: inset 0 0 0 1px rgba(129, 140, 248, 0.5);
+      box-shadow: inset 0 0 0 1px rgba(129, 140, 248, 0.6);
     }
 
     .sidebar-bottom {
@@ -309,6 +319,9 @@
       font-size: 0.78rem;
       color: var(--text-muted);
       margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
     }
 
     .breadcrumb span {
@@ -339,6 +352,8 @@
       align-items: center;
       gap: 0.45rem;
       font-size: 0.8rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
     }
 
     .btn {
@@ -357,6 +372,7 @@
         background-color var(--transition-fast), border-color var(--transition-fast),
         opacity var(--transition-fast);
       white-space: nowrap;
+      background: transparent;
     }
 
     .btn-primary {
@@ -407,6 +423,70 @@
       border: 1px dashed var(--border-subtle);
       font-size: 0.75rem;
       color: var(--text-muted);
+      background: rgba(148, 163, 184, 0.04);
+    }
+
+    /* AI STRIP */
+
+    .ai-strip {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.9rem;
+      padding: 0.7rem 0.9rem;
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(129, 140, 248, 0.4);
+      background: radial-gradient(circle at top left, rgba(79, 70, 229, 0.12), rgba(15, 23, 42, 0.02));
+      box-shadow: 0 14px 40px rgba(79, 70, 229, 0.15);
+    }
+
+    .ai-strip-main {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .ai-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.75rem;
+      padding: 0.2rem 0.7rem;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(129, 140, 248, 0.8);
+      background: rgba(15, 23, 42, 0.7);
+      color: #e5e7eb;
+    }
+
+    .ai-chip span:first-child {
+      font-size: 0.95rem;
+    }
+
+    .ai-strip-text-strong {
+      color: var(--text-main);
+      font-weight: 500;
+    }
+
+    .btn-ai-refresh {
+      font-size: 0.78rem;
+    }
+
+    .risk-low {
+      box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.5);
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.24), rgba(15, 23, 42, 0.6));
+    }
+
+    .risk-moderate {
+      box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.8);
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.28), rgba(15, 23, 42, 0.6));
+    }
+
+    .risk-high {
+      box-shadow: 0 0 0 1px rgba(239, 68, 68, 0.85);
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.32), rgba(15, 23, 42, 0.7));
     }
 
     /* GRID LAYOUT */
@@ -425,6 +505,11 @@
 
       .grid-main {
         grid-template-columns: 1fr;
+      }
+
+      .ai-strip {
+        align-items: flex-start;
+        flex-direction: column;
       }
     }
 
@@ -470,6 +555,7 @@
       font-size: 0.78rem;
       color: var(--text-muted);
       gap: 0.4rem;
+      flex-wrap: wrap;
     }
 
     .badge-mini {
@@ -477,9 +563,11 @@
       padding: 0.15rem 0.6rem;
       border: 1px solid rgba(148, 163, 184, 0.7);
       font-size: 0.7rem;
+      white-space: nowrap;
     }
 
-    /* LOGIN CARD OVERRIDE */
+    /* LOGIN CARD */
+
     #login-card {
       max-width: 430px;
       margin: 1.8rem auto;
@@ -569,6 +657,21 @@
       border: 1px solid rgba(148, 163, 184, 0.4);
       background: var(--bg-elevated-soft);
       padding: 0.55rem 0.6rem;
+      cursor: pointer;
+      transition: box-shadow var(--transition-fast), transform var(--transition-fast),
+        border-color var(--transition-fast), background-color var(--transition-fast);
+    }
+
+    .metric-card:hover {
+      box-shadow: 0 12px 20px rgba(15, 23, 42, 0.12);
+      border-color: rgba(129, 140, 248, 0.8);
+      transform: translateY(-1px);
+      background: linear-gradient(135deg, rgba(79, 70, 229, 0.08), var(--bg-elevated-soft));
+    }
+
+    .metric-card[data-selected="true"] {
+      border-color: rgba(79, 70, 229, 0.95);
+      box-shadow: 0 14px 30px rgba(79, 70, 229, 0.35);
     }
 
     .metric-label {
@@ -660,6 +763,63 @@
       margin-top: 0.5rem;
     }
 
+    /* AI INSIGHTS PANEL */
+
+    .insights {
+      margin-top: 0.9rem;
+      padding: 0.6rem 0.65rem 0.75rem;
+      border-radius: var(--radius-md);
+      border: 1px dashed var(--border-subtle);
+      background: linear-gradient(135deg, rgba(79, 70, 229, 0.05), rgba(15, 23, 42, 0.03));
+      font-size: 0.8rem;
+    }
+
+    .insights-header {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .pill-ai {
+      border-radius: var(--radius-pill);
+      padding: 0.15rem 0.6rem;
+      font-size: 0.7rem;
+      border: 1px solid rgba(129, 140, 248, 0.7);
+      background: var(--primary-soft);
+      color: var(--primary-strong);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .insights-header span {
+      color: var(--text-muted);
+    }
+
+    .insights-main {
+      margin-top: 0.3rem;
+      line-height: 1.4;
+    }
+
+    .insights-actions-title {
+      margin-top: 0.45rem;
+      font-weight: 600;
+      font-size: 0.79rem;
+      color: var(--text-main);
+    }
+
+    .insights-actions {
+      padding-left: 1rem;
+      margin: 0.2rem 0 0;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .insights-actions li {
+      margin-bottom: 0.15rem;
+    }
+
     /* SKELETONS */
 
     .skeleton {
@@ -712,6 +872,7 @@
       opacity: 0;
       transform: translateY(8px);
       animation: toast-in 0.25s forwards;
+      background: var(--bg-elevated);
     }
 
     .toast-success {
@@ -747,6 +908,17 @@
       }
     }
 
+    /* REDUCED MOTION */
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
     /* HIDDEN HANDLER */
     [hidden] {
       display: none !important;
@@ -754,17 +926,17 @@
   </style>
 </head>
 <body>
-  <header>
+  <header role="banner">
     <div class="header-inner">
       <div class="header-left">
-        <div class="logo-mark">IB</div>
+        <div class="logo-mark" aria-hidden="true">IB</div>
         <div class="header-text">
           <h1>InfantBites Owner Dashboard</h1>
-          <p>Secure, private view across performance, compliance & growth.</p>
+          <p>Secure, private view across performance, compliance &amp; growth.</p>
         </div>
       </div>
       <div class="header-right">
-        <div class="pill" id="session-pill">
+        <div class="pill" id="session-pill" aria-live="polite">
           <span class="pill-dot offline" id="session-dot"></span>
           <span id="session-text">Logged out</span>
         </div>
@@ -804,7 +976,7 @@
         <li class="nav-item">
           <button type="button" data-view="settings">
             <span class="nav-item-icon">⚙️</span>
-            Session & Settings
+            Session &amp; Settings
           </button>
         </li>
       </ul>
@@ -814,10 +986,10 @@
       </div>
     </aside>
 
-    <main class="content-shell">
+    <main class="content-shell" role="main">
       <div class="content-scroll">
         <!-- LOGIN PAGE -->
-        <section id="login-view">
+        <section id="login-view" aria-label="Owner authentication">
           <div class="breadcrumb">
             <span>Owner</span> · <strong>Authentication</strong>
           </div>
@@ -841,6 +1013,7 @@
                     placeholder="••••••••"
                     required
                     minlength="4"
+                    aria-required="true"
                   />
                   <div class="helper-text">
                     This access is audited. Do not share or reuse on non-owner devices.
@@ -849,7 +1022,12 @@
                 <button id="login-submit" class="btn btn-primary" type="submit">
                   <span id="login-submit-text">Log In</span>
                 </button>
-                <div class="messages" id="login-messages" aria-live="polite"></div>
+                <div
+                  class="messages"
+                  id="login-messages"
+                  aria-live="polite"
+                  aria-atomic="true"
+                ></div>
               </form>
             </div>
             <div class="card-footer">
@@ -860,14 +1038,19 @@
         </section>
 
         <!-- DASHBOARD PAGE -->
-        <section id="dashboard-view" hidden aria-live="polite">
+        <section
+          id="dashboard-view"
+          hidden
+          aria-live="polite"
+          aria-busy="false"
+        >
           <div class="breadcrumb">
             <span>Owner</span> · <strong id="breadcrumb-label">Overview</strong>
           </div>
 
           <div class="page-title-row">
             <div>
-              <h2 id="page-title">Right now at InfantBites</h2>
+              <h2 id="page-title" tabindex="-1">Right now at InfantBites</h2>
               <p id="page-subtitle">
                 Live view across performance, compliance trails, and upcoming growth bets.
               </p>
@@ -881,6 +1064,37 @@
               </button>
             </div>
           </div>
+
+          <!-- AI SUMMARY STRIP -->
+          <section
+            class="ai-strip"
+            id="ai-strip"
+            aria-label="AI assistant summary"
+            aria-live="polite"
+          >
+            <div class="ai-strip-main">
+              <div class="ai-chip" id="ai-risk-chip">
+                <span>✨</span>
+                <span id="ai-risk-label">Risk: —</span>
+              </div>
+              <div>
+                <span class="ai-strip-text-strong" id="ai-strip-text-main">
+                  Waiting for data…
+                </span>
+                <span id="ai-strip-text-secondary">
+                  Once metrics and logs load, you’ll get a one-line pulse check here.
+                </span>
+              </div>
+            </div>
+            <button
+              class="btn btn-subtle btn-ai-refresh"
+              type="button"
+              id="ai-refresh-btn"
+            >
+              <span class="btn-icon">✨</span>
+              Refresh insights
+            </button>
+          </section>
 
           <div class="grid-main">
             <!-- LEFT: METRICS + CHART -->
@@ -914,15 +1128,15 @@
               </div>
               <div class="card-footer">
                 <span class="badge-mini">Green trend = improving, red = needs attention.</span>
-                <span>Use this as your single source of truth during reviews.</span>
+                <span>Click a metric to contextualize the smart summary.</span>
               </div>
             </section>
 
-            <!-- RIGHT: LOGS + GROWTH -->
+            <!-- RIGHT: LOGS + GROWTH + INSIGHTS -->
             <section class="card" aria-labelledby="cg-title">
               <div class="card-header">
                 <div>
-                  <h3 id="cg-title">Compliance & growth feed</h3>
+                  <h3 id="cg-title">Compliance &amp; growth feed</h3>
                   <span>What changed and where you’re pushing growth next.</span>
                 </div>
                 <div class="badge-mini">Owner annotations</div>
@@ -930,7 +1144,7 @@
               <div class="card-body">
                 <div class="filter-row">
                   <span>Filter view</span>
-                  <select id="log-filter">
+                  <select id="log-filter" aria-label="Filter compliance and growth lists">
                     <option value="all">Show everything</option>
                     <option value="compliance">Compliance only</option>
                     <option value="growth">Growth only</option>
@@ -951,9 +1165,35 @@
                     No growth ideas returned.
                   </div>
                 </div>
+
+                <!-- AI-like insight summary -->
+                <section
+                  class="insights"
+                  id="insights-card"
+                  aria-label="Insight summary"
+                  aria-live="polite"
+                  aria-atomic="true"
+                >
+                  <div class="insights-header">
+                    <div class="pill-ai">
+                      <span>🤖</span>
+                      <span>Smart summary</span>
+                    </div>
+                    <span>Rule-based assistant, computed on your device only.</span>
+                  </div>
+                  <div class="insights-main" id="insights-text">
+                    Insights will appear here after your data loads.
+                  </div>
+                  <div class="insights-actions-wrapper">
+                    <div class="insights-actions-title" id="insights-actions-title" hidden>
+                      Suggested focus for today
+                    </div>
+                    <ul class="insights-actions" id="insights-actions" hidden></ul>
+                  </div>
+                </section>
               </div>
               <div class="card-footer">
-                <span class="badge-mini">Use as a “what changed & what’s next” journal.</span>
+                <span class="badge-mini">Use as a “what changed &amp; what’s next” journal.</span>
                 <span>Pair this with internal notes or a growth doc if needed.</span>
               </div>
             </section>
@@ -976,6 +1216,12 @@
         metricsChart: null,
         theme: "light",
         currentView: "overview",
+        snapshot: {
+          metrics: {},
+          logs: [],
+          growth: [],
+        },
+        selectedMetricKey: null,
       };
 
       const els = {
@@ -1013,6 +1259,14 @@
         refreshBtn: document.getElementById("refresh-btn"),
         lastUpdated: document.getElementById("last-updated"),
 
+        // AI strip
+        aiStrip: document.getElementById("ai-strip"),
+        aiRiskChip: document.getElementById("ai-risk-chip"),
+        aiRiskLabel: document.getElementById("ai-risk-label"),
+        aiStripTextMain: document.getElementById("ai-strip-text-main"),
+        aiStripTextSecondary: document.getElementById("ai-strip-text-secondary"),
+        aiRefreshBtn: document.getElementById("ai-refresh-btn"),
+
         // Metrics
         metricsGrid: document.getElementById("metrics-grid"),
         metricsEmpty: document.getElementById("metrics-empty"),
@@ -1028,6 +1282,12 @@
         growthList: document.getElementById("growth-list"),
         growthEmpty: document.getElementById("growth-empty"),
         logFilter: document.getElementById("log-filter"),
+
+        // Insights
+        insightsCard: document.getElementById("insights-card"),
+        insightsText: document.getElementById("insights-text"),
+        insightsActionsTitle: document.getElementById("insights-actions-title"),
+        insightsActions: document.getElementById("insights-actions"),
 
         // Toasts
         toastContainer: document.getElementById("toast-container"),
@@ -1048,6 +1308,7 @@
         els.refreshBtn.addEventListener("click", handleManualRefresh);
         els.themeToggle.addEventListener("click", toggleTheme);
         els.logFilter.addEventListener("change", applyFilter);
+        els.aiRefreshBtn.addEventListener("click", handleAiRefresh);
 
         els.navButtons.forEach((btn) =>
           btn.addEventListener("click", () => switchView(btn.dataset.view))
@@ -1057,7 +1318,9 @@
         document.addEventListener("keydown", (e) => {
           if (e.target && ["INPUT", "TEXTAREA"].includes(e.target.tagName)) return;
           if (e.key === "r" || e.key === "R") {
-            if (!els.dashboardView.hidden) handleManualRefresh();
+            if (!els.dashboardView.hidden && state.token) {
+              handleManualRefresh();
+            }
           } else if (e.key === "l" || e.key === "L") {
             if (state.token) handleLogout();
           }
@@ -1070,6 +1333,8 @@
         const stored = localStorage.getItem("ib-owner-theme");
         if (stored === "light" || stored === "dark") {
           state.theme = stored;
+        } else if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+          state.theme = "dark";
         }
         applyTheme();
       }
@@ -1132,6 +1397,7 @@
             showToast("success", "Owner session started.");
             await loadAllData();
             startAutoRefresh();
+            els.pageTitle.focus();
           } else {
             showMessage(els.loginMessages, "error", "Invalid login response from server.");
           }
@@ -1151,20 +1417,22 @@
       function handleLogout() {
         stopAutoRefresh();
         state.token = null;
+        state.snapshot = { metrics: {}, logs: [], growth: [] };
+        state.selectedMetricKey = null;
         destroyMetricsChart();
 
         els.dashboardView.hidden = true;
         els.loginView.hidden = false;
         els.logoutBtn.hidden = true;
 
-        // Session pill
         els.sessionDot.classList.add("offline");
         els.sessionText.textContent = "Logged out";
 
         clearMessage(els.loginMessages);
         els.password.value = "";
         els.password.focus();
-        showMessage(els.loginMessages, "info", "You have been logged out.");
+
+        resetInsightsUi("You have been logged out.");
         showToast("info", "Session ended.");
       }
 
@@ -1172,8 +1440,9 @@
         if (!state.token) return;
         state.token = null;
         stopAutoRefresh();
+        destroyMetricsChart();
+
         els.dashboardView.hidden = true;
-        els.loginView.hidden = true; // briefly hide to avoid flicker
         els.loginView.hidden = false;
         els.logoutBtn.hidden = true;
 
@@ -1192,6 +1461,7 @@
       function transitionToDashboard() {
         els.loginView.hidden = true;
         els.dashboardView.hidden = false;
+        els.dashboardView.setAttribute("aria-busy", "true");
         els.logoutBtn.hidden = false;
         els.sessionDot.classList.remove("offline");
         els.sessionText.textContent = "Owner session active";
@@ -1246,7 +1516,6 @@
         els.pageTitle.textContent = config.title;
         els.pageSubtitle.textContent = config.subtitle;
 
-        // For now, main layout is the same, but we adjust filter / scroll behavior.
         if (view === "compliance") {
           els.logFilter.value = "compliance";
         } else if (view === "growth") {
@@ -1290,6 +1559,8 @@
 
       async function loadAllData() {
         showMetricsSkeleton(true);
+        els.dashboardView.setAttribute("aria-busy", "true");
+
         try {
           const [metrics, logs, growth] = await Promise.all([
             fetchWithAuth("/api/owner/metrics"),
@@ -1297,11 +1568,19 @@
             fetchWithAuth("/api/owner/growth"),
           ]);
 
-          renderMetrics(metrics || {});
-          renderLogs(logs || []);
-          renderGrowth(growth || []);
+          state.snapshot = {
+            metrics: metrics || {},
+            logs: logs || [],
+            growth: growth || [],
+          };
+
+          renderMetrics(state.snapshot.metrics);
+          renderLogs(state.snapshot.logs);
+          renderGrowth(state.snapshot.growth);
+          updateInsights(state.snapshot.metrics, state.snapshot.logs, state.snapshot.growth);
 
           setLastUpdated();
+          els.dashboardView.setAttribute("aria-busy", "false");
         } catch (error) {
           console.error(error);
           showToast("error", "Failed to load dashboard data.");
@@ -1310,6 +1589,8 @@
             "error",
             "Failed to load dashboard data. Try refreshing."
           );
+          els.dashboardView.setAttribute("aria-busy", "false");
+          resetInsightsUi("Unable to compute insights – data fetch failed.");
         } finally {
           showMetricsSkeleton(false);
         }
@@ -1338,6 +1619,7 @@
       }
 
       async function handleManualRefresh() {
+        if (!state.token) return;
         els.refreshBtn.disabled = true;
         els.refreshBtn.textContent = "Refreshing…";
         try {
@@ -1347,6 +1629,16 @@
           els.refreshBtn.disabled = false;
           els.refreshBtn.textContent = "⟳ Refresh";
         }
+      }
+
+      function handleAiRefresh() {
+        const { metrics, logs, growth } = state.snapshot;
+        if (!metrics || Object.keys(metrics).length === 0) {
+          showToast("info", "No metrics available yet to recompute insights.");
+          return;
+        }
+        updateInsights(metrics, logs || [], growth || []);
+        showToast("info", "Insights recomputed.");
       }
 
       /* ========= RENDER: METRICS ========= */
@@ -1381,6 +1673,8 @@
         els.metricsGrid.hidden = false;
 
         const numericEntries = [];
+        state.selectedMetricKey = null;
+
         keys.forEach((key) => {
           const raw = metrics[key];
           const value =
@@ -1390,8 +1684,11 @@
               ? parseFloat(raw)
               : raw;
 
-          const card = document.createElement("div");
+          const card = document.createElement("button");
+          card.type = "button";
           card.className = "metric-card";
+          card.dataset.metricKey = key;
+          card.setAttribute("aria-label", `Metric ${prettifyKey(key)} with value ${formatValue(raw)}`);
 
           const labelEl = document.createElement("div");
           labelEl.className = "metric-label";
@@ -1406,6 +1703,7 @@
 
           if (typeof value === "number") {
             numericEntries.push({ key, value });
+
             if (value > 0) {
               trendEl.classList.remove("neutral");
               trendEl.classList.add("positive");
@@ -1424,6 +1722,11 @@
           card.appendChild(labelEl);
           card.appendChild(valueEl);
           if (trendEl.textContent) card.appendChild(trendEl);
+
+          card.addEventListener("click", () => {
+            handleMetricSelection(key);
+          });
+
           els.metricsGrid.appendChild(card);
         });
 
@@ -1434,6 +1737,19 @@
           els.chartSection.hidden = true;
           destroyMetricsChart();
         }
+      }
+
+      function handleMetricSelection(metricKey) {
+        state.selectedMetricKey = metricKey;
+
+        Array.from(els.metricsGrid.children).forEach((node) => {
+          if (node.dataset && node.dataset.metricKey) {
+            node.dataset.selected = node.dataset.metricKey === metricKey ? "true" : "false";
+          }
+        });
+
+        const { metrics, logs, growth } = state.snapshot;
+        updateInsights(metrics || {}, logs || [], growth || [], metricKey);
       }
 
       function renderMetricsChart(entries) {
@@ -1607,6 +1923,243 @@
 
         toggleItems(els.logsList, "compliance");
         toggleItems(els.growthList, "growth");
+      }
+
+      /* ========= AI-LIKE INSIGHTS ========= */
+
+      function updateInsights(metrics, logs, growth, focusedMetricKey) {
+        if (!els.insightsText) return;
+
+        const metricKeys = Object.keys(metrics || {});
+        const numericEntries = [];
+
+        metricKeys.forEach((key) => {
+          const raw = metrics[key];
+          const value =
+            typeof raw === "number"
+              ? raw
+              : typeof raw === "string" && !isNaN(parseFloat(raw))
+              ? parseFloat(raw)
+              : null;
+          if (typeof value === "number") {
+            numericEntries.push({ key, value });
+          }
+        });
+
+        const logCount = (logs || []).length;
+        const growthCount = (growth || []).length;
+
+        const severities = (logs || [])
+          .map((log) => (typeof log === "object" && log.severity ? String(log.severity).toLowerCase() : ""))
+          .filter(Boolean);
+
+        const severityOrder = ["critical", "high", "medium", "low"];
+        let topSeverity = null;
+        severityOrder.some((level) => {
+          if (severities.includes(level)) {
+            topSeverity = level;
+            return true;
+          }
+          return false;
+        });
+
+        const activeGrowth = (growth || []).filter((g) => {
+          if (typeof g !== "object" || !g.status) return false;
+          const status = String(g.status).toLowerCase();
+          return status.includes("live") || status.includes("running") || status.includes("testing");
+        }).length;
+
+        let strongestMetric = null;
+        let weakestMetric = null;
+        if (numericEntries.length) {
+          strongestMetric = numericEntries.reduce((a, b) => (b.value > a.value ? b : a));
+          weakestMetric = numericEntries.reduce((a, b) => (b.value < a.value ? b : a));
+        }
+
+        const negativeMetricCount = numericEntries.filter((m) => m.value < 0).length;
+
+        const risk = computeRiskLevel(negativeMetricCount, topSeverity);
+        updateRiskChipUi(risk);
+
+        // Top summary line (for AI strip)
+        const stripMain = metricKeys.length
+          ? `Loaded ${metricKeys.length} metrics with a ${risk} overall risk signal.`
+          : "No metrics returned yet from the backend.";
+        const stripSecondaryParts = [];
+
+        if (logCount) {
+          stripSecondaryParts.push(`${logCount} compliance log${logCount === 1 ? "" : "s"} in this snapshot`);
+        }
+        if (growthCount) {
+          stripSecondaryParts.push(`${growthCount} growth idea${growthCount === 1 ? "" : "s"} visible`);
+        }
+        if (!stripSecondaryParts.length) {
+          stripSecondaryParts.push("No logs or growth ideas returned.");
+        }
+
+        els.aiStripTextMain.textContent = stripMain;
+        els.aiStripTextSecondary.textContent = stripSecondaryParts.join(" · ");
+
+        // Longer narrative summary
+        const parts = [];
+        parts.push(
+          `This pull includes ${metricKeys.length || "no"} metrics, ${logCount} compliance log${logCount === 1 ? "" : "s"}, and ${growthCount} growth idea${growthCount === 1 ? "" : "s"}. Overall risk is assessed as ${risk.toLowerCase()}.`
+        );
+
+        if (topSeverity) {
+          parts.push(
+            `Compliance: highest recorded severity is "${topSeverity}". Those items deserve a quick review before you focus on growth.`
+          );
+        } else if (logCount) {
+          parts.push("Compliance: activity is present, but no explicit severity levels were detected.");
+        } else {
+          parts.push("Compliance: no recent entries were returned; confirm logging is configured as expected.");
+        }
+
+        if (growthCount && activeGrowth > 0) {
+          parts.push(
+            `Growth: ${activeGrowth} experiment${activeGrowth === 1 ? "" : "s"} appear to be in a live or testing state.`
+          );
+        } else if (growthCount) {
+          parts.push("Growth: all ideas look like backlog or planning items; you might want to promote one into active testing.");
+        } else {
+          parts.push("Growth: the feed is empty; consider capturing at least one near-term idea to explore.");
+        }
+
+        if (strongestMetric && weakestMetric && strongestMetric.key !== weakestMetric.key) {
+          parts.push(
+            `Relative strength: "${prettifyKey(strongestMetric.key)}" is currently strongest among numeric metrics, while "${prettifyKey(weakestMetric.key)}" is weakest.`
+          );
+        } else if (strongestMetric) {
+          parts.push(
+            `Metric highlight: "${prettifyKey(strongestMetric.key)}" stands out among the numeric metrics in this snapshot.`
+          );
+        }
+
+        if (focusedMetricKey && metrics[focusedMetricKey] != null) {
+          const focusedValue = metrics[focusedMetricKey];
+          parts.push(
+            `You are currently focused on "${prettifyKey(focusedMetricKey)}", which is reporting "${formatValue(focusedValue)}". Use this as the anchor metric in today's review.`
+          );
+        }
+
+        els.insightsText.textContent = parts.join(" ");
+
+        // Suggested actions
+        const actions = buildSuggestedActions({
+          risk,
+          topSeverity,
+          negativeMetricCount,
+          strongestMetric,
+          weakestMetric,
+          activeGrowth,
+          growthCount,
+          logCount,
+          focusedMetricKey,
+        });
+
+        if (actions.length) {
+          els.insightsActionsTitle.hidden = false;
+          els.insightsActions.hidden = false;
+          els.insightsActions.innerHTML = "";
+          actions.slice(0, 4).forEach((action) => {
+            const li = document.createElement("li");
+            li.textContent = action;
+            els.insightsActions.appendChild(li);
+          });
+        } else {
+          els.insightsActionsTitle.hidden = true;
+          els.insightsActions.hidden = true;
+          els.insightsActions.innerHTML = "";
+        }
+      }
+
+      function computeRiskLevel(negativeMetricCount, topSeverity) {
+        const highSeverity = topSeverity === "critical" || topSeverity === "high";
+        if (highSeverity || negativeMetricCount >= 3) return "High";
+        if (topSeverity || negativeMetricCount > 0) return "Moderate";
+        return "Low";
+      }
+
+      function updateRiskChipUi(risk) {
+        els.aiRiskChip.classList.remove("risk-low", "risk-moderate", "risk-high");
+        if (risk === "Low") els.aiRiskChip.classList.add("risk-low");
+        else if (risk === "Moderate") els.aiRiskChip.classList.add("risk-moderate");
+        else if (risk === "High") els.aiRiskChip.classList.add("risk-high");
+
+        els.aiRiskLabel.textContent = `Risk: ${risk}`;
+      }
+
+      function buildSuggestedActions(context) {
+        const {
+          risk,
+          topSeverity,
+          negativeMetricCount,
+          strongestMetric,
+          weakestMetric,
+          activeGrowth,
+          growthCount,
+          logCount,
+          focusedMetricKey,
+        } = context;
+
+        const actions = [];
+
+        if (risk === "High" && topSeverity) {
+          actions.push(
+            `Start with a quick pass over all ${topSeverity}-severity compliance items and confirm there are owners and due dates.`
+          );
+        } else if (risk === "Moderate" && topSeverity) {
+          actions.push(
+            `Schedule a short review of recent "${topSeverity}" compliance events and capture any follow-up tasks in your internal tracker.`
+          );
+        }
+
+        if (negativeMetricCount > 0 && weakestMetric) {
+          actions.push(
+            `Drill into "${prettifyKey(weakestMetric.key)}" to understand why it’s underperforming and whether it’s data-quality, operations, or product driven.`
+          );
+        }
+
+        if (growthCount && activeGrowth === 0) {
+          actions.push(
+            "Choose one growth idea from the list and move it into a time-boxed experiment with a clear success metric."
+          );
+        } else if (!growthCount) {
+          actions.push(
+            "Capture at least one concrete growth idea for the week (e.g., a small pricing, messaging, or funnel test)."
+          );
+        }
+
+        if (strongestMetric) {
+          actions.push(
+            `Document what’s working behind "${prettifyKey(strongestMetric.key)}" so you can replicate it elsewhere.`
+          );
+        }
+
+        if (logCount === 0 && risk === "Low") {
+          actions.push("Double-check that compliance logging is wired correctly in your backend to avoid blind spots.");
+        }
+
+        if (focusedMetricKey) {
+          actions.push(
+            `For "${prettifyKey(focusedMetricKey)}", write a one-sentence narrative you’d use in an investor or board update.`
+          );
+        }
+
+        return actions;
+      }
+
+      function resetInsightsUi(message) {
+        els.aiRiskChip.classList.remove("risk-low", "risk-moderate", "risk-high");
+        els.aiRiskLabel.textContent = "Risk: —";
+        els.aiStripTextMain.textContent = "Insights temporarily unavailable.";
+        els.aiStripTextSecondary.textContent = "Try refreshing or logging in again.";
+
+        els.insightsText.textContent = message || "Insights are not available at the moment.";
+        els.insightsActionsTitle.hidden = true;
+        els.insightsActions.hidden = true;
+        els.insightsActions.innerHTML = "";
       }
 
       /* ========= TOASTS & MESSAGES ========= */
