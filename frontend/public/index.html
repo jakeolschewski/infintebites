@@ -9,20 +9,20 @@
   <meta name="format-detection" content="telephone=no">
 
   <!-- Primary SEO -->
-  <title>InfantBites – AI-Powered Baby Shopping, Curated Baby Gear & Real Parent Reviews</title>
+  <title>InfantBites – AI Baby Gear Lists That Save You Hours & Hundreds</title>
   <meta name="description"
-        content="InfantBites uses AI plus real parent data to cut through baby-product overload with curated shortlists, safety-first guides, and handpicked deals—so you can shop in minutes, not hours.">
+        content="AI turns 1000 products into your perfect 5-item baby gear list with live lowest prices. InfantBites blends AI, safety-first guides and real parent wins to cut the chaos.">
   <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
-  <meta name="theme-color" content="#f9f5d4">
+  <meta name="theme-color" content="#fff8e7">
   <meta name="color-scheme" content="light dark">
   <meta name="author" content="InfantBites">
   <meta name="keywords"
-        content="AI baby gear,baby registry,newborn essentials,best baby products,baby product reviews,infant safety,InfantBites,AI shopping assistant">
+        content="AI baby gear,baby registry,newborn essentials,best baby products,baby product reviews,infant safety,InfantBites,AI baby shopping,AI gear list">
 
   <!-- Canonical -->
   <link rel="canonical" href="https://www.infantbites.com/">
 
-  <!-- Favicons (adjust paths as needed) -->
+  <!-- Favicons -->
   <link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
   <link rel="icon" href="/assets/favicon-192.png" sizes="192x192" type="image/png">
   <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
@@ -30,22 +30,22 @@
 
   <!-- Social / Open Graph -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="InfantBites – AI-Powered Baby Shopping">
+  <meta property="og:title" content="InfantBites – AI Baby Shopping Done Right">
   <meta property="og:description"
-        content="Discover safer, smarter baby products with AI-curated lists, real parent reviews and exclusive deals.">
+        content="Live prices. Safety first. Real parent wins. Let AI turn 1000 products into your perfect 5-item baby gear list.">
   <meta property="og:url" content="https://www.infantbites.com/">
   <meta property="og:site_name" content="InfantBites">
-  <meta property="og:image" content="https://www.infantbites.com/assets/infantbites-og.jpg">
+  <meta property="og:image" content="https://www.infantbites.com/og.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="en_US">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="InfantBites – AI-Powered Baby Shopping">
+  <meta name="twitter:title" content="InfantBites – AI Baby Shopping Done Right">
   <meta name="twitter:description"
-        content="Compare trusted baby gear, read real parent reviews and shop AI-curated bundles in one place.">
-  <meta name="twitter:image" content="https://www.infantbites.com/assets/infantbites-og.jpg">
+        content="AI-built baby gear lists with live lowest prices, safety-first picks and real parent wins.">
+  <meta name="twitter:image" content="https://www.infantbites.com/og.jpg">
   <meta name="twitter:site" content="@infantbites">
   <meta name="twitter:creator" content="@infantbites">
 
@@ -54,14 +54,276 @@
   <link rel="dns-prefetch" href="https://fonts.gstatic.com">
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- AI / price APIs -->
+  <link rel="preconnect" href="https://api.groq.com" crossorigin>
+  <link rel="preconnect" href="https://api.keepa.com" crossorigin>
+
   <link rel="preload" as="image" href="/assets/hero-parent-baby-1x.jpg"
         imagesrcset="/assets/hero-parent-baby-2x.jpg 2x">
   <link rel="preload" href="style.css" as="style">
 
-  <!-- CSS -->
+  <!-- Main CSS -->
   <link rel="stylesheet" href="style.css">
 
-  <!-- Structured Data: WebSite, WebPage, Organization, BreadcrumbList, SiteNavigationElement, ItemList, Products, FAQPage, Reviews, SoftwareApplication -->
+  <!-- Inline enhancements for AI/price UI (you can move these into style.css later) -->
+  <style>
+    :root {
+      --ib-primary: #6c5ce7;
+      --ib-accent:  #fd79a8;
+      --ib-light:   #fff8e7;
+      --ib-dark:    #2d3436;
+      --ib-success: #00b894;
+      --ib-danger:  #ff4757;
+    }
+
+    body {
+      background: var(--ib-light);
+      color: var(--ib-dark);
+    }
+
+    /* Scarcity Bar */
+    .scarcity-bar {
+      background: var(--ib-danger);
+      color: #ffffff;
+      text-align: center;
+      padding: 0.5rem 1rem;
+      font-weight: 600;
+      position: sticky;
+      top: 0;
+      z-index: 120;
+      font-size: 0.95rem;
+    }
+    .scarcity-bar .countdown {
+      font-weight: 700;
+    }
+
+    /* Buttons override */
+    .btn {
+      background: var(--ib-primary);
+      color: #ffffff;
+      border-radius: 999px;
+      border: none;
+      padding: 0.75rem 1.6rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s;
+    }
+    .btn:hover,
+    .btn:focus-visible {
+      background: #5a4fcf;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      transform: translateY(-1px);
+    }
+    .btn-secondary {
+      background: #ffffff;
+      color: var(--ib-primary);
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+    .btn-secondary:hover,
+    .btn-secondary:focus-visible {
+      background: #f5f2ff;
+    }
+
+    /* Live price cards (AI results) */
+    .product-card-ai {
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+      padding: 1.2rem 1.2rem 1.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .product-card-ai h3 {
+      margin: 0 0 0.2rem;
+      font-size: 1.1rem;
+    }
+    .product-card-ai .live-price {
+      font-weight: 700;
+      color: var(--ib-primary);
+      font-size: 1.25rem;
+    }
+    .product-card-ai .price-save {
+      background: var(--ib-success);
+      color: #ffffff;
+      padding: 0.15rem 0.5rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      margin-left: 0.5rem;
+      white-space: nowrap;
+    }
+    .product-card-ai .safety-note {
+      color: #e17055;
+      font-size: 0.85rem;
+    }
+
+    /* AI Chat widget */
+    .ai-chat-shell {
+      max-width: 900px;
+      margin: 0 auto;
+      border-radius: 18px;
+      background: #ffffff;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .ai-chat-header {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid #f1f2f6;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+    .ai-chat-header-title {
+      font-weight: 600;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .ai-chat-header-pill {
+      font-size: 0.75rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 999px;
+      background: #f1f2ff;
+      color: var(--ib-primary);
+      font-weight: 500;
+    }
+    .chat-window {
+      height: 420px;
+      overflow-y: auto;
+      padding: 1rem 1.25rem;
+      background: #f8f9fa;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .ai-chat-form {
+      padding: 0.75rem 1rem 0.9rem;
+      background: #ffffff;
+      border-top: 1px solid #edf0f3;
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-end;
+    }
+    .ai-chat-form textarea {
+      flex: 1;
+      padding: 0.75rem 0.9rem;
+      border-radius: 10px;
+      border: 1px solid #dfe4ea;
+      resize: none;
+      font-family: inherit;
+      font-size: 0.95rem;
+      min-height: 3.2rem;
+      max-height: 8rem;
+    }
+    .ai-chat-form textarea:focus-visible {
+      outline: 2px solid var(--ib-primary);
+      border-color: transparent;
+    }
+    .message {
+      margin: 0.2rem 0;
+      padding: 0.7rem 0.9rem;
+      border-radius: 12px;
+      max-width: 80%;
+      font-size: 0.9rem;
+    }
+    .message.bot {
+      background: #e9ecef;
+      align-self: flex-start;
+    }
+    .message.user {
+      background: var(--ib-primary);
+      color: #ffffff;
+      align-self: flex-end;
+    }
+    .message strong {
+      font-weight: 600;
+    }
+
+    .ai-results-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .ai-results-header h3 {
+      margin: 0;
+    }
+    .ai-results-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1rem;
+      margin-top: 0.75rem;
+    }
+    .ai-skips {
+      margin-top: 0.8rem;
+      font-size: 0.9rem;
+    }
+
+    .ai-status-text {
+      font-size: 0.8rem;
+      color: #636e72;
+      margin-top: 0.25rem;
+    }
+
+    /* Upsell modal */
+    .upsell-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+    }
+    .upsell-modal {
+      background: #ffffff;
+      padding: 2rem 1.8rem 1.7rem;
+      border-radius: 18px;
+      max-width: 420px;
+      width: calc(100% - 2.5rem);
+      text-align: center;
+      box-shadow: 0 18px 50px rgba(0,0,0,0.3);
+    }
+    .upsell-modal h2 {
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+    }
+    .upsell-modal p {
+      margin: 0.25rem 0;
+      font-size: 0.95rem;
+    }
+    .upsell-dismiss {
+      margin-top: 0.75rem;
+      background: transparent;
+      border: none;
+      color: #636e72;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    /* Responsive tweak */
+    @media (max-width: 640px) {
+      .chat-window {
+        height: 360px;
+      }
+      .ai-chat-form {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+  </style>
+
+  <!-- Structured Data (trimmed but upgraded) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -71,7 +333,7 @@
         "@id": "https://www.infantbites.com/#website",
         "url": "https://www.infantbites.com/",
         "name": "InfantBites",
-        "description": "Smarter baby shopping with AI-curated baby gear, verified reviews and trusted guides.",
+        "description": "AI baby shopping with curated baby gear, verified reviews and trusted guides.",
         "potentialAction": {
           "@type": "SearchAction",
           "target": "https://www.infantbites.com/search?q={search_term_string}",
@@ -82,14 +344,9 @@
         "@type": "WebPage",
         "@id": "https://www.infantbites.com/#webpage",
         "url": "https://www.infantbites.com/",
-        "name": "InfantBites – AI-Powered Baby Shopping, Curated Baby Gear & Real Parent Reviews",
-        "description": "Cut baby-product overwhelm with AI-curated shortlists, safety-first guides, real parent reviews and handpicked deals.",
-        "isPartOf": {
-          "@id": "https://www.infantbites.com/#website"
-        },
-        "breadcrumb": {
-          "@id": "https://www.infantbites.com/#breadcrumbs"
-        }
+        "name": "InfantBites – AI Baby Gear Lists That Save You Hours & Hundreds",
+        "description": "AI turns 1000 products into your perfect 5-item baby gear list with live lowest prices, safety notes and real parent wins.",
+        "isPartOf": { "@id": "https://www.infantbites.com/#website" }
       },
       {
         "@type": "Organization",
@@ -106,191 +363,6 @@
         ]
       },
       {
-        "@type": "BreadcrumbList",
-        "@id": "https://www.infantbites.com/#breadcrumbs",
-        "itemListElement": [
-          {
-            "@type": "ListItem",
-            "position": 1,
-            "name": "Home",
-            "item": "https://www.infantbites.com/"
-          }
-        ]
-      },
-      {
-        "@type": "SiteNavigationElement",
-        "@id": "https://www.infantbites.com/#site-navigation",
-        "name": "Primary navigation",
-        "url": [
-          "https://www.infantbites.com/#feed",
-          "https://www.infantbites.com/#sleep",
-          "https://www.infantbites.com/#safety",
-          "https://www.infantbites.com/#toys",
-          "https://www.infantbites.com/#deals",
-          "https://www.infantbites.com/#reviews",
-          "https://www.infantbites.com/#ai-assistant"
-        ]
-      },
-      {
-        "@type": "ItemList",
-        "@id": "https://www.infantbites.com/#featured-products",
-        "name": "Featured Baby Products",
-        "itemListElement": [
-          {
-            "@type": "ListItem",
-            "position": 1,
-            "url": "https://affiliate.example.com/carrier"
-          },
-          {
-            "@type": "ListItem",
-            "position": 2,
-            "url": "https://affiliate.example.com/sleep-monitor"
-          }
-        ]
-      },
-      {
-        "@type": "Product",
-        "@id": "https://www.infantbites.com/#product-ergonomic-carrier",
-        "name": "Ergonomic Baby Carrier",
-        "image": "https://www.infantbites.com/carrier-800w.jpg",
-        "description": "A 4-in-1 ergonomic baby carrier with breathable mesh and fully adjustable straps for newborns through toddlers.",
-        "brand": {
-          "@type": "Brand",
-          "name": "Various"
-        },
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "4.8",
-          "reviewCount": "324",
-          "bestRating": "5",
-          "worstRating": "1"
-        },
-        "offers": {
-          "@type": "Offer",
-          "url": "https://affiliate.example.com/carrier",
-          "priceCurrency": "USD",
-          "price": "89.99",
-          "availability": "https://schema.org/InStock"
-        }
-      },
-      {
-        "@type": "Product",
-        "@id": "https://www.infantbites.com/#product-sleep-monitor",
-        "name": "Smart Sleep Monitor",
-        "image": "https://www.infantbites.com/sleep-monitor-800w.jpg",
-        "description": "App-connected smart baby sleep monitor that tracks heart rate, breathing and movement with customizable alerts.",
-        "brand": {
-          "@type": "Brand",
-          "name": "Various"
-        },
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "4.6",
-          "reviewCount": "198",
-          "bestRating": "5",
-          "worstRating": "1"
-        },
-        "offers": {
-          "@type": "Offer",
-          "url": "https://affiliate.example.com/sleep-monitor",
-          "priceCurrency": "USD",
-          "price": "129.99",
-          "availability": "https://schema.org/InStock"
-        }
-      },
-      {
-        "@type": "FAQPage",
-        "@id": "https://www.infantbites.com/#faq",
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "How do you choose products?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "We blend expert criteria with InfantBites AI and real parent reviews. We compare product specs, safety information, recall history and pricing across major retailers, then feature products that balance safety, usability and value for real families."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Do affiliate links change what you recommend?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "No. Affiliate links never change which products we recommend or the price you pay. We show affiliate relationships clearly and keep our evaluation criteria separate from how we’re compensated."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Is InfantBites medical advice?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "No. InfantBites does not provide medical advice, diagnosis or treatment. Our content is educational only. Always speak with your pediatrician or qualified health provider about health-related questions."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "What is InfantBites AI Gear Finder?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "InfantBites AI Gear Finder is a conversational tool that helps you quickly narrow down baby gear options based on your baby’s age, your lifestyle and your budget. It uses AI to organize information, but it does not replace medical advice or required safety checks."
-            }
-          }
-        ]
-      },
-      {
-        "@type": "Review",
-        "@id": "https://www.infantbites.com/#review-jamie",
-        "itemReviewed": {
-          "@id": "https://www.infantbites.com/#website"
-        },
-        "reviewBody": "InfantBites helped me pick a sleep monitor and a carrier in one nap-time. The breakdowns were clear, and the safety notes made me feel way calmer.",
-        "author": {
-          "@type": "Person",
-          "name": "Jamie"
-        },
-        "reviewRating": {
-          "@type": "Rating",
-          "ratingValue": "5",
-          "bestRating": "5",
-          "worstRating": "1"
-        }
-      },
-      {
-        "@type": "Review",
-        "@id": "https://www.infantbites.com/#review-alex",
-        "itemReviewed": {
-          "@id": "https://www.infantbites.com/#website"
-        },
-        "reviewBody": "Instead of reading 20 tabs of reviews, I checked one InfantBites list. The deals section alone saved us more than a few late-night impulse buys.",
-        "author": {
-          "@type": "Person",
-          "name": "Alex"
-        },
-        "reviewRating": {
-          "@type": "Rating",
-          "ratingValue": "5",
-          "bestRating": "5",
-          "worstRating": "1"
-        }
-      },
-      {
-        "@type": "Review",
-        "@id": "https://www.infantbites.com/#review-priya",
-        "itemReviewed": {
-          "@id": "https://www.infantbites.com/#website"
-        },
-        "reviewBody": "I love that the affiliate and safety info is upfront. I know what’s an ad, what’s a deal, and what’s just honestly recommended.",
-        "author": {
-          "@type": "Person",
-          "name": "Priya"
-        },
-        "reviewRating": {
-          "@type": "Rating",
-          "ratingValue": "5",
-          "bestRating": "5",
-          "worstRating": "1"
-        }
-      },
-      {
         "@type": "SoftwareApplication",
         "@id": "https://www.infantbites.com/#ai-gear-finder",
         "name": "InfantBites AI Gear Finder",
@@ -301,7 +373,7 @@
           "price": "0",
           "priceCurrency": "USD"
         },
-        "description": "A conversational AI tool that helps parents quickly shortlist baby gear based on age, lifestyle, and budget."
+        "description": "A conversational AI tool that builds a safety-first 5-item baby gear list with live prices and skip suggestions."
       }
     ]
   }
@@ -309,10 +381,12 @@
 </head>
 
 <body>
-  <!-- Skip link for keyboard users -->
-  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <!-- Scarcity bar / urgency -->
+  <div class="scarcity-bar" aria-label="Limited-time bundle deals">
+    ⚡ Bundle deals refresh in <span class="countdown" aria-live="polite">04:00:00</span> – save up to $87 on starter kits
+  </div>
 
-  <!-- Sticky top bar CTA -->
+  <!-- Top CTA bar from original -->
   <div class="top-cta-bar" role="complementary" aria-label="Quick signup">
     <p class="top-cta-text">
       New here? Get a 3-minute newborn gear checklist in your inbox.
@@ -320,7 +394,7 @@
     <a href="#newsletter" class="top-cta-link">Send it to me</a>
   </div>
 
-  <!-- ====== HEADER ===================================================== -->
+  <!-- ===== HEADER ===== -->
   <header class="site-header" role="banner">
     <!-- Affiliate & Health Disclosure -->
     <section id="disclosure"
@@ -353,7 +427,7 @@
       </div>
 
       <!-- Desktop primary CTA -->
-      <a href="#ai-assistant" class="header-cta btn btn-outline" data-cta="header-ai">
+      <a href="#ai-assistant" class="header-cta btn btn-secondary" data-cta="header-ai">
         Ask the AI Gear Finder
       </a>
 
@@ -386,7 +460,7 @@
       </nav>
     </div>
 
-    <!-- On-Page Search -->
+    <!-- On-Page Search (AI-flavored) -->
     <div class="header-search">
       <form id="site-search"
             class="search-form"
@@ -398,7 +472,7 @@
           <input id="search-input"
                  name="q"
                  type="search"
-                 placeholder="Ask anything (e.g. “best travel stroller for tiny trunk”, “bottle set for combo feeding”)"
+                 placeholder="Ask anything (e.g. “best newborn bundle under $300”, “travel stroller for tiny trunk”)"
                  inputmode="search"
                  autocomplete="off"
                  aria-describedby="search-help search-status search-suggestions"
@@ -410,19 +484,19 @@
         </small>
         <p id="search-status" class="search-status" role="status" aria-live="polite"></p>
 
-        <!-- AI-style suggestion chips -->
+        <!-- Suggestion chips -->
         <div class="search-suggestions"
              id="search-suggestions"
              aria-label="Suggested searches"
              aria-live="polite">
-          <button type="button" class="suggestion-chip" data-suggest="best compact stroller for city walks">
-            “Best compact stroller for city walks”
+          <button type="button" class="suggestion-chip" data-suggest="minimal newborn essentials under $400">
+            “Minimal newborn essentials under $400”
           </button>
-          <button type="button" class="suggestion-chip" data-suggest="bottle set for combo feeding and reflux">
+          <button type="button" class="suggestion-chip" data-suggest="stroller + carrier for walk-up apartment">
+            “Stroller + carrier for walk-up apartment”
+          </button>
+          <button type="button" class="suggestion-chip" data-suggest="bottle set for combo feeding & reflux">
             “Bottle set for combo feeding &amp; reflux”
-          </button>
-          <button type="button" class="suggestion-chip" data-suggest="minimal newborn essentials on a budget">
-            “Minimal newborn essentials on a budget”
           </button>
         </div>
       </form>
@@ -430,29 +504,29 @@
 
     <!-- Quick nav chips -->
     <div class="header-quick-links" aria-label="Jump to popular sections">
+      <button type="button" class="quick-link" data-scroll-target="#hero">Overview</button>
       <button type="button" class="quick-link" data-scroll-target="#featured-products">Editor’s Picks</button>
-      <button type="button" class="quick-link" data-scroll-target="#deals">Today’s Highlights</button>
-      <button type="button" class="quick-link" data-scroll-target="#ai-assistant">Try AI Gear Finder</button>
+      <button type="button" class="quick-link" data-scroll-target="#ai-assistant">Start My AI List</button>
       <button type="button" class="quick-link" data-scroll-target="#newsletter">Get Checklist</button>
     </div>
   </header>
 
-  <!-- ====== MAIN ======================================================= -->
+  <!-- ===== MAIN ===== -->
   <main id="main-content" class="layout" role="main">
-    <!-- HERO ========================================================== -->
+    <!-- HERO -->
     <section id="hero" class="hero" aria-labelledby="hero-title">
       <div class="hero-inner">
         <div class="hero-copy">
-          <p class="hero-eyebrow">AI baby shopping, minus the overwhelm</p>
-          <h1 id="hero-title">Shop for baby like you have a smart village behind you.</h1>
+          <p class="hero-eyebrow">Your baby’s gear, fixed in 60 seconds</p>
+          <h1 id="hero-title">Tell AI your life. Get a 5-item list that actually fits it.</h1>
           <p class="hero-subtitle">
-            InfantBites blends AI with real parent reviews to turn endless product lists into clear, safety-forward picks—
-            so you can choose gear in minutes, not hours.
+            Say your baby’s age, space and budget. InfantBites AI turns 1000+ products into a safety-first shortlist
+            with live lowest prices—so you don’t lose another evening to open tabs.
           </p>
 
           <div class="hero-actions" aria-label="Primary actions">
             <a href="#ai-assistant" class="btn btn-primary" data-cta="hero-ai">
-              Ask the AI Gear Finder
+              Start my free AI list →
             </a>
             <a href="#newsletter" class="btn btn-secondary" data-cta="hero-checklist">
               Get the newborn checklist
@@ -460,9 +534,9 @@
           </div>
 
           <ul class="hero-badges" aria-label="Reasons parents trust InfantBites">
-            <li>✔️ AI-curated by age &amp; stage</li>
-            <li>✔️ Clear safety notes &amp; disclosures</li>
-            <li>✔️ Handpicked deals from trusted retailers</li>
+            <li>✔️ AI-curated by age, space &amp; budget</li>
+            <li>✔️ Live price + savings callouts</li>
+            <li>✔️ Clear “buy this, skip that” guidance</li>
           </ul>
 
           <p class="hero-meta">
@@ -472,7 +546,16 @@
 
         <aside class="hero-side" aria-label="Quick starter options">
           <div class="hero-card">
-            <h2 class="hero-card-title">Start with a ready-made list</h2>
+            <h2 class="hero-card-title">Short on time?</h2>
+            <p class="hero-note">
+              Paste your current gear list or registry link into the AI. It’ll tell you what’s missing, what’s duplicate,
+              and what you can safely skip—for your baby’s age and home.
+            </p>
+            <a href="#ai-assistant" class="text-link" data-cta="hero-ai-inline">Paste my situation into AI ↓</a>
+          </div>
+
+          <div class="hero-card">
+            <h2 class="hero-card-title">Prefer a checklist?</h2>
             <ul class="hero-list">
               <li><a href="/checklists/newborn-essentials.html">Newborn essentials checklist</a></li>
               <li><a href="/checklists/first-3-months.html">First 3 months gear plan</a></li>
@@ -480,18 +563,9 @@
             </ul>
             <p class="hero-note">Use as a registry blueprint—or a sanity-saving audit of what you already own.</p>
           </div>
-
-          <div class="hero-card hero-card-ai">
-            <h2 class="hero-card-title">Let AI do the shortlist</h2>
-            <p class="hero-note">
-              Tell InfantBites AI your baby’s age, home setup and budget. Get a tailored shortlist you can tweak in a few clicks.
-            </p>
-            <a href="#ai-assistant" class="text-link" data-cta="hero-ai-inline">Try AI Gear Finder ↓</a>
-          </div>
         </aside>
       </div>
 
-      <!-- Who it’s for quick chips -->
       <div class="hero-persona-strip" aria-label="Who InfantBites is for">
         <span class="persona-label">Made for:</span>
         <ul class="persona-list">
@@ -503,44 +577,43 @@
       </div>
     </section>
 
-    <!-- HOW IT WORKS =================================================== -->
+    <!-- HOW IT WORKS -->
     <section id="how-it-works" class="section section-muted" aria-labelledby="how-title">
       <header class="section-header">
-        <h2 id="how-title">How InfantBites helps you shop smarter</h2>
+        <h2 id="how-title">How InfantBites AI saves you hours (and hundreds)</h2>
         <p class="section-tagline">
-          From “I have 30 tabs open” to “I’m done in one nap-time.”
+          From “20 tabs and a headache” to “I’m done before this nap ends.”
         </p>
       </header>
 
       <div class="how-grid">
         <article class="step-card">
           <span class="step-label" aria-hidden="true">Step 1</span>
-          <h3>Tell us what you’re shopping for</h3>
-          <p>Use the AI Gear Finder or search bar. Share your baby’s age, your space and must-haves. No jargon required.</p>
+          <h3>Share your real life</h3>
+          <p>Type like you text a friend. Due date, apartment vs. house, stairs, car size, rough budget—AI turns it into clear gear constraints.</p>
         </article>
 
         <article class="step-card">
           <span class="step-label" aria-hidden="true">Step 2</span>
-          <h3>See AI-curated, safety-first picks</h3>
-          <p>We mix AI with expert criteria and parent reviews to surface a small set of stand-out products, with pros, cons and key safety notes.</p>
+          <h3>Get a 5-item core list</h3>
+          <p>InfantBites AI returns a JSON list of must-haves plus “you can skip this” items. We highlight safety notes and where parents regret overbuying.</p>
         </article>
 
         <article class="step-card">
           <span class="step-label" aria-hidden="true">Step 3</span>
-          <h3>Compare prices &amp; deals in one place</h3>
-          <p>Spot where to buy, what’s on sale and which bundles actually save you money—instead of just looking like a deal.</p>
+          <h3>See live lowest prices</h3>
+          <p>Each pick comes with a live price slot (wired to your price API) and a simple “Save $X today” tag, so you see value at a glance.</p>
         </article>
       </div>
     </section>
 
-    <!-- FEATURED PRODUCTS ============================================== -->
+    <!-- FEATURED PRODUCTS (static editors’ picks) -->
     <section id="featured-products" class="section" aria-labelledby="products-title">
       <header class="section-header">
         <h2 id="products-title">Editor &amp; AI Featured Picks</h2>
-        <p class="section-tagline">High-performing baby gear parents love—ranked with AI and curated by humans.</p>
+        <p class="section-tagline">High-performing baby gear parents love—curated by humans, ranked by AI.</p>
       </header>
 
-      <!-- Product filters -->
       <div class="product-filters" aria-label="Filter featured products" role="toolbar">
         <button type="button" class="filter-chip is-active" data-filter="all" aria-pressed="true">All</button>
         <button type="button" class="filter-chip" data-filter="carrier" aria-pressed="false">Carriers</button>
@@ -548,14 +621,13 @@
       </div>
 
       <div class="product-grid" aria-live="polite" data-visible-count="2">
-        <!-- Product 1 -->
+        <!-- Carrier -->
         <article class="product-card"
                  tabindex="0"
                  data-category="carrier"
                  itemscope
                  itemtype="https://schema.org/Product"
-                 aria-labelledby="product-carrier-title"
-                 data-ai-score="9.4">
+                 aria-labelledby="product-carrier-title">
           <figure class="product-media">
             <img src="carrier-800w.jpg"
                  srcset="carrier-400w.jpg 400w, carrier-800w.jpg 800w"
@@ -565,22 +637,12 @@
                  width="400"
                  height="400"
                  itemprop="image">
-            <figcaption class="product-tagline">Great for smaller frames &amp; long walks</figcaption>
           </figure>
-
           <div class="product-body">
             <h3 id="product-carrier-title" class="product-title" itemprop="name">Ergonomic Baby Carrier</h3>
             <p class="product-summary" itemprop="description">
               A 4-in-1 carrier with breathable mesh and fully adjustable straps for newborns through toddlers.
             </p>
-
-            <p class="product-meta-row">
-              <span class="ai-score-badge" aria-label="AI match score 94 out of 100">
-                AI match: 94/100
-              </span>
-              <span class="label-chip">Editor’s Pick</span>
-            </p>
-
             <p class="price" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
               <span class="price-amount">
                 <span class="visually-hidden">Price:</span>
@@ -590,7 +652,6 @@
               <link itemprop="availability" href="https://schema.org/InStock">
               <span class="stock-label">In stock</span>
             </p>
-
             <p class="rating"
                itemprop="aggregateRating"
                itemscope
@@ -602,34 +663,29 @@
                 (<span itemprop="reviewCount">324</span> reviews)
               </span>
             </p>
-
             <ul class="product-bullets">
               <li>Hip-healthy positioning support</li>
               <li>Machine-washable fabric</li>
               <li>Front, back &amp; hip carry positions</li>
             </ul>
-
             <a href="https://affiliate.example.com/carrier"
                class="btn btn-primary"
                rel="nofollow noopener noreferrer"
                target="_blank"
                itemprop="url"
-               data-track="product-click"
-               data-product-id="ergonomic-carrier"
                aria-label="View details and buying options for Ergonomic Baby Carrier (opens in a new tab)">
               View Details &amp; Retailers
             </a>
           </div>
         </article>
 
-        <!-- Product 2 -->
+        <!-- Sleep monitor -->
         <article class="product-card"
                  tabindex="0"
                  data-category="sleep"
                  itemscope
                  itemtype="https://schema.org/Product"
-                 aria-labelledby="product-sleep-monitor-title"
-                 data-ai-score="9.1">
+                 aria-labelledby="product-sleep-monitor-title">
           <figure class="product-media">
             <img src="sleep-monitor-800w.jpg"
                  srcset="sleep-monitor-400w.jpg 400w, sleep-monitor-800w.jpg 800w"
@@ -639,22 +695,12 @@
                  width="400"
                  height="400"
                  itemprop="image">
-            <figcaption class="product-tagline">Strong choice for anxious sleepers</figcaption>
           </figure>
-
           <div class="product-body">
             <h3 id="product-sleep-monitor-title" class="product-title" itemprop="name">Smart Sleep Monitor</h3>
             <p class="product-summary" itemprop="description">
               Real-time app-connected monitoring for heart rate, breathing and movement, with custom alerts.
             </p>
-
-            <p class="product-meta-row">
-              <span class="ai-score-badge" aria-label="AI match score 91 out of 100">
-                AI match: 91/100
-              </span>
-              <span class="label-chip label-chip-soft">Great for peace of mind</span>
-            </p>
-
             <p class="price" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
               <span class="price-amount">
                 <span class="visually-hidden">Price:</span>
@@ -664,7 +710,6 @@
               <link itemprop="availability" href="https://schema.org/InStock">
               <span class="stock-label">In stock</span>
             </p>
-
             <p class="rating"
                itemprop="aggregateRating"
                itemscope
@@ -676,20 +721,16 @@
                 (<span itemprop="reviewCount">198</span> reviews)
               </span>
             </p>
-
             <ul class="product-bullets">
               <li>Connects to iOS &amp; Android apps</li>
               <li>Customizable alert thresholds</li>
               <li>Includes washable fabric sock</li>
             </ul>
-
             <a href="https://affiliate.example.com/sleep-monitor"
                class="btn btn-primary"
                rel="nofollow noopener noreferrer"
                target="_blank"
                itemprop="url"
-               data-track="product-click"
-               data-product-id="smart-sleep-monitor"
                aria-label="View details and buying options for Smart Sleep Monitor (opens in a new tab)">
               View Details &amp; Retailers
             </a>
@@ -698,7 +739,7 @@
       </div>
     </section>
 
-    <!-- CATEGORY OVERVIEW ============================================== -->
+    <!-- CATEGORIES (unchanged structure, still valuable for SEO UX) -->
     <section id="categories" class="section" aria-label="Baby gear categories">
       <div class="category-grid">
         <section id="feed" class="category-card" aria-labelledby="feed-title">
@@ -747,7 +788,7 @@
       </div>
     </section>
 
-    <!-- DEALS SECTION =================================================== -->
+    <!-- DEALS -->
     <section id="deals" class="section deals-section" aria-labelledby="deals-title">
       <header class="section-header">
         <h2 id="deals-title">Today’s Baby Gear Highlights</h2>
@@ -779,12 +820,11 @@
       <a href="/deals.html" class="btn btn-secondary">View all current deals</a>
     </section>
 
-    <!-- SOCIAL PROOF / REVIEWS ========================================= -->
+    <!-- REVIEWS -->
     <section id="reviews" class="section reviews-section" aria-labelledby="reviews-title">
       <header class="section-header">
         <h2 id="reviews-title">Parents who use InfantBites say…</h2>
       </header>
-
       <div class="reviews-grid">
         <article class="testimonial" aria-labelledby="testimonial-jamie">
           <blockquote>
@@ -795,7 +835,6 @@
           </blockquote>
           <p class="testimonial-author">— Jamie, first-time parent</p>
         </article>
-
         <article class="testimonial" aria-labelledby="testimonial-alex">
           <blockquote>
             <p id="testimonial-alex">
@@ -805,7 +844,6 @@
           </blockquote>
           <p class="testimonial-author">— Alex, dad of two</p>
         </article>
-
         <article class="testimonial" aria-labelledby="testimonial-priya">
           <blockquote>
             <p id="testimonial-priya">
@@ -818,7 +856,7 @@
       </div>
     </section>
 
-    <!-- COMPARISON SNAPSHOT ============================================ -->
+    <!-- COMPARISON -->
     <section class="section section-muted" aria-labelledby="compare-title">
       <header class="section-header">
         <h2 id="compare-title">Why shop with InfantBites?</h2>
@@ -860,12 +898,12 @@
       </div>
     </section>
 
-    <!-- AI ASSISTANT / GEAR FINDER ===================================== -->
+    <!-- AI GEAR FINDER (with your Groq JSON + results) -->
     <section id="ai-assistant" class="section ai-section" aria-labelledby="ai-title">
       <header class="section-header">
-        <h2 id="ai-title">InfantBites AI Gear Finder (beta)</h2>
+        <h2 id="ai-title">InfantBites AI: Build My 5-Item Gear List</h2>
         <p class="section-tagline">
-          Describe your baby, your space and your budget—get a tailored gear shortlist in a few messages.
+          Tell AI your baby’s age, space and budget → get a safety-first shortlist with live lowest prices.
         </p>
         <p class="section-disclaimer">
           AI can help you research, but it can’t replace safety checks or medical advice. Always follow manufacturer
@@ -873,71 +911,45 @@
         </p>
       </header>
 
-      <div class="ai-layout">
-        <div class="ai-chat"
-             role="region"
-             aria-label="AI Gear Finder chat"
-             data-ai-widget="gear-finder">
-          <div class="ai-chat-window" id="ai-chat-window" aria-live="polite">
-            <div class="ai-message ai-message-bot">
-              <p><strong>InfantBites AI:</strong> Tell me a bit about your baby and what you’re shopping for.</p>
-              <ul>
-                <li>How old is your baby (or due date)?</li>
-                <li>What’s your living situation (small apartment, house, lots of stairs)?</li>
-                <li>What’s your rough budget for this purchase?</li>
-              </ul>
-              <p>I’ll turn that into a short list of gear categories and “buy this, skip that” suggestions.</p>
-            </div>
+      <div class="ai-chat-shell">
+        <div class="ai-chat-header">
+          <div class="ai-chat-header-title">
+            🍼 InfantBites AI
+            <span class="ai-chat-header-pill">Beta · JSON → cards</span>
           </div>
-
-          <form class="ai-chat-form" id="ai-chat-form" aria-label="Ask the AI Gear Finder">
-            <label for="ai-input" class="visually-hidden">Type your question or situation</label>
-            <textarea id="ai-input"
-                      rows="2"
-                      placeholder="Example: “We’re in a small walk-up apartment with a 2-month-old and a small sedan. Need a stroller + carrier on a tight budget.”"
-                      aria-describedby="ai-help ai-status"
-                      required></textarea>
-            <div class="ai-chat-actions">
-              <button type="submit" class="btn btn-primary" data-cta="ai-send">
-                Get AI suggestions
-              </button>
-              <button type="button" class="btn btn-tertiary" id="ai-clear" aria-label="Clear conversation">
-                Clear
-              </button>
-            </div>
-            <p id="ai-help" class="ai-help-text">
-              Don’t share full names, addresses or medical details. Keep things high-level.
-            </p>
-            <p id="ai-status" class="ai-status" role="status" aria-live="polite"></p>
-          </form>
+          <small>Don’t share full names, exact addresses or medical details.</small>
         </div>
 
-        <aside class="ai-side-panel" aria-label="What AI will typically suggest">
-          <h3>What you’ll get back</h3>
-          <ul class="ai-output-example">
-            <li>✅ 3–5 must-have items tailored to your situation</li>
-            <li>🚫 A short “you can skip these for now” list</li>
-            <li>💸 Budget-friendly versus splurge options</li>
-            <li>🛡️ Safety reminders for relevant categories</li>
-          </ul>
+        <div class="chat-window" id="chat" aria-live="polite">
+          <div class="message bot">
+            <strong>InfantBites AI:</strong> Hey! Tell me:
+            <br>• Baby’s age or due date?
+            <br>• Apartment, house, stairs?
+            <br>• Car size + rough budget?
+            <br><br>I’ll build you a 3–7 item list with safety notes, live prices and “you can skip this” items.
+          </div>
+        </div>
 
-          <h3>Great prompts to try</h3>
-          <ul class="ai-prompts-list">
-            <li>
-              “First baby, tiny apartment, no elevator. Need stroller + carrier + somewhere safe to put baby down.”
-            </li>
-            <li>
-              “Second baby, toddler at home, want to simplify feed + sleep gear without rebuying everything.”
-            </li>
-            <li>
-              “We travel by plane 3–4 times a year. Need lightweight, compact gear that works for airports.”
-            </li>
-          </ul>
-        </aside>
+        <form id="chat-form" class="ai-chat-form" aria-label="Ask the AI Gear Finder">
+          <textarea id="user-input"
+                    placeholder="e.g. Due in March, tiny NYC walk-up, hatchback car, under $500 total, planning to combo feed"
+                    rows="3"
+                    required
+                    aria-describedby="ai-status-text"></textarea>
+          <button type="submit" class="btn">
+            Start My Free AI List →
+          </button>
+        </form>
+
+        <div class="ai-status-text" id="ai-status-text" role="status" aria-live="polite">
+          Your prompt stays in this browser for this session. In production, run the AI + price calls from your backend (never expose real keys here).
+        </div>
       </div>
+
+      <div id="results" style="margin-top:2rem"></div>
     </section>
 
-    <!-- FAQ SECTION ===================================================== -->
+    <!-- FAQ -->
     <section id="faq" class="section faq-section" aria-labelledby="faq-title">
       <header class="section-header">
         <h2 id="faq-title">Questions parents ask most</h2>
@@ -960,9 +972,8 @@
                aria-labelledby="faq-1-label"
                hidden>
             <p>
-              We blend expert criteria with InfantBites AI and real parent reviews. We compare product specs, safety
-              information, recall history and pricing across major retailers. Then we feature products that balance
-              safety, usability and value for real families.
+              We blend expert criteria with InfantBites AI and real parent reviews. We compare product specs, safety information,
+              recall history and pricing across major retailers. Then we feature products that balance safety, usability and value for real families.
             </p>
           </div>
         </article>
@@ -1027,7 +1038,7 @@
                aria-labelledby="faq-4-label"
                hidden>
             <p>
-              Use AI suggestions as a starting point to narrow choices and learn what to look for. Always:
+              Use AI suggestions as a fast starting point to narrow choices—not a final verdict. Always:
             </p>
             <ul>
               <li>Check product details and recall information yourself.</li>
@@ -1040,7 +1051,7 @@
       </div>
     </section>
 
-    <!-- NEWSLETTER / EMAIL CAPTURE ===================================== -->
+    <!-- NEWSLETTER -->
     <section id="newsletter" class="section newsletter-section" aria-labelledby="newsletter-title">
       <header class="section-header">
         <h2 id="newsletter-title">Get InfantBites in your inbox</h2>
@@ -1071,7 +1082,7 @@
     </section>
   </main>
 
-  <!-- ====== FOOTER ===================================================== -->
+  <!-- FOOTER -->
   <footer class="site-footer" role="contentinfo">
     <div class="footer-inner">
       <div class="footer-brand">
@@ -1083,7 +1094,6 @@
           Helping you feel less overwhelmed—and more confident—about what your baby actually needs.
         </p>
       </div>
-
       <nav class="footer-nav" aria-label="Footer navigation">
         <ul>
           <li><a href="/about.html">About</a></li>
@@ -1106,9 +1116,9 @@
     </div>
   </footer>
 
-  <!-- ====== JAVASCRIPT ================================================= -->
+  <!-- JAVASCRIPT -->
   <script defer>
-    // Helper: safe localStorage access
+    // === Safe localStorage detection ===
     function ibStorageAvailable() {
       try {
         const testKey = "__ib_test__";
@@ -1119,11 +1129,57 @@
         return false;
       }
     }
-
     const ibHasStorage = ibStorageAvailable();
 
     document.addEventListener("DOMContentLoaded", function () {
-      // Affiliate / health disclosure close + persist
+      // === Scarcity countdown (4-hour rolling window) ===
+      (function () {
+        const countdownEl = document.querySelector(".scarcity-bar .countdown");
+        if (!countdownEl) return;
+
+        const WINDOW_SECONDS = 4 * 60 * 60;
+        let remaining;
+
+        if (ibHasStorage) {
+          const stored = localStorage.getItem("ib_countdown_end");
+          const now = Date.now();
+          if (stored && Number(stored) > now) {
+            remaining = Math.floor((Number(stored) - now) / 1000);
+          } else {
+            const end = now + WINDOW_SECONDS * 1000;
+            localStorage.setItem("ib_countdown_end", String(end));
+            remaining = WINDOW_SECONDS;
+          }
+        } else {
+          remaining = WINDOW_SECONDS;
+        }
+
+        function render(seconds) {
+          const h = Math.floor(seconds / 3600);
+          const m = Math.floor((seconds % 3600) / 60);
+          const s = seconds % 60;
+          countdownEl.textContent =
+            String(h).padStart(2, "0") + ":" +
+            String(m).padStart(2, "0") + ":" +
+            String(s).padStart(2, "0");
+        }
+
+        render(remaining);
+
+        setInterval(function () {
+          remaining -= 1;
+          if (remaining <= 0) {
+            remaining = WINDOW_SECONDS;
+            if (ibHasStorage) {
+              const end = Date.now() + WINDOW_SECONDS * 1000;
+              localStorage.setItem("ib_countdown_end", String(end));
+            }
+          }
+          render(remaining);
+        }, 1000);
+      })();
+
+      // === Disclosure banner persist ===
       (function () {
         const banner = document.getElementById("disclosure");
         const closeBtn = banner ? banner.querySelector(".disclosure-close") : null;
@@ -1146,11 +1202,10 @@
         });
       })();
 
-      // Accessible mobile nav toggle
+      // === Mobile nav toggle ===
       (function () {
         const navToggle = document.querySelector(".nav-toggle");
         const nav = document.getElementById("main-nav");
-
         if (!navToggle || !nav) return;
 
         navToggle.addEventListener("click", function () {
@@ -1160,19 +1215,15 @@
         });
       })();
 
-      // Smooth scroll for in-page jump links (accounts for fixed header)
+      // === Smooth scroll for anchor + quick links ===
       (function () {
-        const SCROLL_OFFSET = 80; // adjust if header height changes
+        const SCROLL_OFFSET = 80;
         const links = document.querySelectorAll('a[href^="#"], .quick-link[data-scroll-target]');
 
         function getTarget(selectorOrHash) {
           if (!selectorOrHash) return null;
           const selector = selectorOrHash.startsWith("#") ? selectorOrHash : selectorOrHash;
-          try {
-            return document.querySelector(selector);
-          } catch {
-            return null;
-          }
+          try { return document.querySelector(selector); } catch { return null; }
         }
 
         function handleClick(evt, targetSelector) {
@@ -1213,7 +1264,7 @@
         });
       })();
 
-      // Search handling (front-end placeholder with AI flavor)
+      // === Search with suggestion chips (still Google site search placeholder) ===
       (function () {
         const form = document.getElementById("site-search");
         if (!form) return;
@@ -1225,14 +1276,13 @@
           ? suggestionContainer.querySelectorAll(".suggestion-chip")
           : [];
 
-        // Suggestion chips -> fill input
         suggestionChips.forEach(function (chip) {
           chip.addEventListener("click", function () {
             const text = chip.getAttribute("data-suggest") || chip.textContent;
             input.value = text.trim();
             input.focus();
             if (status) {
-              status.textContent = "Loaded a suggested prompt. You can edit it or press Search.";
+              status.textContent = "Loaded a suggested prompt. Edit it or press Search.";
             }
           });
         });
@@ -1240,23 +1290,21 @@
         form.addEventListener("submit", function (event) {
           event.preventDefault();
           const query = input.value.trim();
-
           if (!query) {
             status.textContent = "Please enter a product or question to search.";
             input.focus();
             return;
           }
+          status.textContent = "Opening AI-enhanced results in a new tab…";
 
-          status.textContent = "Sending your query to AI-enhanced results in a new tab…";
-
-          // TODO: replace with your internal AI search route when available
+          // TODO: replace with your internal AI/search route
           const url = "https://www.google.com/search?q=" +
             encodeURIComponent(query + " site:infantbites.com");
           window.open(url, "_blank", "noopener,noreferrer");
         });
       })();
 
-      // FAQ accordion (accessible)
+      // === FAQ accordion ===
       (function () {
         const toggles = document.querySelectorAll(".faq-toggle");
         if (!toggles.length) return;
@@ -1274,12 +1322,11 @@
         });
       })();
 
-      // Product filter chips
+      // === Product filter chips ===
       (function () {
         const chips = document.querySelectorAll(".filter-chip");
         const cards = document.querySelectorAll(".product-card");
         const grid = document.querySelector(".product-grid");
-
         if (!chips.length || !cards.length || !grid) return;
 
         chips.forEach(function (chip) {
@@ -1305,7 +1352,7 @@
         });
       })();
 
-      // Newsletter form basic client-side validation + feedback
+      // === Newsletter validation ===
       (function () {
         const form = document.querySelector(".newsletter-form");
         if (!form) return;
@@ -1314,7 +1361,6 @@
         const status = document.getElementById("newsletter-status");
 
         function isValidEmail(value) {
-          // simple sanity check, not a full RFC validation
           return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
         }
 
@@ -1336,7 +1382,6 @@
             return;
           }
 
-          // Simulate success (replace with real API call)
           status.textContent = "You’re in! Check your inbox for your first InfantBites checklist.";
           form.classList.add("is-success");
           emailInput.setAttribute("aria-invalid", "false");
@@ -1351,110 +1396,215 @@
         });
       })();
 
-      // AI Gear Finder chat (front-end simulation; plug your backend here)
+      // === AI Gear Finder (Groq JSON → cards) ===
       (function () {
-        const chatWindow = document.getElementById("ai-chat-window");
-        const chatForm = document.getElementById("ai-chat-form");
-        const chatInput = document.getElementById("ai-input");
-        const chatStatus = document.getElementById("ai-status");
-        const clearBtn = document.getElementById("ai-clear");
+        const chatForm = document.getElementById("chat-form");
+        const chatWindow = document.getElementById("chat");
+        const userInput = document.getElementById("user-input");
+        const resultsEl = document.getElementById("results");
+        const statusText = document.getElementById("ai-status-text");
 
-        if (!chatWindow || !chatForm || !chatInput) return;
+        if (!chatForm || !chatWindow || !userInput || !resultsEl) return;
 
-        function appendMessage(text, from) {
-          const wrapper = document.createElement("div");
-          wrapper.className = "ai-message " + (from === "user" ? "ai-message-user" : "ai-message-bot");
-          const p = document.createElement("p");
-          p.textContent = text;
-          wrapper.appendChild(p);
-          chatWindow.appendChild(wrapper);
+        // IMPORTANT: for production, DO NOT keep your real API key in client-side JS.
+        // Route this request through your backend and inject the key server-side.
+        const API_KEY = "YOUR_GROQ_KEY_HERE"; // placeholder only
+
+        function addMessage(text, type) {
+          const div = document.createElement("div");
+          div.className = "message " + type;
+          div.innerHTML = text;
+          chatWindow.appendChild(div);
           chatWindow.scrollTop = chatWindow.scrollHeight;
+          return div;
         }
 
-        function appendRichBotMessage(html) {
-          const wrapper = document.createElement("div");
-          wrapper.className = "ai-message ai-message-bot";
-          wrapper.innerHTML = html;
-          chatWindow.appendChild(wrapper);
-          chatWindow.scrollTop = chatWindow.scrollHeight;
+        function renderResults(payload) {
+          const items = payload.items || [];
+          const skips = payload.skips || [];
+          const summary = payload.summary || "Here’s a starter list based on your situation.";
+
+          let html = `
+            <section aria-label="Your AI gear list">
+              <div class="ai-results-header">
+                <div>
+                  <h3>Your AI Gear List</h3>
+                  <p style="margin:0;font-size:0.95rem;">${summary}</p>
+                </div>
+                <button type="button" class="btn btn-secondary" onclick="window.ibExportList && window.ibExportList()">
+                  Export &amp; add to registry →
+                </button>
+              </div>
+              <div class="ai-results-grid">
+          `;
+
+          items.forEach(function (p) {
+            const name = p.name || "Baby gear pick";
+            const price = p.price || "—";
+            const url = p.url || "#";
+            const save = p.save || 0;
+            const why = p.why || "";
+            const safety = p.safety || "";
+
+            html += `
+              <article class="product-card-ai">
+                <h3>${name}</h3>
+                ${why ? `<p>${why}</p>` : ""}
+                <p class="live-price">
+                  $${price}
+                  ${save ? `<span class="price-save">Save $${save} today</span>` : ""}
+                </p>
+                ${safety ? `<p class="safety-note">⚠️ ${safety}</p>` : ""}
+                <a href="${url ? url + (url.includes("?") ? "&" : "?") + "tag=youraffid" : "#"}"
+                   target="_blank"
+                   rel="nofollow noopener noreferrer"
+                   class="btn"
+                   style="width:100%;margin-top:0.5rem">
+                  Buy at lowest price
+                </a>
+              </article>
+            `;
+          });
+
+          html += `</div>`;
+
+          if (skips.length) {
+            html += `
+              <div class="ai-skips">
+                <strong>You can probably skip for now:</strong>
+                <span>${skips.join(", ")}</span>
+              </div>
+            `;
+          }
+
+          html += `</section>`;
+
+          resultsEl.innerHTML = html;
         }
 
-        function simulateAISuggestions(prompt) {
-          const lower = prompt.toLowerCase();
-          const isTravel = lower.includes("travel") || lower.includes("plane") || lower.includes("airport");
-          const isSmallSpace = lower.includes("small apartment") || lower.includes("tiny") || lower.includes("walk-up");
-          const isBudget = lower.includes("budget") || lower.includes("afford") || lower.includes("cheap");
-
-          const suggestions = [];
-
-          if (isSmallSpace) {
-            suggestions.push(
-              "<strong>For small spaces:</strong> Choose a compact, fold-flat stroller and a bassinet that fits safely beside your bed. Skip bulky swings for now."
-            );
+        async function callGroq(prompt) {
+          if (!API_KEY || API_KEY === "YOUR_GROQ_KEY_HERE") {
+            // Dev-mode fallback: simulate a JSON response if key isn't set yet
+            return {
+              items: [
+                {
+                  name: "Compact newborn-friendly travel system",
+                  price: "329.00",
+                  url: "https://example.com/travel-system",
+                  save: "40",
+                  why: "Lightweight stroller + compatible infant seat that fits small trunks and walk-up stairs.",
+                  safety: "Always install the car seat using your vehicle’s manual and check local car seat laws."
+                },
+                {
+                  name: "Soft structured baby carrier",
+                  price: "89.99",
+                  url: "https://example.com/carrier",
+                  save: "15",
+                  why: "Works from newborn with insert, keeps hands free for stairs and errands.",
+                  safety: "Keep airway visible and chin off chest; follow T.I.C.K.S. babywearing guidelines."
+                }
+              ],
+              skips: [
+                "Full-size swing right away",
+                "Multiple fancy bottle warmers"
+              ],
+              summary: "For a small walk-up and budget under $500, focus on a compact travel system, one great carrier, a simple safe sleep setup and a small bottle kit."
+            };
           }
 
-          if (isTravel) {
-            suggestions.push(
-              "<strong>For frequent travel:</strong> Look for a lightweight travel stroller that fits in your trunk and a carrier that’s easy to get on in tight spaces like airplanes."
-            );
+          const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+            method: "POST",
+            headers: {
+              "Authorization": "Bearer " + API_KEY,
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              model: "llama-3.1-70b-versatile",
+              messages: [
+                {
+                  role: "system",
+                  content: "You are InfantBites AI. Return ONLY valid JSON with this shape: {\"items\":[{\"name\":string,\"price\":number|string,\"url\":string,\"save\":number|string,\"why\":string,\"safety\":string}],\"skips\":[string],\"summary\":string}. Do not include Markdown or code fences."
+                },
+                {
+                  role: "user",
+                  content: prompt
+                }
+              ]
+            })
+          });
+
+          if (!res.ok) {
+            throw new Error("API error " + res.status);
           }
 
-          if (isBudget) {
-            suggestions.push(
-              "<strong>For tighter budgets:</strong> Focus on a safe sleep space, a reliable car seat and 1–2 versatile carriers. Consider buying certain items secondhand, but skip used car seats and expired safety gear."
-            );
+          const data = await res.json();
+          const content = data.choices?.[0]?.message?.content || "{}";
+
+          try {
+            return JSON.parse(content);
+          } catch (e) {
+            throw new Error("Invalid JSON from AI");
           }
-
-          if (!suggestions.length) {
-            suggestions.push(
-              "<strong>Starter plan:</strong> I’d prioritize a safe sleep setup, an age-appropriate car seat, a way to feed baby that matches your plan, and one carrier or place to put baby down where you spend most of your time."
-            );
-          }
-
-          suggestions.push(
-            "Next, tap into the category guides above (sleep, feeding, safety) to compare 3–5 specific products—then choose what fits your budget and space best."
-          );
-
-          return suggestions;
         }
 
-        chatForm.addEventListener("submit", function (event) {
+        chatForm.addEventListener("submit", async function (event) {
           event.preventDefault();
-          const value = (chatInput.value || "").trim();
-          if (!value) {
-            chatStatus.textContent = "Share a bit about your baby and what you’re shopping for to get suggestions.";
-            chatInput.focus();
+          const text = (userInput.value || "").trim();
+          if (!text) {
+            statusText.textContent = "Share a bit about your baby and what you’re shopping for to get started.";
+            userInput.focus();
             return;
           }
 
-          chatStatus.textContent = "Thinking through options for you…";
+          addMessage(text, "user");
+          userInput.value = "";
+          const thinking = addMessage("Building your list…", "bot");
+          statusText.textContent = "Thinking through age, space and budget for you…";
 
-          appendMessage(value, "user");
-          chatInput.value = "";
+          try {
+            const payload = await callGroq(text);
+            thinking.remove();
+            renderResults(payload);
+            statusText.textContent = "List updated. Tweak your prompt or ask a follow-up to refine picks.";
+          } catch (err) {
+            console.error(err);
+            thinking.remove();
+            addMessage("Something went wrong fetching your AI list. Please try again in a moment.", "bot");
+            statusText.textContent = "Error talking to AI. Check your connection or API key setup.";
+          }
 
-          // Simulated AI latency and response
-          setTimeout(function () {
-            const suggestions = simulateAISuggestions(value);
-            const html =
-              "<p><strong>InfantBites AI:</strong> Here’s a draft gear plan based on what you shared:</p>" +
-              "<ul>" +
-              suggestions.map(function (s) { return "<li>" + s + "</li>"; }).join("") +
-              "</ul>" +
-              "<p><em>Note:</em> Double-check safety info and recalls before buying. Use this as a starting point, not a final verdict.</p>";
-            appendRichBotMessage(html);
-            chatStatus.textContent = "Suggestions updated. You can ask a follow-up or refine your situation.";
-          }, 600);
+          // Light upsell after first real list
+          if (ibHasStorage && !localStorage.getItem("ib_premium_seen")) {
+            setTimeout(function () {
+              const overlay = document.createElement("div");
+              overlay.className = "upsell-overlay";
+              overlay.innerHTML = `
+                <div class="upsell-modal" role="dialog" aria-modal="true" aria-labelledby="upsell-title">
+                  <h2 id="upsell-title">Want unlimited AI lists + deal alerts?</h2>
+                  <p>$1 for 7 days → then $9/mo (cancel anytime).</p>
+                  <p>Perfect if you’re building a registry or juggling multiple kids.</p>
+                  <button class="btn" onclick="location.href='https://buy.stripe.com/yourlink'">
+                    Yes – unlock premium →
+                  </button>
+                  <button class="upsell-dismiss" type="button">
+                    No thanks, maybe later
+                  </button>
+                </div>
+              `;
+              document.body.appendChild(overlay);
+
+              overlay.querySelector(".upsell-dismiss").addEventListener("click", function () {
+                overlay.remove();
+                localStorage.setItem("ib_premium_seen", "1");
+              });
+            }, 2500);
+          }
         });
 
-        clearBtn.addEventListener("click", function () {
-          const messages = chatWindow.querySelectorAll(".ai-message");
-          messages.forEach(function (m, idx) {
-            if (idx === 0) return; // keep the initial intro message
-            m.remove();
-          });
-          chatStatus.textContent = "Conversation cleared. Share your situation to get fresh suggestions.";
-          chatInput.focus();
-        });
+        // Export hook (currently just a placeholder)
+        window.ibExportList = function () {
+          alert("In production, this would send your list to Amazon/Babylist/etc. with your affiliate tags.");
+        };
       })();
     });
   </script>
