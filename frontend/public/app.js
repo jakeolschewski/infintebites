@@ -3,6 +3,18 @@
 
 'use strict';
 
+/* ========================================================================== */
+/* Types                                                                      */
+/* ========================================================================== */
+
+/**
+ * @typedef {'idle' | 'validating' | 'submitting' | 'success' | 'error'} PlannerState
+ */
+
+/**
+ * @typedef {'VALIDATION' | 'NETWORK' | 'TIMEOUT' | 'SERVER' | 'UNKNOWN'} PlannerErrorKind
+ */
+
 /**
  * @typedef {Object} PlannerPayload
  * @property {number} age_months
@@ -21,6 +33,7 @@
  * @property {string} name
  * @property {string} [description]
  * @property {string} [price]
+ * @property {string} [href]   // optional canonical link; falls back to internal redirect
  */
 
 /**
@@ -43,6 +56,17 @@
  * @property {string|null} [formError]
  * @property {Record<string, string>} [fieldErrors]
  */
+
+/**
+ * @typedef {Object} PlannerResolvedError
+ * @property {PlannerErrorKind} kind
+ * @property {string} message
+ * @property {unknown} [raw]
+ */
+
+/* ========================================================================== */
+/* Constants                                                                  */
+/* ========================================================================== */
 
 const DEFAULTS = {
   API: {
@@ -74,7 +98,8 @@ const DEFAULTS = {
     STATUS_GENERIC_ERROR: 'Something went wrong. Please try again later.',
     STATUS_NETWORK_ERROR: 'Network error – please check your connection and try again.',
     STATUS_TIMEOUT_ERROR: 'Request took too long – please try again in a moment.',
-    STATUS_PARTIAL_BUNDLES_ERROR: 'Plan generated, but bundle recommendations are unavailable right now.'
+    STATUS_PARTIAL_BUNDLES_ERROR:
+      'Plan generated, but bundle recommendations are unavailable right now.'
   },
   VALIDATION: {
     MIN_AGE_MONTHS: 1,
@@ -84,16 +109,15 @@ const DEFAULTS = {
   }
 };
 
-/* -------------------------------------------------------------------------- */
-/* Small utility helpers                                                      */
-/* -------------------------------------------------------------------------- */
+/* ========================================================================== */
+/* Generic Utilities                                                          */
+/* ========================================================================== */
 
 /**
- * Create an element with optional props & children.
  * @template {keyof HTMLElementTagNameMap} K
  * @param {K} tag
  * @param {Partial<HTMLElementTagNameMap[K]> & Record<string, any>} [props]
- * @param {Array<Node|string>} [children]
+ * @param {Array<Node|string|null|undefined>} [children]
  * @returns {HTMLElementTagNameMap[K]}
  */
 function createEl(tag, props = {}, children = []) {
@@ -117,16 +141,26 @@ function createEl(tag, props = {}, children = []) {
     }
   });
 
-  children.forEach((child) => {
-    if (child == null) return;
+  for (const child of children) {
+    if (child == null) continue;
     el.append(child instanceof Node ? child : document.createTextNode(String(child)));
-  });
+  }
 
   return el;
 }
 
 /**
+ * @param {HTMLInputElement|null} input
+ * @returns {string}
+ */
+function getTrimmedValue(input) {
+  return (input?.value ?? '').trim();
+}
+
+/**
  * Fetch wrapper with timeout + safe JSON handling.
+ * Returns `null` for an empty body.
+ *
  * @template T
  * @param {string} url
  * @param {RequestInit & { timeoutMs?: number }} [options]
@@ -157,9 +191,7 @@ async function jsonFetch(url, options = {}) {
     }
 
     const text = await res.text();
-    if (!text) {
-      return null;
-    }
+    if (!text) return null;
 
     try {
       return /** @type {T} */ (JSON.parse(text));
@@ -180,12 +212,71 @@ async function jsonFetch(url, options = {}) {
   }
 }
 
-/* -------------------------------------------------------------------------- */
-/* PlannerApp class                                                           */
-/* -------------------------------------------------------------------------- */
+/* ========================================================================== */
+/* Validation Logic (pure, testable)                                          */
+/* ========================================================================== */
+
+/**
+ * @param {string} ageRaw
+ * @param {string} concernRaw
+ * @param {string} emailRaw
+ * @returns {PlannerValidationResult}
+ */
+function validateFields(ageRaw, concernRaw, emailRaw) {
+  /** @type {Record<string, string>} */
+  const fieldErrors = {};
+
+  // Age
+  const ageValue = ageRaw.trim();
+  const ageNumber = Number(ageValue);
+
+  if (!ageValue) {
+    fieldErrors.age = 'Age is required.';
+  } else if (!Number.isFinite(ageNumber) || ageNumber <= 0) {
+    fieldErrors.age = 'Age must be a positive number.';
+  } else if (
+    ageNumber < DEFAULTS.VALIDATION.MIN_AGE_MONTHS ||
+    ageNumber > DEFAULTS.VALIDATION.MAX_AGE_MONTHS
+  ) {
+    fieldErrors.age = `Age must be between ${DEFAULTS.VALIDATION.MIN_AGE_MONTHS} and ${DEFAULTS.VALIDATION.MAX_AGE_MONTHS} months.`;
+  }
+
+  // Concern
+  const concern = concernRaw.trim();
+  if (!concern) {
+    fieldErrors.concern = 'Please describe your main concern.';
+  } else if (concern.length < DEFAULTS.VALIDATION.MIN_CONCERN_LEN) {
+    fieldErrors.concern = `Concern must be at least ${DEFAULTS.VALIDATION.MIN_CONCERN_LEN} characters.`;
+  } else if (concern.length > DEFAULTS.VALIDATION.MAX_CONCERN_LEN) {
+    fieldErrors.concern = `Concern must be at most ${DEFAULTS.VALIDATION.MAX_CONCERN_LEN} characters.`;
+  }
+
+  // Email (optional but validate if present)
+  const email = emailRaw.trim();
+  if (email) {
+    const basicEmailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!basicEmailRegex.test(email)) {
+      fieldErrors.email = 'Please enter a valid email address.';
+    }
+  }
+
+  const ok = Object.keys(fieldErrors).length === 0;
+
+  return {
+    ok,
+    formError: ok ? null : DEFAULTS.TEXT.STATUS_VALIDATION_ERROR,
+    fieldErrors
+  };
+}
+
+/* ========================================================================== */
+/* PlannerApp                                                                 */
+/* ========================================================================== */
 
 class PlannerApp {
-  /** @param {PlannerConfig} config */
+  /**
+   * @param {PlannerConfig} config
+   */
   constructor(config) {
     this.form = config.form;
     this.planSection = config.planSection;
@@ -206,41 +297,61 @@ class PlannerApp {
     /** @type {HTMLInputElement|null} */
     this.emailInput = this.form.querySelector('#email');
 
+    /** @type {PlannerState} */
+    this.state = 'idle';
+
+    if (!this.ageInput || !this.concernInput) {
+      console.error('[planner] Missing #age or #concern input in form.');
+    }
+
     // Accessibility
     this.statusEl.setAttribute('role', 'status');
     this.statusEl.setAttribute('aria-live', 'polite');
   }
 
   /* ---------------------------------------------------------------------- */
-  /* Initialization                                                         */
+  /* Init                                                                   */
   /* ---------------------------------------------------------------------- */
 
   init() {
     if (!this.ageInput || !this.concernInput) {
-      console.error('[planner] Missing #age or #concern input in form.');
       return;
     }
 
     this.form.addEventListener('submit', (event) => this.handleSubmit(event));
 
-    // Live validation on blur for nicer UX
-    this.ageInput.addEventListener('blur', () => this.validateAndShowErrors(false));
-    this.concernInput.addEventListener('blur', () => this.validateAndShowErrors(false));
+    // Live field-level validation
+    const blurHandler = () => {
+      if (this.state === 'submitting') return;
+      this.validateAndShowErrors(false);
+    };
+
+    this.ageInput.addEventListener('blur', blurHandler);
+    this.concernInput.addEventListener('blur', blurHandler);
     if (this.emailInput) {
-      this.emailInput.addEventListener('blur', () => this.validateAndShowErrors(false));
+      this.emailInput.addEventListener('blur', blurHandler);
     }
 
     this.resetUI();
   }
 
   /* ---------------------------------------------------------------------- */
-  /* UI state helpers                                                       */
+  /* UI/state helpers                                                       */
   /* ---------------------------------------------------------------------- */
+
+  /**
+   * @param {PlannerState} newState
+   */
+  setState(newState) {
+    this.state = newState;
+    this.onEvent('state_change', { state: newState });
+  }
 
   resetUI() {
     this.clearStatus();
     this.hideSpinner();
     this.clearFieldErrors();
+    this.setState('idle');
   }
 
   showSpinner() {
@@ -291,7 +402,8 @@ class PlannerApp {
    * @param {string|null} message
    */
   setFieldError(field, message) {
-    const fieldWrapper = field.closest('[data-field-wrapper]') || field.parentElement || field;
+    const fieldWrapper =
+      field.closest('[data-field-wrapper]') || field.parentElement || field;
     const existingError = fieldWrapper.querySelector(`.${DEFAULTS.CSS.FIELD_ERROR}`);
 
     field.classList.remove(DEFAULTS.CSS.FIELD_INVALID);
@@ -302,7 +414,7 @@ class PlannerApp {
 
     field.classList.add(DEFAULTS.CSS.FIELD_INVALID);
 
-    const errorId = `${field.id || field.name}-error`;
+    const errorId = `${field.id || field.getAttribute('name') || 'field'}-error`;
     const errorEl = createEl(
       'div',
       {
@@ -321,94 +433,49 @@ class PlannerApp {
   /* ---------------------------------------------------------------------- */
 
   /**
-   * @returns {PlannerValidationResult}
-   */
-  validate() {
-    /** @type {Record<string, string>} */
-    const fieldErrors = {};
-
-    const rawAge = this.ageInput?.value?.trim() || '';
-    const rawConcern = this.concernInput?.value?.trim() || '';
-    const rawEmail = this.emailInput?.value?.trim() || '';
-
-    // Age
-    const ageNumber = Number(rawAge);
-    if (!rawAge) {
-      fieldErrors.age = 'Age is required.';
-    } else if (!Number.isFinite(ageNumber) || ageNumber <= 0) {
-      fieldErrors.age = 'Age must be a positive number.';
-    } else if (
-      ageNumber < DEFAULTS.VALIDATION.MIN_AGE_MONTHS ||
-      ageNumber > DEFAULTS.VALIDATION.MAX_AGE_MONTHS
-    ) {
-      fieldErrors.age = `Age must be between ${DEFAULTS.VALIDATION.MIN_AGE_MONTHS} and ${DEFAULTS.VALIDATION.MAX_AGE_MONTHS} months.`;
-    }
-
-    // Concern
-    if (!rawConcern) {
-      fieldErrors.concern = 'Please describe your main concern.';
-    } else if (rawConcern.length < DEFAULTS.VALIDATION.MIN_CONCERN_LEN) {
-      fieldErrors.concern = `Concern must be at least ${DEFAULTS.VALIDATION.MIN_CONCERN_LEN} characters.`;
-    } else if (rawConcern.length > DEFAULTS.VALIDATION.MAX_CONCERN_LEN) {
-      fieldErrors.concern = `Concern must be at most ${DEFAULTS.VALIDATION.MAX_CONCERN_LEN} characters.`;
-    }
-
-    // Email (optional but validate if present)
-    if (rawEmail) {
-      const basicEmailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!basicEmailRegex.test(rawEmail)) {
-        fieldErrors.email = 'Please enter a valid email address.';
-      }
-    }
-
-    const ok = Object.keys(fieldErrors).length === 0;
-
-    return {
-      ok,
-      formError: ok ? null : DEFAULTS.TEXT.STATUS_VALIDATION_ERROR,
-      fieldErrors
-    };
-  }
-
-  /**
-   * Runs validation, updates UI, and optionally focuses the first invalid field.
-   * @param {boolean} focusFirstInvalid
-   * @returns {boolean} `true` if valid
+   * @param {boolean} [focusFirstInvalid=true]
+   * @returns {boolean}
    */
   validateAndShowErrors(focusFirstInvalid = true) {
-    const { ok, formError, fieldErrors } = this.validate();
+    const result = validateFields(
+      getTrimmedValue(this.ageInput),
+      getTrimmedValue(this.concernInput),
+      getTrimmedValue(this.emailInput)
+    );
 
     this.clearFieldErrors();
 
-    if (!ok) {
-      this.setStatus(formError || DEFAULTS.TEXT.STATUS_VALIDATION_ERROR, true);
+    if (!result.ok) {
+      this.setStatus(result.formError || DEFAULTS.TEXT.STATUS_VALIDATION_ERROR, true);
 
       /** @type {HTMLElement|null} */
       let firstInvalidField = null;
 
-      if (this.ageInput && fieldErrors.age) {
-        this.setFieldError(this.ageInput, fieldErrors.age);
+      if (this.ageInput && result.fieldErrors.age) {
+        this.setFieldError(this.ageInput, result.fieldErrors.age);
         firstInvalidField = firstInvalidField || this.ageInput;
       }
 
-      if (this.concernInput && fieldErrors.concern) {
-        this.setFieldError(this.concernInput, fieldErrors.concern);
+      if (this.concernInput && result.fieldErrors.concern) {
+        this.setFieldError(this.concernInput, result.fieldErrors.concern);
         firstInvalidField = firstInvalidField || this.concernInput;
       }
 
-      if (this.emailInput && fieldErrors.email) {
-        this.setFieldError(this.emailInput, fieldErrors.email);
+      if (this.emailInput && result.fieldErrors.email) {
+        this.setFieldError(this.emailInput, result.fieldErrors.email);
         firstInvalidField = firstInvalidField || this.emailInput;
       }
 
       if (focusFirstInvalid && firstInvalidField) {
         firstInvalidField.focus();
       }
-    } else {
-      this.clearStatus();
+
+      this.onEvent('validation_failed', { fieldErrors: result.fieldErrors });
+      return false;
     }
 
-    return ok;
+    this.clearStatus();
+    return true;
   }
 
   /**
@@ -416,9 +483,9 @@ class PlannerApp {
    * @returns {PlannerPayload}
    */
   getPayload() {
-    const ageMonths = Number(this.ageInput?.value?.trim() || '0');
-    const concern = this.concernInput?.value?.trim() || '';
-    const email = this.emailInput?.value?.trim() || '';
+    const ageMonths = Number(getTrimmedValue(this.ageInput) || '0');
+    const concern = getTrimmedValue(this.concernInput);
+    const email = getTrimmedValue(this.emailInput);
 
     /** @type {PlannerPayload} */
     const payload = { age_months: ageMonths, concern };
@@ -427,7 +494,7 @@ class PlannerApp {
   }
 
   /* ---------------------------------------------------------------------- */
-  /* Rendering methods                                                      */
+  /* Rendering                                                              */
   /* ---------------------------------------------------------------------- */
 
   /**
@@ -439,7 +506,8 @@ class PlannerApp {
 
     const heading = createEl('h2', {
       textContent: DEFAULTS.TEXT.PLAN_HEADING,
-      id: 'plan-heading'
+      id: 'plan-heading',
+      tabIndex: -1
     });
     frag.appendChild(heading);
 
@@ -460,6 +528,9 @@ class PlannerApp {
     frag.appendChild(disclaimer);
 
     this.planSection.appendChild(frag);
+
+    // Focus the heading for accessibility and “guided” experience
+    heading.focus();
   }
 
   /**
@@ -499,15 +570,13 @@ class PlannerApp {
       const descText = bundle.description || '';
       const priceText = bundle.price ? `Price: ${bundle.price}` : '';
 
-      const desc = descText
-        ? createEl('p', {}, [descText])
-        : createEl('p', {}, []);
-      const price = priceText
-        ? createEl('p', {}, [priceText])
-        : createEl('p', {}, []);
+      const desc = createEl('p', {}, descText ? [descText] : []);
+      const price = createEl('p', {}, priceText ? [priceText] : []);
+
+      const href = bundle.href || `/api/bundles/go/${idSafe}`;
 
       const link = createEl('a', {
-        href: `/api/bundles/go/${idSafe}`,
+        href,
         rel: 'noopener sponsored nofollow',
         target: '_blank',
         textContent: 'View deal'
@@ -521,7 +590,57 @@ class PlannerApp {
   }
 
   /* ---------------------------------------------------------------------- */
-  /* Main handler                                                           */
+  /* Error resolution                                                       */
+  /* ---------------------------------------------------------------------- */
+
+  /**
+   * @param {unknown} err
+   * @returns {PlannerResolvedError}
+   */
+  resolveError(err) {
+    if (!err) {
+      return {
+        kind: 'UNKNOWN',
+        message: DEFAULTS.TEXT.STATUS_GENERIC_ERROR
+      };
+    }
+
+    const anyErr = /** @type {any} */ (err);
+
+    if (anyErr.code === 'TIMEOUT' || anyErr.message === 'timeout') {
+      return {
+        kind: 'TIMEOUT',
+        message: DEFAULTS.TEXT.STATUS_TIMEOUT_ERROR,
+        raw: err
+      };
+    }
+
+    if (anyErr instanceof TypeError) {
+      // Typical fetch network error
+      return {
+        kind: 'NETWORK',
+        message: DEFAULTS.TEXT.STATUS_NETWORK_ERROR,
+        raw: err
+      };
+    }
+
+    if (typeof anyErr.status === 'number') {
+      return {
+        kind: 'SERVER',
+        message: DEFAULTS.TEXT.STATUS_GENERIC_ERROR,
+        raw: err
+      };
+    }
+
+    return {
+      kind: 'UNKNOWN',
+      message: DEFAULTS.TEXT.STATUS_GENERIC_ERROR,
+      raw: err
+    };
+  }
+
+  /* ---------------------------------------------------------------------- */
+  /* Main submit handler                                                    */
   /* ---------------------------------------------------------------------- */
 
   /**
@@ -530,9 +649,15 @@ class PlannerApp {
   async handleSubmit(event) {
     event.preventDefault();
 
-    // Validation first
-    if (!this.validateAndShowErrors(true)) {
-      this.onEvent('validation_failed');
+    // Avoid double-submit
+    if (this.state === 'submitting') {
+      return;
+    }
+
+    this.setState('validating');
+    const isValid = this.validateAndShowErrors(true);
+    if (!isValid) {
+      this.setState('error');
       return;
     }
 
@@ -542,10 +667,12 @@ class PlannerApp {
     this.disableForm();
     this.showSpinner();
     this.setStatus(DEFAULTS.TEXT.STATUS_LOADING, false);
+    this.setState('submitting');
 
     try {
       // 1) Fetch plan
-      const planData = await jsonFetch(/** @type {string} */ (this.planEndpoint), {
+      /** @type {PlannerStepData|null} */
+      const planData = await jsonFetch(this.planEndpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -558,59 +685,45 @@ class PlannerApp {
       // 2) Fetch bundles (best-effort; don't wipe out a good plan if this fails)
       try {
         const bundlesUrl = this.bundlesEndpoint(payload.concern);
+        /** @type {PlannerBundle[]|null} */
         const bundlesData = await jsonFetch(bundlesUrl, {
           method: 'GET',
           timeoutMs: this.timeoutMs
         });
+
         this.renderBundles(bundlesData);
         this.onEvent('bundles_success', { bundles: bundlesData });
 
         this.setStatus(DEFAULTS.TEXT.STATUS_SUCCESS, false);
         this.onEvent('success', { plan: planData, bundles: bundlesData });
+        this.setState('success');
       } catch (bundlesErr) {
         console.error('[planner] Error while fetching bundles:', bundlesErr);
         this.renderBundles(null); // show "No bundles" message
         this.setStatus(DEFAULTS.TEXT.STATUS_PARTIAL_BUNDLES_ERROR, true);
         this.onEvent('bundles_error', bundlesErr);
+        this.setState('error');
       }
     } catch (err) {
       console.error('[planner] Error while generating plan:', err);
-      this.onEvent('error', err);
-
-      const message = this.resolveErrorMessage(err);
-      this.setStatus(message, true);
+      const resolved = this.resolveError(err);
+      this.setStatus(resolved.message, true);
+      this.onEvent('error', resolved);
+      this.setState('error');
     } finally {
       this.hideSpinner();
       this.enableForm();
+      if (this.state === 'submitting') {
+        // ensure we don't accidentally stay "submitting"
+        this.setState('idle');
+      }
     }
-  }
-
-  /**
-   * Map low-level errors to user-friendly copy.
-   * @param {unknown} err
-   * @returns {string}
-   */
-  resolveErrorMessage(err) {
-    if (!err) return DEFAULTS.TEXT.STATUS_GENERIC_ERROR;
-
-    const anyErr = /** @type {any} */ (err);
-
-    if (anyErr.code === 'TIMEOUT' || anyErr.message === 'timeout') {
-      return DEFAULTS.TEXT.STATUS_TIMEOUT_ERROR;
-    }
-
-    if (anyErr instanceof TypeError) {
-      // Typical fetch network error
-      return DEFAULTS.TEXT.STATUS_NETWORK_ERROR;
-    }
-
-    return DEFAULTS.TEXT.STATUS_GENERIC_ERROR;
   }
 }
 
-/* -------------------------------------------------------------------------- */
-/* Auto-bootstrap on DOM ready                                                */
-/* -------------------------------------------------------------------------- */
+/* ========================================================================== */
+/* Auto-bootstrap                                                             */
+/* ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
   /** @type {HTMLFormElement|null} */
@@ -619,7 +732,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const bundlesSection = document.getElementById('bundles-section');
   const statusEl = document.getElementById('status');
   const spinnerEl = document.getElementById('spinner');
-  const submitButton = form?.querySelector('button[type="submit"]') || null;
+  const submitButton =
+    /** @type {HTMLButtonElement|null} */ (
+      form?.querySelector('button[type="submit"]')
+    ) || null;
 
   if (!form || !planSection || !bundlesSection || !statusEl || !spinnerEl || !submitButton) {
     console.error(
@@ -653,3 +769,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // @ts-ignore
   window.__plannerApp = app;
 });
+
+// Optionally export for module-based usage elsewhere
+// export { PlannerApp, DEFAULTS, validateFields };
