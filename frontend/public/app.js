@@ -1,25 +1,47 @@
-// planner.js
-// Loaded via: <script type="module" src="/js/planner.js"></script>
-
-'use strict';
+// experience.js
+// Loaded via: <script type="module" src="/js/experience.js"></script>
+//
+// "Experience layer" that sits on top of PlannerApp and provides:
+//  - Grok quiz → personalized list + video explainers
+//  - Registry builder + share link
+//  - Milestone tracker
+//  - Price alert subscriptions
+//  - Review submission + photo upload
+//  - AI live chat widget
+//  - Daily self-evolution toggle (Zapier/Make webhook)
+//
+// Assumes planner.js exposes window.__plannerApp = app.
 
 /* ========================================================================== */
-/* Types                                                                      */
+/* Types (JSDoc only)                                                         */
 /* ========================================================================== */
 
 /**
- * @typedef {'idle' | 'validating' | 'submitting' | 'success' | 'error'} PlannerState
+ * @typedef {'user'|'assistant'} ChatRole
  */
 
 /**
- * @typedef {'VALIDATION' | 'NETWORK' | 'TIMEOUT' | 'SERVER' | 'UNKNOWN'} PlannerErrorKind
+ * @typedef {Object} ChatMessage
+ * @property {ChatRole} role
+ * @property {string} content
  */
 
 /**
- * @typedef {Object} PlannerPayload
- * @property {number} age_months
- * @property {string} concern
- * @property {string} [email]
+ * @typedef {Object} GrokQuizResultItem
+ * @property {string} title
+ * @property {string} [description]
+ */
+
+/**
+ * @typedef {Object} GrokQuizVideo
+ * @property {string} title
+ * @property {string} url
+ */
+
+/**
+ * @typedef {Object} GrokQuizResponse
+ * @property {GrokQuizResultItem[]} [items]
+ * @property {GrokQuizVideo[]} [videos]
  */
 
 /**
@@ -33,84 +55,100 @@
  * @property {string} name
  * @property {string} [description]
  * @property {string} [price]
- * @property {string} [href]   // optional canonical link; falls back to internal redirect
+ * @property {string} [href]
  */
 
 /**
- * @typedef {Object} PlannerConfig
- * @property {HTMLFormElement} form
- * @property {HTMLElement} planSection
- * @property {HTMLElement} bundlesSection
- * @property {HTMLElement} statusEl
- * @property {HTMLElement} spinnerEl
- * @property {HTMLButtonElement} submitButton
- * @property {number} [timeoutMs]
- * @property {string} [planEndpoint]
- * @property {(concern: string) => string} [bundlesEndpoint]
+ * @typedef {Object} ExperienceConfig
+ * @property {any|null} plannerApp          // instance of PlannerApp, if available
+ * @property {string} [grokQuizEndpoint]
+ * @property {string} [chatEndpoint]
+ * @property {string} [registryShareEndpoint]
+ * @property {string} [priceAlertEndpoint]
+ * @property {string} [reviewEndpoint]
+ * @property {string} [selfEvolutionWebhookEndpoint]
  * @property {(stage: string, detail?: unknown) => void} [onEvent]
- */
-
-/**
- * @typedef {Object} PlannerValidationResult
- * @property {boolean} ok
- * @property {string|null} [formError]
- * @property {Record<string, string>} [fieldErrors]
- */
-
-/**
- * @typedef {Object} PlannerResolvedError
- * @property {PlannerErrorKind} kind
- * @property {string} message
- * @property {unknown} [raw]
  */
 
 /* ========================================================================== */
 /* Constants                                                                  */
 /* ========================================================================== */
 
-const DEFAULTS = {
+const EXP_DEFAULTS = {
   API: {
-    PLAN: '/api/planner/plan',
-    // NOTE: keeping original query param shape; change if your backend expects something else
-    BUNDLES: (concern) => `/api/bundles?age=${encodeURIComponent(concern)}`,
+    GROK_QUIZ: '/api/grok/quiz',
+    CHAT: '/api/chat',
+    REGISTRY_SHARE: '/api/registry/share',
+    PRICE_ALERT: '/api/alerts/price',
+    REVIEW: '/api/reviews',
+    SELF_EVOLUTION_WEBHOOK: '/api/webhooks/self-evolution',
     TIMEOUT_MS: 15000
+  },
+  SELECTORS: {
+    QUIZ_FORM: '#quiz-form',
+    QUIZ_RESULTS: '#quiz-results',
+    REGISTRY_ROOT: '#registry-builder',
+    REGISTRY_FORM: '#registry-form',
+    REGISTRY_LIST: '#registry-list',
+    REGISTRY_SHARE: '#registry-share',
+    MILESTONE_LIST: '#milestone-list',
+    MILESTONE_ADD: '#milestone-add',
+    PRICE_ALERT_FORM: '#price-alert-form',
+    REVIEW_FORM: '#review-form',
+    CHAT_WIDGET: '#chat-widget',
+    SELF_EVOLUTION_TOGGLE: '#self-evolution-toggle'
   },
   CSS: {
     STATUS_OK: 'status status--ok',
     STATUS_ERROR: 'status status--error',
     STATUS_NEUTRAL: 'status',
-    FIELD_ERROR: 'field-error',
-    FIELD_INVALID: 'field-invalid',
-    BUNDLE_CARD: 'bundle',
-    DISCLAIMER: 'disclaimer',
-    HIDDEN: 'hidden'
+    HIDDEN: 'hidden',
+    CHAT_CONTAINER: 'chat-container',
+    CHAT_MESSAGES: 'chat-messages',
+    CHAT_MESSAGE_USER: 'chat-message chat-message--user',
+    CHAT_MESSAGE_ASSISTANT: 'chat-message chat-message--assistant',
+    CHAT_TOGGLE: 'chat-toggle',
+    CHAT_HEADER: 'chat-header',
+    CHAT_CLOSE: 'chat-close',
+    MILESTONE_DONE: 'milestone-done',
+    REGISTRY_ITEM: 'registry-item'
+  },
+  STORAGE: {
+    REGISTRY: 'exp_registry_v1',
+    MILESTONES: 'exp_milestones_v1'
   },
   TEXT: {
-    PLAN_HEADING: 'Your Personalized Plan',
-    BUNDLES_HEADING: 'Recommended Deals',
-    NO_BUNDLES: 'No bundles found for this concern.',
-    DISCLAIMER:
-      'This plan is general in nature and is not medical advice. Always consult a qualified professional for specific concerns.',
-    STATUS_IDLE: '',
-    STATUS_LOADING: 'Generating your plan…',
-    STATUS_SUCCESS: 'All done! Enjoy your personalized plan.',
-    STATUS_VALIDATION_ERROR: 'Please fix the highlighted fields and try again.',
-    STATUS_GENERIC_ERROR: 'Something went wrong. Please try again later.',
-    STATUS_NETWORK_ERROR: 'Network error – please check your connection and try again.',
-    STATUS_TIMEOUT_ERROR: 'Request took too long – please try again in a moment.',
-    STATUS_PARTIAL_BUNDLES_ERROR:
-      'Plan generated, but bundle recommendations are unavailable right now.'
-  },
-  VALIDATION: {
-    MIN_AGE_MONTHS: 1,
-    MAX_AGE_MONTHS: 600, // 50 years, change as needed
-    MIN_CONCERN_LEN: 3,
-    MAX_CONCERN_LEN: 500
+    QUIZ_LOADING: 'Generating your personalized list…',
+    QUIZ_ERROR: 'Something went wrong. Please try again.',
+    QUIZ_EMPTY: 'No recommendations yet. Try tweaking your answers.',
+    QUIZ_HEADING_LIST: 'Your personalized list',
+    QUIZ_HEADING_VIDEOS: 'Video explainers',
+
+    REGISTRY_EMPTY: 'No items yet. Add your first one!',
+    REGISTRY_SHARE_OK: 'Share link copied to clipboard!',
+    REGISTRY_SHARE_ERROR: 'Could not generate share link. Please try again.',
+
+    MILESTONES_EMPTY: 'No milestones yet – add one to get started.',
+
+    PRICE_ALERT_LOADING: 'Subscribing…',
+    PRICE_ALERT_OK: 'Price alert set! You will be notified by email.',
+    PRICE_ALERT_ERROR: 'Could not create alert. Please try again later.',
+
+    REVIEW_LOADING: 'Uploading your review…',
+    REVIEW_OK: 'Thanks for your review!',
+    REVIEW_ERROR: 'Could not submit review. Please try again later.',
+
+    CHAT_PLACEHOLDER: 'Ask anything…',
+    CHAT_TITLE: 'AI Assistant',
+    CHAT_THINKING: 'Thinking…',
+    CHAT_ERROR: 'Something went wrong. Please try again.',
+
+    SELF_EVOLUTION_ERROR: 'Could not update daily self-evolution setting. Please try again.'
   }
 };
 
 /* ========================================================================== */
-/* Generic Utilities                                                          */
+/* Generic utilities                                                          */
 /* ========================================================================== */
 
 /**
@@ -134,6 +172,8 @@ function createEl(tag, props = {}, children = []) {
           el.dataset[dataKey] = String(dataValue);
         }
       });
+    } else if (key === 'onclick' && typeof value === 'function') {
+      el.addEventListener('click', value);
     } else if (key in el) {
       el[key] = value;
     } else {
@@ -150,574 +190,987 @@ function createEl(tag, props = {}, children = []) {
 }
 
 /**
- * @param {HTMLInputElement|null} input
- * @returns {string}
- */
-function getTrimmedValue(input) {
-  return (input?.value ?? '').trim();
-}
-
-/**
- * Fetch wrapper with timeout + safe JSON handling.
- * Returns `null` for an empty body.
- *
  * @template T
  * @param {string} url
  * @param {RequestInit & { timeoutMs?: number }} [options]
- * @returns {Promise<T|null>}
+ * @returns {Promise<T>}
  */
 async function jsonFetch(url, options = {}) {
-  const { timeoutMs = DEFAULTS.API.TIMEOUT_MS, ...fetchOptions } = options;
+  const { timeoutMs = EXP_DEFAULTS.API.TIMEOUT_MS, ...fetchOptions } = options;
   const controller = new AbortController();
   const id = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
     const res = await fetch(url, { ...fetchOptions, signal: controller.signal });
-
     if (!res.ok) {
-      let detail = '';
+      let message = `HTTP ${res.status}`;
       try {
-        const json = await res.json();
-        if (json && typeof json.message === 'string') {
-          detail = `: ${json.message}`;
+        const body = await res.json();
+        if (body && typeof body.message === 'string') {
+          message += `: ${body.message}`;
         }
       } catch {
-        // ignore parse error and fall back to status text
+        // ignore JSON parse
       }
-      const error = new Error(`HTTP ${res.status}${detail}`);
+      const err = new Error(message);
       // @ts-ignore
-      error.status = res.status;
-      throw error;
+      err.status = res.status;
+      throw err;
     }
-
     const text = await res.text();
-    if (!text) return null;
-
-    try {
-      return /** @type {T} */ (JSON.parse(text));
-    } catch (err) {
-      console.error('[planner] Invalid JSON from', url, err);
-      throw new Error('Invalid JSON response');
-    }
-  } catch (err) {
-    if (err && /** @type {any} */ (err).name === 'AbortError') {
-      const e = new Error('timeout');
-      // @ts-ignore
-      e.code = 'TIMEOUT';
-      throw e;
-    }
-    throw err;
+    if (!text) return /** @type {any} */ ({});
+    return /** @type {T} */ (JSON.parse(text));
   } finally {
     clearTimeout(id);
   }
 }
 
-/* ========================================================================== */
-/* Validation Logic (pure, testable)                                          */
-/* ========================================================================== */
-
 /**
- * @param {string} ageRaw
- * @param {string} concernRaw
- * @param {string} emailRaw
- * @returns {PlannerValidationResult}
+ * @param {HTMLElement|null} el
+ * @param {string} msg
+ * @param {boolean} [isError=false]
  */
-function validateFields(ageRaw, concernRaw, emailRaw) {
-  /** @type {Record<string, string>} */
-  const fieldErrors = {};
-
-  // Age
-  const ageValue = ageRaw.trim();
-  const ageNumber = Number(ageValue);
-
-  if (!ageValue) {
-    fieldErrors.age = 'Age is required.';
-  } else if (!Number.isFinite(ageNumber) || ageNumber <= 0) {
-    fieldErrors.age = 'Age must be a positive number.';
-  } else if (
-    ageNumber < DEFAULTS.VALIDATION.MIN_AGE_MONTHS ||
-    ageNumber > DEFAULTS.VALIDATION.MAX_AGE_MONTHS
-  ) {
-    fieldErrors.age = `Age must be between ${DEFAULTS.VALIDATION.MIN_AGE_MONTHS} and ${DEFAULTS.VALIDATION.MAX_AGE_MONTHS} months.`;
-  }
-
-  // Concern
-  const concern = concernRaw.trim();
-  if (!concern) {
-    fieldErrors.concern = 'Please describe your main concern.';
-  } else if (concern.length < DEFAULTS.VALIDATION.MIN_CONCERN_LEN) {
-    fieldErrors.concern = `Concern must be at least ${DEFAULTS.VALIDATION.MIN_CONCERN_LEN} characters.`;
-  } else if (concern.length > DEFAULTS.VALIDATION.MAX_CONCERN_LEN) {
-    fieldErrors.concern = `Concern must be at most ${DEFAULTS.VALIDATION.MAX_CONCERN_LEN} characters.`;
-  }
-
-  // Email (optional but validate if present)
-  const email = emailRaw.trim();
-  if (email) {
-    const basicEmailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!basicEmailRegex.test(email)) {
-      fieldErrors.email = 'Please enter a valid email address.';
-    }
-  }
-
-  const ok = Object.keys(fieldErrors).length === 0;
-
-  return {
-    ok,
-    formError: ok ? null : DEFAULTS.TEXT.STATUS_VALIDATION_ERROR,
-    fieldErrors
-  };
+function setStatusEl(el, msg, isError = false) {
+  if (!el) return;
+  el.textContent = msg;
+  el.className = isError
+    ? EXP_DEFAULTS.CSS.STATUS_ERROR
+    : msg
+      ? EXP_DEFAULTS.CSS.STATUS_OK
+      : EXP_DEFAULTS.CSS.STATUS_NEUTRAL;
 }
 
 /* ========================================================================== */
-/* PlannerApp                                                                 */
+/* Grok Quiz → personalized list + video explainers                          */
 /* ========================================================================== */
 
-class PlannerApp {
+class GrokQuiz {
   /**
-   * @param {PlannerConfig} config
+   * @param {HTMLFormElement} form
+   * @param {HTMLElement} results
+   * @param {ExperienceConfig} config
    */
-  constructor(config) {
-    this.form = config.form;
-    this.planSection = config.planSection;
-    this.bundlesSection = config.bundlesSection;
-    this.statusEl = config.statusEl;
-    this.spinnerEl = config.spinnerEl;
-    this.submitButton = config.submitButton;
-    this.onEvent = config.onEvent || (() => {});
-
-    this.planEndpoint = config.planEndpoint || DEFAULTS.API.PLAN;
-    this.bundlesEndpoint = config.bundlesEndpoint || DEFAULTS.API.BUNDLES;
-    this.timeoutMs = config.timeoutMs || DEFAULTS.API.TIMEOUT_MS;
-
-    /** @type {HTMLInputElement|null} */
-    this.ageInput = this.form.querySelector('#age');
-    /** @type {HTMLInputElement|null} */
-    this.concernInput = this.form.querySelector('#concern');
-    /** @type {HTMLInputElement|null} */
-    this.emailInput = this.form.querySelector('#email');
-
-    /** @type {PlannerState} */
-    this.state = 'idle';
-
-    if (!this.ageInput || !this.concernInput) {
-      console.error('[planner] Missing #age or #concern input in form.');
-    }
-
-    // Accessibility
-    this.statusEl.setAttribute('role', 'status');
-    this.statusEl.setAttribute('aria-live', 'polite');
+  constructor(form, results, config) {
+    this.form = form;
+    this.results = results;
+    this.config = config;
+    this.loading = false;
+    /** @type {PlannerStepData|null} */
+    this.latestPlan = null;
+    /** @type {PlannerBundle[]|null} */
+    this.latestBundles = null;
   }
-
-  /* ---------------------------------------------------------------------- */
-  /* Init                                                                   */
-  /* ---------------------------------------------------------------------- */
 
   init() {
-    if (!this.ageInput || !this.concernInput) {
-      return;
+    this.form.addEventListener('submit', (e) => this.handleSubmit(e));
+  }
+
+  /** @param {PlannerStepData|null} plan */
+  syncPlan(plan) {
+    this.latestPlan = plan;
+  }
+
+  /** @param {PlannerBundle[]|null} bundles */
+  syncBundles(bundles) {
+    this.latestBundles = bundles;
+  }
+
+  buildPayload() {
+    const fd = new FormData(this.form);
+    /** @type {Record<string, unknown>} */
+    const payload = {};
+    fd.forEach((value, key) => {
+      payload[key] = value;
+    });
+
+    if (this.latestPlan && Array.isArray(this.latestPlan.steps)) {
+      payload.plan_steps = this.latestPlan.steps;
+    }
+    if (this.latestBundles) {
+      payload.bundle_names = this.latestBundles.map((b) => b.name);
     }
 
-    this.form.addEventListener('submit', (event) => this.handleSubmit(event));
-
-    // Live field-level validation
-    const blurHandler = () => {
-      if (this.state === 'submitting') return;
-      this.validateAndShowErrors(false);
-    };
-
-    this.ageInput.addEventListener('blur', blurHandler);
-    this.concernInput.addEventListener('blur', blurHandler);
-    if (this.emailInput) {
-      this.emailInput.addEventListener('blur', blurHandler);
-    }
-
-    this.resetUI();
-  }
-
-  /* ---------------------------------------------------------------------- */
-  /* UI/state helpers                                                       */
-  /* ---------------------------------------------------------------------- */
-
-  /**
-   * @param {PlannerState} newState
-   */
-  setState(newState) {
-    this.state = newState;
-    this.onEvent('state_change', { state: newState });
-  }
-
-  resetUI() {
-    this.clearStatus();
-    this.hideSpinner();
-    this.clearFieldErrors();
-    this.setState('idle');
-  }
-
-  showSpinner() {
-    this.spinnerEl.classList.remove(DEFAULTS.CSS.HIDDEN);
-    this.form.setAttribute('aria-busy', 'true');
-  }
-
-  hideSpinner() {
-    this.spinnerEl.classList.add(DEFAULTS.CSS.HIDDEN);
-    this.form.removeAttribute('aria-busy');
-  }
-
-  /**
-   * @param {string} msg
-   * @param {boolean} [isError=false]
-   */
-  setStatus(msg, isError = false) {
-    this.statusEl.textContent = msg;
-    this.statusEl.className = isError
-      ? DEFAULTS.CSS.STATUS_ERROR
-      : msg
-        ? DEFAULTS.CSS.STATUS_OK
-        : DEFAULTS.CSS.STATUS_NEUTRAL;
-  }
-
-  clearStatus() {
-    this.setStatus(DEFAULTS.TEXT.STATUS_IDLE, false);
-  }
-
-  disableForm() {
-    this.submitButton.disabled = true;
-    this.submitButton.setAttribute('aria-disabled', 'true');
-  }
-
-  enableForm() {
-    this.submitButton.disabled = false;
-    this.submitButton.setAttribute('aria-disabled', 'false');
-  }
-
-  clearFieldErrors() {
-    if (this.ageInput) this.setFieldError(this.ageInput, null);
-    if (this.concernInput) this.setFieldError(this.concernInput, null);
-    if (this.emailInput) this.setFieldError(this.emailInput, null);
-  }
-
-  /**
-   * @param {HTMLElement} field
-   * @param {string|null} message
-   */
-  setFieldError(field, message) {
-    const fieldWrapper =
-      field.closest('[data-field-wrapper]') || field.parentElement || field;
-    const existingError = fieldWrapper.querySelector(`.${DEFAULTS.CSS.FIELD_ERROR}`);
-
-    field.classList.remove(DEFAULTS.CSS.FIELD_INVALID);
-    if (existingError) existingError.remove();
-    field.removeAttribute('aria-describedby');
-
-    if (!message) return;
-
-    field.classList.add(DEFAULTS.CSS.FIELD_INVALID);
-
-    const errorId = `${field.id || field.getAttribute('name') || 'field'}-error`;
-    const errorEl = createEl(
-      'div',
-      {
-        className: DEFAULTS.CSS.FIELD_ERROR,
-        id: errorId
-      },
-      [message]
-    );
-
-    fieldWrapper.appendChild(errorEl);
-    field.setAttribute('aria-describedby', errorId);
-  }
-
-  /* ---------------------------------------------------------------------- */
-  /* Validation                                                             */
-  /* ---------------------------------------------------------------------- */
-
-  /**
-   * @param {boolean} [focusFirstInvalid=true]
-   * @returns {boolean}
-   */
-  validateAndShowErrors(focusFirstInvalid = true) {
-    const result = validateFields(
-      getTrimmedValue(this.ageInput),
-      getTrimmedValue(this.concernInput),
-      getTrimmedValue(this.emailInput)
-    );
-
-    this.clearFieldErrors();
-
-    if (!result.ok) {
-      this.setStatus(result.formError || DEFAULTS.TEXT.STATUS_VALIDATION_ERROR, true);
-
-      /** @type {HTMLElement|null} */
-      let firstInvalidField = null;
-
-      if (this.ageInput && result.fieldErrors.age) {
-        this.setFieldError(this.ageInput, result.fieldErrors.age);
-        firstInvalidField = firstInvalidField || this.ageInput;
-      }
-
-      if (this.concernInput && result.fieldErrors.concern) {
-        this.setFieldError(this.concernInput, result.fieldErrors.concern);
-        firstInvalidField = firstInvalidField || this.concernInput;
-      }
-
-      if (this.emailInput && result.fieldErrors.email) {
-        this.setFieldError(this.emailInput, result.fieldErrors.email);
-        firstInvalidField = firstInvalidField || this.emailInput;
-      }
-
-      if (focusFirstInvalid && firstInvalidField) {
-        firstInvalidField.focus();
-      }
-
-      this.onEvent('validation_failed', { fieldErrors: result.fieldErrors });
-      return false;
-    }
-
-    this.clearStatus();
-    return true;
-  }
-
-  /**
-   * Get payload from the form. Assumes validation has already passed.
-   * @returns {PlannerPayload}
-   */
-  getPayload() {
-    const ageMonths = Number(getTrimmedValue(this.ageInput) || '0');
-    const concern = getTrimmedValue(this.concernInput);
-    const email = getTrimmedValue(this.emailInput);
-
-    /** @type {PlannerPayload} */
-    const payload = { age_months: ageMonths, concern };
-    if (email) payload.email = email;
     return payload;
   }
 
-  /* ---------------------------------------------------------------------- */
-  /* Rendering                                                              */
-  /* ---------------------------------------------------------------------- */
+  /** @param {SubmitEvent} event */
+  async handleSubmit(event) {
+    event.preventDefault();
+    if (this.loading) return;
+    this.loading = true;
 
-  /**
-   * @param {PlannerStepData|null} planData
-   */
-  renderPlan(planData) {
-    this.planSection.innerHTML = '';
-    const frag = document.createDocumentFragment();
+    this.results.innerHTML = '';
+    this.results.appendChild(
+      createEl('p', { textContent: EXP_DEFAULTS.TEXT.QUIZ_LOADING })
+    );
 
-    const heading = createEl('h2', {
-      textContent: DEFAULTS.TEXT.PLAN_HEADING,
-      id: 'plan-heading',
-      tabIndex: -1
-    });
-    frag.appendChild(heading);
+    const payload = this.buildPayload();
 
-    const steps = Array.isArray(planData?.steps) ? planData.steps : [];
-    if (steps.length > 0) {
-      const list = createEl('ul', { 'aria-labelledby': 'plan-heading' });
-      steps.forEach((step, idx) => {
-        list.appendChild(
-          createEl('li', { dataset: { stepIndex: String(idx + 1) } }, [step])
-        );
+    try {
+      const endpoint = this.config.grokQuizEndpoint || EXP_DEFAULTS.API.GROK_QUIZ;
+      /** @type {GrokQuizResponse} */
+      const data = await jsonFetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
       });
-      frag.appendChild(list);
+      this.renderResults(data);
+      this.config.onEvent?.('grok_quiz_success', { payload, data });
+    } catch (err) {
+      console.error('[experience:grok_quiz] error', err);
+      this.results.innerHTML = '';
+      this.results.appendChild(
+        createEl('p', { textContent: EXP_DEFAULTS.TEXT.QUIZ_ERROR })
+      );
+      this.config.onEvent?.('grok_quiz_error', err);
+    } finally {
+      this.loading = false;
     }
-
-    const disclaimer = createEl('p', { className: DEFAULTS.CSS.DISCLAIMER }, [
-      DEFAULTS.TEXT.DISCLAIMER
-    ]);
-    frag.appendChild(disclaimer);
-
-    this.planSection.appendChild(frag);
-
-    // Focus the heading for accessibility and “guided” experience
-    heading.focus();
   }
 
-  /**
-   * @param {PlannerBundle[]|null} bundles
-   */
-  renderBundles(bundles) {
-    this.bundlesSection.innerHTML = '';
+  /** @param {GrokQuizResponse} data */
+  renderResults(data) {
+    this.results.innerHTML = '';
     const frag = document.createDocumentFragment();
 
-    const arr = Array.isArray(bundles) ? bundles : [];
+    const items = Array.isArray(data.items) ? data.items : [];
+    const videos = Array.isArray(data.videos) ? data.videos : [];
 
-    if (arr.length === 0) {
-      frag.appendChild(createEl('p', {}, [DEFAULTS.TEXT.NO_BUNDLES]));
-      this.bundlesSection.appendChild(frag);
+    if (items.length === 0 && videos.length === 0) {
+      frag.appendChild(
+        createEl('p', { textContent: EXP_DEFAULTS.TEXT.QUIZ_EMPTY })
+      );
+      this.results.appendChild(frag);
       return;
     }
 
-    const heading = createEl('h2', {
-      textContent: DEFAULTS.TEXT.BUNDLES_HEADING,
-      id: 'bundles-heading'
-    });
-    frag.appendChild(heading);
-
-    arr.forEach((bundle) => {
-      const idSafe = encodeURIComponent(String(bundle.id ?? 'bundle'));
-
-      const article = createEl('article', {
-        className: DEFAULTS.CSS.BUNDLE_CARD,
-        'aria-labelledby': `bundle-${idSafe}-title`
+    if (items.length > 0) {
+      const heading = createEl('h3', {
+        textContent: EXP_DEFAULTS.TEXT.QUIZ_HEADING_LIST,
+        id: 'quiz-personalized-heading',
+        tabIndex: -1
       });
-
-      const title = createEl('h3', {
-        id: `bundle-${idSafe}-title`,
-        textContent: bundle.name ?? 'Bundle'
+      const ul = createEl('ul', { 'aria-labelledby': 'quiz-personalized-heading' });
+      items.forEach((item) => {
+        const strong = createEl('strong', {}, [item.title]);
+        const parts = [strong];
+        if (item.description) parts.push(' – ' + item.description);
+        ul.appendChild(createEl('li', {}, parts));
       });
+      frag.append(heading, ul);
+    }
 
-      const descText = bundle.description || '';
-      const priceText = bundle.price ? `Price: ${bundle.price}` : '';
-
-      const desc = createEl('p', {}, descText ? [descText] : []);
-      const price = createEl('p', {}, priceText ? [priceText] : []);
-
-      const href = bundle.href || `/api/bundles/go/${idSafe}`;
-
-      const link = createEl('a', {
-        href,
-        rel: 'noopener sponsored nofollow',
-        target: '_blank',
-        textContent: 'View deal'
+    if (videos.length > 0) {
+      const heading = createEl('h3', {
+        textContent: EXP_DEFAULTS.TEXT.QUIZ_HEADING_VIDEOS,
+        id: 'quiz-videos-heading',
+        tabIndex: -1
       });
+      const ul = createEl('ul', { 'aria-labelledby': 'quiz-videos-heading' });
+      videos.forEach((video) => {
+        const link = createEl('a', {
+          href: video.url,
+          target: '_blank',
+          rel: 'noopener noreferrer',
+          textContent: video.title
+        });
+        ul.appendChild(createEl('li', {}, [link]));
+      });
+      frag.append(heading, ul);
+    }
 
-      article.append(title, desc, price, link);
-      frag.appendChild(article);
-    });
+    this.results.appendChild(frag);
+  }
+}
 
-    this.bundlesSection.appendChild(frag);
+/* ========================================================================== */
+/* Registry builder + share link                                              */
+/* ========================================================================== */
+
+/**
+ * @typedef {Object} RegistryItem
+ * @property {string} id
+ * @property {string} name
+ * @property {string} [note]
+ * @property {string} [url]
+ * @property {string|number} [sourceBundleId]
+ */
+
+class RegistryBuilder {
+  /**
+   * @param {HTMLElement} root
+   * @param {ExperienceConfig} config
+   */
+  constructor(root, config) {
+    this.root = root;
+    this.config = config;
+    /** @type {HTMLFormElement|null} */
+    this.form = root.querySelector(EXP_DEFAULTS.SELECTORS.REGISTRY_FORM);
+    /** @type {HTMLElement|null} */
+    this.listEl = root.querySelector(EXP_DEFAULTS.SELECTORS.REGISTRY_LIST);
+    /** @type {HTMLButtonElement|null} */
+    this.shareBtn = root.querySelector(EXP_DEFAULTS.SELECTORS.REGISTRY_SHARE);
+    /** @type {RegistryItem[]} */
+    this.items = [];
   }
 
-  /* ---------------------------------------------------------------------- */
-  /* Error resolution                                                       */
-  /* ---------------------------------------------------------------------- */
+  init() {
+    if (!this.form || !this.listEl || !this.shareBtn) return;
+    this.load();
+    this.render();
+
+    this.form.addEventListener('submit', (e) => this.handleAdd(e));
+    this.shareBtn.addEventListener('click', () => this.handleShare());
+  }
+
+  load() {
+    try {
+      const raw = localStorage.getItem(EXP_DEFAULTS.STORAGE.REGISTRY);
+      if (!raw) return;
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) this.items = parsed;
+    } catch (err) {
+      console.error('[experience:registry] load error', err);
+    }
+  }
+
+  save() {
+    try {
+      localStorage.setItem(EXP_DEFAULTS.STORAGE.REGISTRY, JSON.stringify(this.items));
+    } catch (err) {
+      console.error('[experience:registry] save error', err);
+    }
+  }
+
+  /** @param {PlannerBundle[]|null} bundles */
+  syncFromBundles(bundles) {
+    if (!bundles || !bundles.length) return;
+    if (this.items.length > 0) return; // don't overwrite user list
+
+    bundles.forEach((b) => {
+      this.items.push({
+        id: `bundle-${b.id}`,
+        name: b.name,
+        note: b.description || b.price || '',
+        url: b.href,
+        sourceBundleId: b.id
+      });
+    });
+    this.save();
+    this.render();
+  }
+
+  /** @param {SubmitEvent} event */
+  handleAdd(event) {
+    event.preventDefault();
+    const fd = new FormData(this.form);
+    const name = String(fd.get('name') || '').trim();
+    const note = String(fd.get('note') || '').trim();
+    const url = String(fd.get('url') || '').trim();
+    if (!name) return;
+
+    const item = /** @type {RegistryItem} */ ({
+      id: `custom-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+      name,
+      note: note || undefined,
+      url: url || undefined
+    });
+
+    this.items.push(item);
+    this.save();
+    this.form.reset();
+    this.render();
+    this.config.onEvent?.('registry_item_added', { item });
+  }
+
+  render() {
+    this.listEl.innerHTML = '';
+    if (this.items.length === 0) {
+      this.listEl.textContent = EXP_DEFAULTS.TEXT.REGISTRY_EMPTY;
+      return;
+    }
+
+    const ul = createEl('ul');
+    this.items.forEach((item) => {
+      const removeBtn = createEl(
+        'button',
+        {
+          type: 'button',
+          onclick: () => {
+            this.items = this.items.filter((i) => i.id !== item.id);
+            this.save();
+            this.render();
+            this.config.onEvent?.('registry_item_removed', { item });
+          }
+        },
+        ['Remove']
+      );
+
+      /** @type {(Node|string)[]} */
+      const content = [
+        createEl('span', { className: EXP_DEFAULTS.CSS.REGISTRY_ITEM }, [
+          createEl('strong', {}, [item.name])
+        ])
+      ];
+      if (item.note) content.push(' – ' + item.note);
+      if (item.url) {
+        const link = createEl('a', {
+          href: item.url,
+          target: '_blank',
+          rel: 'noopener noreferrer',
+          textContent: 'View'
+        });
+        content.push(' ', link);
+      }
+      content.push(' ', removeBtn);
+
+      ul.appendChild(createEl('li', {}, content));
+    });
+
+    this.listEl.appendChild(ul);
+  }
+
+  async handleShare() {
+    try {
+      let shareUrl = '';
+
+      if (this.config.registryShareEndpoint) {
+        const res = await jsonFetch(this.config.registryShareEndpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ items: this.items })
+        });
+        // @ts-ignore
+        shareUrl = String(res.url || '');
+      }
+
+      if (!shareUrl) {
+        const encoded = encodeURIComponent(JSON.stringify(this.items));
+        shareUrl = `${window.location.origin}${window.location.pathname}?registry=${encoded}`;
+      }
+
+      await navigator.clipboard?.writeText(shareUrl);
+      alert(EXP_DEFAULTS.TEXT.REGISTRY_SHARE_OK);
+      this.config.onEvent?.('registry_share', { url: shareUrl });
+    } catch (err) {
+      console.error('[experience:registry] share error', err);
+      alert(EXP_DEFAULTS.TEXT.REGISTRY_SHARE_ERROR);
+      this.config.onEvent?.('registry_share_error', err);
+    }
+  }
+}
+
+/* ========================================================================== */
+/* Milestone tracker                                                          */
+/* ========================================================================== */
+
+/**
+ * @typedef {Object} Milestone
+ * @property {string} id
+ * @property {string} label
+ * @property {boolean} done
+ */
+
+class MilestoneTracker {
+  /**
+   * @param {HTMLElement} listEl
+   * @param {HTMLButtonElement|null} addBtn
+   * @param {ExperienceConfig} config
+   */
+  constructor(listEl, addBtn, config) {
+    this.listEl = listEl;
+    this.addBtn = addBtn;
+    this.config = config;
+    /** @type {Milestone[]} */
+    this.milestones = [];
+  }
+
+  init() {
+    this.load();
+    this.render();
+    if (this.addBtn) {
+      this.addBtn.addEventListener('click', () => this.addMilestone());
+    }
+  }
+
+  load() {
+    try {
+      const raw = localStorage.getItem(EXP_DEFAULTS.STORAGE.MILESTONES);
+      if (!raw) return;
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) this.milestones = parsed;
+    } catch (err) {
+      console.error('[experience:milestones] load error', err);
+    }
+  }
+
+  save() {
+    try {
+      localStorage.setItem(EXP_DEFAULTS.STORAGE.MILESTONES, JSON.stringify(this.milestones));
+    } catch (err) {
+      console.error('[experience:milestones] save error', err);
+    }
+  }
+
+  /** @param {PlannerStepData|null} plan */
+  syncFromPlan(plan) {
+    if (!plan || !Array.isArray(plan.steps) || !plan.steps.length) return;
+    if (this.milestones.length > 0) return; // don't overwrite user’s milestones
+
+    this.milestones = plan.steps.map((label, index) => ({
+      id: `plan-${index + 1}`,
+      label: label.trim(),
+      done: false
+    }));
+    this.save();
+    this.render();
+  }
+
+  render() {
+    this.listEl.innerHTML = '';
+    if (this.milestones.length === 0) {
+      this.listEl.textContent = EXP_DEFAULTS.TEXT.MILESTONES_EMPTY;
+      return;
+    }
+
+    this.milestones.forEach((m) => {
+      const checkbox = createEl('input', {
+        type: 'checkbox',
+        checked: m.done,
+        onchange: () => {
+          m.done = !m.done;
+          this.save();
+          this.render();
+          this.config.onEvent?.('milestone_toggled', { milestone: m });
+        }
+      });
+
+      const labelEl = createEl('span', {
+        className: m.done ? EXP_DEFAULTS.CSS.MILESTONE_DONE : ''
+      }, [m.label]);
+
+      this.listEl.appendChild(createEl('li', {}, [checkbox, ' ', labelEl]));
+    });
+  }
+
+  addMilestone() {
+    const label = window.prompt('Describe your new milestone:');
+    if (!label) return;
+    const m = /** @type {Milestone} */ ({
+      id: `custom-${Date.now()}`,
+      label: label.trim(),
+      done: false
+    });
+    this.milestones.push(m);
+    this.save();
+    this.render();
+    this.config.onEvent?.('milestone_added', { milestone: m });
+  }
+}
+
+/* ========================================================================== */
+/* Price alert subscriptions                                                  */
+/* ========================================================================== */
+
+class PriceAlerts {
+  /**
+   * @param {HTMLFormElement} form
+   * @param {ExperienceConfig} config
+   */
+  constructor(form, config) {
+    this.form = form;
+    this.config = config;
+    /** @type {HTMLElement|null} */
+    this.statusEl = form.querySelector('[data-role="status"]');
+    /** @type {PlannerBundle[]|null} */
+    this.latestBundles = null;
+  }
+
+  init() {
+    this.form.addEventListener('submit', (e) => this.handleSubmit(e));
+  }
+
+  /** @param {PlannerBundle[]|null} bundles */
+  syncFromBundles(bundles) {
+    this.latestBundles = bundles;
+  }
+
+  buildPayload() {
+    const fd = new FormData(this.form);
+    /** @type {Record<string, unknown>} */
+    const payload = {};
+    fd.forEach((value, key) => {
+      payload[key] = value;
+    });
+
+    if (this.latestBundles) {
+      payload.bundles = this.latestBundles.map((b) => ({
+        id: b.id,
+        name: b.name,
+        price: b.price
+      }));
+    }
+
+    return payload;
+  }
+
+  /** @param {SubmitEvent} event */
+  async handleSubmit(event) {
+    event.preventDefault();
+    const payload = this.buildPayload();
+    setStatusEl(this.statusEl, EXP_DEFAULTS.TEXT.PRICE_ALERT_LOADING, false);
+
+    try {
+      const endpoint = this.config.priceAlertEndpoint || EXP_DEFAULTS.API.PRICE_ALERT;
+      await jsonFetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      setStatusEl(this.statusEl, EXP_DEFAULTS.TEXT.PRICE_ALERT_OK, false);
+      this.form.reset();
+      this.config.onEvent?.('price_alert_created', { payload });
+    } catch (err) {
+      console.error('[experience:price_alert] error', err);
+      setStatusEl(this.statusEl, EXP_DEFAULTS.TEXT.PRICE_ALERT_ERROR, true);
+      this.config.onEvent?.('price_alert_error', err);
+    }
+  }
+}
+
+/* ========================================================================== */
+/* Review submission + photo upload                                           */
+/* ========================================================================== */
+
+class ReviewForm {
+  /**
+   * @param {HTMLFormElement} form
+   * @param {ExperienceConfig} config
+   */
+  constructor(form, config) {
+    this.form = form;
+    this.config = config;
+    /** @type {HTMLElement|null} */
+    this.statusEl = form.querySelector('[data-role="status"]');
+    /** @type {PlannerBundle[]|null} */
+    this.latestBundles = null;
+  }
+
+  init() {
+    this.form.addEventListener('submit', (e) => this.handleSubmit(e));
+  }
+
+  /** @param {PlannerBundle[]|null} bundles */
+  syncFromBundles(bundles) {
+    this.latestBundles = bundles;
+  }
+
+  /** @param {SubmitEvent} event */
+  async handleSubmit(event) {
+    event.preventDefault();
+    const fd = new FormData(this.form);
+
+    if (this.latestBundles && this.latestBundles.length) {
+      fd.append('primary_bundle', String(this.latestBundles[0].id));
+    }
+
+    setStatusEl(this.statusEl, EXP_DEFAULTS.TEXT.REVIEW_LOADING, false);
+
+    try {
+      const endpoint = this.config.reviewEndpoint || EXP_DEFAULTS.API.REVIEW;
+      const res = await fetch(endpoint, { method: 'POST', body: fd });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      setStatusEl(this.statusEl, EXP_DEFAULTS.TEXT.REVIEW_OK, false);
+      this.form.reset();
+      this.config.onEvent?.('review_submitted', {});
+    } catch (err) {
+      console.error('[experience:review] error', err);
+      setStatusEl(this.statusEl, EXP_DEFAULTS.TEXT.REVIEW_ERROR, true);
+      this.config.onEvent?.('review_error', err);
+    }
+  }
+}
+
+/* ========================================================================== */
+/* AI live chat widget                                                        */
+/* ========================================================================== */
+
+class ChatWidget {
+  /**
+   * @param {HTMLElement} root
+   * @param {ExperienceConfig} config
+   */
+  constructor(root, config) {
+    this.root = root;
+    this.config = config;
+    /** @type {ChatMessage[]} */
+    this.history = [];
+    /** @type {PlannerStepData|null} */
+    this.latestPlan = null;
+    /** @type {PlannerBundle[]|null} */
+    this.latestBundles = null;
+    this.loading = false;
+  }
+
+  init() {
+    this.renderLauncher();
+  }
+
+  /** @param {PlannerStepData|null} plan */
+  syncPlan(plan) {
+    this.latestPlan = plan;
+  }
+
+  /** @param {PlannerBundle[]|null} bundles */
+  syncBundles(bundles) {
+    this.latestBundles = bundles;
+  }
+
+  renderLauncher() {
+    this.root.innerHTML = '';
+    const btn = createEl(
+      'button',
+      {
+        type: 'button',
+        className: EXP_DEFAULTS.CSS.CHAT_TOGGLE,
+        'aria-label': 'Open AI assistant chat'
+      },
+      ['Chat with AI']
+    );
+    btn.addEventListener('click', () => this.openChat());
+    this.root.appendChild(btn);
+  }
+
+  openChat() {
+    this.root.innerHTML = '';
+
+    const container = createEl('div', { className: EXP_DEFAULTS.CSS.CHAT_CONTAINER });
+    const header = createEl('div', { className: EXP_DEFAULTS.CSS.CHAT_HEADER });
+    const title = createEl('span', {}, [EXP_DEFAULTS.TEXT.CHAT_TITLE]);
+    const closeBtn = createEl(
+      'button',
+      {
+        type: 'button',
+        className: EXP_DEFAULTS.CSS.CHAT_CLOSE,
+        'aria-label': 'Close chat'
+      },
+      ['×']
+    );
+    header.append(title, closeBtn);
+
+    /** @type {HTMLElement} */
+    const messagesEl = createEl('div', {
+      className: EXP_DEFAULTS.CSS.CHAT_MESSAGES,
+      role: 'log',
+      'aria-live': 'polite'
+    });
+
+    const form = createEl('form', { className: 'chat-form' });
+    const input = createEl('input', {
+      type: 'text',
+      name: 'message',
+      placeholder: EXP_DEFAULTS.TEXT.CHAT_PLACEHOLDER,
+      autocomplete: 'off',
+      required: true
+    });
+    const sendBtn = createEl('button', { type: 'submit' }, ['Send']);
+    form.append(input, sendBtn);
+
+    container.append(header, messagesEl, form);
+    this.root.appendChild(container);
+
+    closeBtn.addEventListener('click', () => this.renderLauncher());
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const content = input.value.trim();
+      if (!content || this.loading) return;
+      input.value = '';
+      this.appendMessage('user', content, messagesEl);
+      this.sendMessage(content, messagesEl);
+    });
+
+    const initial = this.buildInitialContextMessage();
+    if (initial) {
+      this.appendMessage('assistant', initial, messagesEl);
+    }
+  }
+
+  buildInitialContextMessage() {
+    const lines = [];
+    if (this.latestPlan && Array.isArray(this.latestPlan.steps) && this.latestPlan.steps.length) {
+      lines.push('Here is your current plan:');
+      this.latestPlan.steps.forEach((step) => {
+        lines.push('• ' + step);
+      });
+    }
+    if (this.latestBundles && this.latestBundles.length) {
+      lines.push('');
+      lines.push('Recommended bundles:');
+      this.latestBundles.forEach((b) => lines.push(`• ${b.name}${b.price ? ` (${b.price})` : ''}`));
+    }
+    if (!lines.length) return '';
+    return lines.join('\n');
+  }
 
   /**
-   * @param {unknown} err
-   * @returns {PlannerResolvedError}
+   * @param {ChatRole} role
+   * @param {string} text
+   * @param {HTMLElement} messagesEl
    */
-  resolveError(err) {
-    if (!err) {
-      return {
-        kind: 'UNKNOWN',
-        message: DEFAULTS.TEXT.STATUS_GENERIC_ERROR
-      };
+  appendMessage(role, text, messagesEl) {
+    const cls =
+      role === 'user'
+        ? EXP_DEFAULTS.CSS.CHAT_MESSAGE_USER
+        : EXP_DEFAULTS.CSS.CHAT_MESSAGE_ASSISTANT;
+    const bubble = createEl('div', { className: cls }, [text]);
+    messagesEl.appendChild(bubble);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+    this.history.push({ role, content: text });
+  }
+
+  /**
+   * @param {string} text
+   * @param {HTMLElement} messagesEl
+   */
+  async sendMessage(text, messagesEl) {
+    this.loading = true;
+    const thinking = createEl(
+      'div',
+      { className: EXP_DEFAULTS.CSS.CHAT_MESSAGE_ASSISTANT },
+      [EXP_DEFAULTS.TEXT.CHAT_THINKING]
+    );
+    messagesEl.appendChild(thinking);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+
+    try {
+      const endpoint = this.config.chatEndpoint || EXP_DEFAULTS.API.CHAT;
+      /** @type {{reply: string}} */
+      const data = await jsonFetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: text,
+          history: this.history,
+          context: {
+            plan: this.latestPlan,
+            bundles: this.latestBundles
+          }
+        })
+      });
+
+      thinking.remove();
+      this.appendMessage('assistant', data.reply || '(no response)', messagesEl);
+      this.config.onEvent?.('chat_message', { history: this.history.slice() });
+    } catch (err) {
+      console.error('[experience:chat] error', err);
+      thinking.remove();
+      this.appendMessage('assistant', EXP_DEFAULTS.TEXT.CHAT_ERROR, messagesEl);
+      this.config.onEvent?.('chat_error', err);
+    } finally {
+      this.loading = false;
+    }
+  }
+}
+
+/* ========================================================================== */
+/* Daily self-evolution toggle                                                */
+/* ========================================================================== */
+
+class SelfEvolutionToggle {
+  /**
+   * @param {HTMLInputElement} checkbox
+   * @param {ExperienceConfig} config
+   */
+  constructor(checkbox, config) {
+    this.checkbox = checkbox;
+    this.config = config;
+  }
+
+  init() {
+    this.checkbox.addEventListener('change', () =>
+      this.handleChange(this.checkbox.checked)
+    );
+  }
+
+  /** @param {boolean} enabled */
+  async handleChange(enabled) {
+    try {
+      const endpoint =
+        this.config.selfEvolutionWebhookEndpoint ||
+        EXP_DEFAULTS.API.SELF_EVOLUTION_WEBHOOK;
+
+      await jsonFetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ enabled })
+      });
+
+      this.config.onEvent?.('self_evolution_toggle', { enabled });
+    } catch (err) {
+      console.error('[experience:self_evolution] error', err);
+      alert(EXP_DEFAULTS.TEXT.SELF_EVOLUTION_ERROR);
+      this.checkbox.checked = !enabled;
+      this.config.onEvent?.('self_evolution_error', err);
+    }
+  }
+}
+
+/* ========================================================================== */
+/* ExperienceApp – orchestrator                                               */
+/* ========================================================================== */
+
+class ExperienceApp {
+  /** @param {ExperienceConfig} config */
+  constructor(config) {
+    this.config = config;
+
+    /** @type {GrokQuiz|null} */
+    this.grokQuiz = null;
+    /** @type {RegistryBuilder|null} */
+    this.registry = null;
+    /** @type {MilestoneTracker|null} */
+    this.milestones = null;
+    /** @type {PriceAlerts|null} */
+    this.priceAlerts = null;
+    /** @type {ReviewForm|null} */
+    this.reviewForm = null;
+    /** @type {ChatWidget|null} */
+    this.chat = null;
+    /** @type {SelfEvolutionToggle|null} */
+    this.selfEvolution = null;
+
+    /** @type {PlannerStepData|null} */
+    this.latestPlan = null;
+    /** @type {PlannerBundle[]|null} */
+    this.latestBundles = null;
+  }
+
+  init() {
+    this.initFeatures();
+    this.wirePlannerEvents(this.config.plannerApp);
+    this.config.onEvent?.('experience_init', {});
+  }
+
+  initFeatures() {
+    // Grok Quiz
+    const quizForm = /** @type {HTMLFormElement|null} */ (
+      document.querySelector(EXP_DEFAULTS.SELECTORS.QUIZ_FORM)
+    );
+    const quizResults = /** @type {HTMLElement|null} */ (
+      document.querySelector(EXP_DEFAULTS.SELECTORS.QUIZ_RESULTS)
+    );
+    if (quizForm && quizResults) {
+      this.grokQuiz = new GrokQuiz(quizForm, quizResults, this.config);
+      this.grokQuiz.init();
     }
 
-    const anyErr = /** @type {any} */ (err);
-
-    if (anyErr.code === 'TIMEOUT' || anyErr.message === 'timeout') {
-      return {
-        kind: 'TIMEOUT',
-        message: DEFAULTS.TEXT.STATUS_TIMEOUT_ERROR,
-        raw: err
-      };
+    // Registry
+    const registryRoot = /** @type {HTMLElement|null} */ (
+      document.querySelector(EXP_DEFAULTS.SELECTORS.REGISTRY_ROOT)
+    );
+    if (registryRoot) {
+      this.registry = new RegistryBuilder(registryRoot, this.config);
+      this.registry.init();
     }
 
-    if (anyErr instanceof TypeError) {
-      // Typical fetch network error
-      return {
-        kind: 'NETWORK',
-        message: DEFAULTS.TEXT.STATUS_NETWORK_ERROR,
-        raw: err
-      };
+    // Milestones
+    const milestoneList = /** @type {HTMLElement|null} */ (
+      document.querySelector(EXP_DEFAULTS.SELECTORS.MILESTONE_LIST)
+    );
+    const milestoneAdd = /** @type {HTMLButtonElement|null} */ (
+      document.querySelector(EXP_DEFAULTS.SELECTORS.MILESTONE_ADD)
+    );
+    if (milestoneList) {
+      this.milestones = new MilestoneTracker(milestoneList, milestoneAdd, this.config);
+      this.milestones.init();
     }
 
-    if (typeof anyErr.status === 'number') {
-      return {
-        kind: 'SERVER',
-        message: DEFAULTS.TEXT.STATUS_GENERIC_ERROR,
-        raw: err
-      };
+    // Price alerts
+    const priceAlertForm = /** @type {HTMLFormElement|null} */ (
+      document.querySelector(EXP_DEFAULTS.SELECTORS.PRICE_ALERT_FORM)
+    );
+    if (priceAlertForm) {
+      this.priceAlerts = new PriceAlerts(priceAlertForm, this.config);
+      this.priceAlerts.init();
     }
 
-    return {
-      kind: 'UNKNOWN',
-      message: DEFAULTS.TEXT.STATUS_GENERIC_ERROR,
-      raw: err
+    // Review form
+    const reviewFormEl = /** @type {HTMLFormElement|null} */ (
+      document.querySelector(EXP_DEFAULTS.SELECTORS.REVIEW_FORM)
+    );
+    if (reviewFormEl) {
+      this.reviewForm = new ReviewForm(reviewFormEl, this.config);
+      this.reviewForm.init();
+    }
+
+    // Chat widget
+    const chatRoot = /** @type {HTMLElement|null} */ (
+      document.querySelector(EXP_DEFAULTS.SELECTORS.CHAT_WIDGET)
+    );
+    if (chatRoot) {
+      this.chat = new ChatWidget(chatRoot, this.config);
+      this.chat.init();
+    }
+
+    // Self-evolution toggle
+    const toggle = /** @type {HTMLInputElement|null} */ (
+      document.querySelector(EXP_DEFAULTS.SELECTORS.SELF_EVOLUTION_TOGGLE)
+    );
+    if (toggle) {
+      this.selfEvolution = new SelfEvolutionToggle(toggle, this.config);
+      this.selfEvolution.init();
+    }
+  }
+
+  /**
+   * Wire into PlannerApp events by monkey-patching its onEvent.
+   * @param {any|null} plannerApp
+   */
+  wirePlannerEvents(plannerApp) {
+    if (!plannerApp || typeof plannerApp.onEvent !== 'function') return;
+
+    const originalOnEvent = plannerApp.onEvent.bind(plannerApp);
+
+    plannerApp.onEvent = (stage, detail) => {
+      // Preserve any existing behavior
+      originalOnEvent(stage, detail);
+      // Fan-out to experience layer
+      this.handlePlannerEvent(stage, detail);
     };
   }
 
-  /* ---------------------------------------------------------------------- */
-  /* Main submit handler                                                    */
-  /* ---------------------------------------------------------------------- */
-
   /**
-   * @param {SubmitEvent} event
+   * Called from patched PlannerApp.onEvent.
+   * @param {string} stage
+   * @param {any} detail
    */
-  async handleSubmit(event) {
-    event.preventDefault();
-
-    // Avoid double-submit
-    if (this.state === 'submitting') {
-      return;
-    }
-
-    this.setState('validating');
-    const isValid = this.validateAndShowErrors(true);
-    if (!isValid) {
-      this.setState('error');
-      return;
-    }
-
-    const payload = this.getPayload();
-    this.onEvent('submit', { payload });
-
-    this.disableForm();
-    this.showSpinner();
-    this.setStatus(DEFAULTS.TEXT.STATUS_LOADING, false);
-    this.setState('submitting');
-
-    try {
-      // 1) Fetch plan
-      /** @type {PlannerStepData|null} */
-      const planData = await jsonFetch(this.planEndpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-        timeoutMs: this.timeoutMs
-      });
-
-      this.renderPlan(planData);
-      this.onEvent('plan_success', { plan: planData });
-
-      // 2) Fetch bundles (best-effort; don't wipe out a good plan if this fails)
-      try {
-        const bundlesUrl = this.bundlesEndpoint(payload.concern);
+  handlePlannerEvent(stage, detail) {
+    switch (stage) {
+      case 'plan_success': {
+        /** @type {PlannerStepData|null} */
+        const plan = detail?.plan ?? null;
+        this.latestPlan = plan;
+        this.grokQuiz?.syncPlan(plan);
+        this.milestones?.syncFromPlan(plan);
+        this.chat?.syncPlan(plan);
+        break;
+      }
+      case 'bundles_success': {
         /** @type {PlannerBundle[]|null} */
-        const bundlesData = await jsonFetch(bundlesUrl, {
-          method: 'GET',
-          timeoutMs: this.timeoutMs
-        });
-
-        this.renderBundles(bundlesData);
-        this.onEvent('bundles_success', { bundles: bundlesData });
-
-        this.setStatus(DEFAULTS.TEXT.STATUS_SUCCESS, false);
-        this.onEvent('success', { plan: planData, bundles: bundlesData });
-        this.setState('success');
-      } catch (bundlesErr) {
-        console.error('[planner] Error while fetching bundles:', bundlesErr);
-        this.renderBundles(null); // show "No bundles" message
-        this.setStatus(DEFAULTS.TEXT.STATUS_PARTIAL_BUNDLES_ERROR, true);
-        this.onEvent('bundles_error', bundlesErr);
-        this.setState('error');
+        const bundles = detail?.bundles ?? null;
+        this.latestBundles = bundles;
+        this.registry?.syncFromBundles(bundles);
+        this.priceAlerts?.syncFromBundles(bundles);
+        this.reviewForm?.syncFromBundles(bundles);
+        this.chat?.syncBundles(bundles);
+        break;
       }
-    } catch (err) {
-      console.error('[planner] Error while generating plan:', err);
-      const resolved = this.resolveError(err);
-      this.setStatus(resolved.message, true);
-      this.onEvent('error', resolved);
-      this.setState('error');
-    } finally {
-      this.hideSpinner();
-      this.enableForm();
-      if (this.state === 'submitting') {
-        // ensure we don't accidentally stay "submitting"
-        this.setState('idle');
-      }
+      default:
+        break;
     }
+
+    this.config.onEvent?.('planner_event', { stage, detail });
   }
 }
 
@@ -726,49 +1179,28 @@ class PlannerApp {
 /* ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
-  /** @type {HTMLFormElement|null} */
-  const form = document.getElementById('planner-form');
-  const planSection = document.getElementById('plan-section');
-  const bundlesSection = document.getElementById('bundles-section');
-  const statusEl = document.getElementById('status');
-  const spinnerEl = document.getElementById('spinner');
-  const submitButton =
-    /** @type {HTMLButtonElement|null} */ (
-      form?.querySelector('button[type="submit"]')
-    ) || null;
+  // PlannerApp is set in planner.js
+  // @ts-ignore
+  const plannerApp = window.__plannerApp || null;
 
-  if (!form || !planSection || !bundlesSection || !statusEl || !spinnerEl || !submitButton) {
-    console.error(
-      '[planner] Initialization failed – required DOM elements are missing. ' +
-        'Check #planner-form, #plan-section, #bundles-section, #status, #spinner, and a submit button.'
-    );
-    return;
-  }
-
-  const app = new PlannerApp({
-    form,
-    planSection,
-    bundlesSection,
-    statusEl,
-    spinnerEl,
-    submitButton,
-    // Optional customization points:
-    // planEndpoint: '/api/planner/plan',
-    // bundlesEndpoint: (concern) => `/api/bundles?age=${encodeURIComponent(concern)}`,
-    // timeoutMs: 15000,
+  const exp = new ExperienceApp({
+    plannerApp,
+    // You can override endpoints here if needed:
+    // grokQuizEndpoint: '/api/grok/quiz',
+    // chatEndpoint: '/api/chat',
+    // registryShareEndpoint: '/api/registry/share',
+    // priceAlertEndpoint: '/api/alerts/price',
+    // reviewEndpoint: '/api/reviews',
+    // selfEvolutionWebhookEndpoint: '/api/webhooks/self-evolution',
     onEvent: (stage, detail) => {
-      // Hook for analytics / debugging
-      // e.g. window.gtag?.('event', 'planner_' + stage, { detail });
-      // console.debug('[planner:event]', stage, detail);
+      // Central analytics hook for the entire experience layer
+      // e.g. window.gtag?.('event', 'experience_' + stage, { detail });
+      // console.debug('[experience:event]', stage, detail);
     }
   });
 
-  app.init();
+  exp.init();
 
-  // Expose for debugging / manual triggering from devtools if you want
   // @ts-ignore
-  window.__plannerApp = app;
+  window.__experienceApp = exp;
 });
-
-// Optionally export for module-based usage elsewhere
-// export { PlannerApp, DEFAULTS, validateFields };
