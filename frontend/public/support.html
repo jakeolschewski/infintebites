@@ -10,7 +10,6 @@
     content="Chat with the InfantBites AI Support Assistant or send a message directly to our team."
   />
 
-  <!-- You can move all styles to style.css if you prefer -->
   <style>
     :root {
       --bg: #f4f5fb;
@@ -129,6 +128,8 @@
       gap: 0.75rem;
       font-size: 0.78rem;
       color: var(--text-muted);
+      flex-wrap: wrap;
+      justify-content: flex-end;
     }
 
     .pill-badge {
@@ -147,6 +148,24 @@
       height: 8px;
       border-radius: var(--radius-pill);
       background: #22c55e;
+    }
+
+    .ai-model-chip {
+      border-radius: var(--radius-pill);
+      padding: 0.25rem 0.7rem;
+      border: 1px solid var(--border-subtle);
+      background: rgba(15, 23, 42, 0.02);
+      font-size: 0.75rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .ai-model-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #4c7df0;
     }
 
     .theme-toggle {
@@ -241,6 +260,47 @@
       color: var(--text-muted);
     }
 
+    .ai-status-row {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 0.4rem;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+    }
+
+    .ai-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      border-radius: var(--radius-pill);
+      padding: 0.2rem 0.55rem;
+      background: rgba(96, 165, 250, 0.12);
+      color: var(--primary-strong);
+      font-size: 0.74rem;
+    }
+
+    .ai-status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #4c7df0;
+      animation: pulse 1.8s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0%,
+      100% {
+        transform: scale(1);
+        opacity: 0.8;
+      }
+      50% {
+        transform: scale(1.3);
+        opacity: 1;
+      }
+    }
+
     .mode-toggle {
       display: inline-flex;
       align-items: center;
@@ -249,6 +309,7 @@
       background: var(--bg-subtle);
       border: 1px solid var(--border-subtle);
       font-size: 0.75rem;
+      white-space: nowrap;
     }
 
     .mode-toggle button {
@@ -278,7 +339,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 0.4rem;
-      margin: 0.4rem 0 0.8rem;
+      margin: 0.4rem 0 0.6rem;
     }
 
     .chip {
@@ -301,12 +362,105 @@
       color: var(--primary-strong);
     }
 
+    /* AI control strip */
+    .ai-control-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.45rem 0.7rem;
+      margin-bottom: 0.6rem;
+      border-radius: 0.9rem;
+      background: radial-gradient(circle at left, rgba(129, 140, 248, 0.18), transparent 60%);
+      border: 1px dashed rgba(148, 163, 184, 0.65);
+      font-size: 0.78rem;
+    }
+
+    .ai-control-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      align-items: center;
+    }
+
+    .ai-control-label {
+      font-weight: 500;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .segmented {
+      display: inline-flex;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-subtle);
+      padding: 0.1rem;
+    }
+
+    .segmented button {
+      border-radius: var(--radius-pill);
+      border: none;
+      background: transparent;
+      padding: 0.18rem 0.6rem;
+      font-size: 0.74rem;
+      cursor: pointer;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .segmented button.active {
+      background: var(--primary-soft);
+      color: var(--primary-strong);
+      font-weight: 500;
+    }
+
+    .ai-language-select {
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-subtle);
+      padding: 0.22rem 0.6rem;
+      font-size: 0.75rem;
+      background: rgba(15, 23, 42, 0.02);
+      color: var(--text-main);
+      outline: none;
+    }
+
+    .ai-language-select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.4);
+    }
+
+    .ai-goal-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.28rem;
+      margin-top: 0.25rem;
+    }
+
+    .ai-goal-chip {
+      border-radius: var(--radius-pill);
+      border: 1px dashed rgba(148, 163, 184, 0.7);
+      padding: 0.2rem 0.6rem;
+      font-size: 0.75rem;
+      background: rgba(249, 250, 251, 0.85);
+      cursor: pointer;
+      color: var(--text-muted);
+    }
+
+    .ai-goal-chip.active {
+      border-style: solid;
+      border-color: rgba(96, 165, 250, 0.9);
+      background: var(--primary-soft);
+      color: var(--primary-strong);
+      font-weight: 500;
+    }
+
     .support-chat-window {
       flex: 1;
       border-radius: 1.1rem;
       border: 1px solid rgba(148, 163, 184, 0.35);
       padding: 0.8rem;
-      margin-top: 0.15rem;
+      margin-top: 0.35rem;
       background: radial-gradient(circle at top left, rgba(129, 140, 248, 0.12), var(--bg-subtle) 50%);
       overflow-y: auto;
       max-height: 430px;
@@ -396,6 +550,32 @@
       text-align: right;
     }
 
+    .assistant-actions {
+      margin-top: 0.3rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.25rem;
+      font-size: 0.74rem;
+    }
+
+    .assistant-action-btn {
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      background: rgba(248, 250, 252, 0.9);
+      padding: 0.18rem 0.55rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.2rem;
+      color: var(--text-muted);
+    }
+
+    .assistant-action-btn:hover {
+      background: var(--primary-soft);
+      border-color: rgba(96, 165, 250, 0.8);
+      color: var(--primary-strong);
+    }
+
     .typing-indicator {
       display: inline-flex;
       align-items: center;
@@ -480,6 +660,7 @@
       display: flex;
       align-items: center;
       gap: 0.4rem;
+      flex-wrap: wrap;
     }
 
     .char-counter {
@@ -699,6 +880,7 @@
       gap: 0.4rem;
       font-size: 0.78rem;
       margin-top: 0.15rem;
+      flex-wrap: wrap;
     }
 
     .file-field input[type="file"] {
@@ -731,6 +913,104 @@
 
     .support-faq-list a:hover {
       text-decoration: underline;
+    }
+
+    /* AI ticket summary card */
+    .ai-summary-card {
+      margin-top: 0.5rem;
+      border-radius: 0.9rem;
+      border: 1px dashed rgba(148, 163, 184, 0.65);
+      padding: 0.6rem 0.7rem;
+      background: rgba(249, 250, 251, 0.95);
+      font-size: 0.8rem;
+    }
+
+    [data-theme="dark"] .ai-summary-card {
+      background: rgba(15, 23, 42, 0.96);
+    }
+
+    .ai-summary-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.25rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .ai-summary-title {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-weight: 500;
+    }
+
+    .ai-summary-body {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      white-space: pre-wrap;
+    }
+
+    .ai-summary-pill {
+      border-radius: var(--radius-pill);
+      padding: 0.15rem 0.55rem;
+      font-size: 0.7rem;
+      background: rgba(96, 165, 250, 0.12);
+      color: var(--primary-strong);
+    }
+
+    /* AI insights card */
+    .ai-insights-card {
+      margin-top: 0.8rem;
+      border-radius: 0.9rem;
+      border: 1px dashed rgba(148, 163, 184, 0.65);
+      padding: 0.6rem 0.7rem;
+      background: rgba(249, 250, 251, 0.95);
+      font-size: 0.8rem;
+    }
+
+    [data-theme="dark"] .ai-insights-card {
+      background: rgba(15, 23, 42, 0.96);
+    }
+
+    .ai-insights-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.25rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .ai-insights-pill {
+      border-radius: var(--radius-pill);
+      padding: 0.12rem 0.55rem;
+      font-size: 0.7rem;
+      background: rgba(56, 189, 248, 0.12);
+      color: #0369a1;
+    }
+
+    .ai-insights-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.22rem;
+    }
+
+    .ai-insights-list li {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.5rem;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .ai-insights-label {
+      opacity: 0.85;
+    }
+
+    .ai-insights-value {
+      font-weight: 500;
     }
 
     .support-footer {
@@ -777,7 +1057,10 @@
           <span class="pill-dot"></span>
           AI online
         </span>
-        <span>Avg AI response time: &lt; 10 seconds</span>
+        <div class="ai-model-chip">
+          <span class="ai-model-dot"></span>
+          <span id="ai-model-label">Smart Assist</span>
+        </div>
         <button id="theme-toggle" class="theme-toggle" type="button">
           <span aria-hidden="true">🌞</span>
           <span id="theme-label">Light</span>
@@ -799,6 +1082,13 @@
               Describe your problem in natural language. The assistant will answer,
               and can summarize everything for our human team if needed.
             </p>
+            <div class="ai-status-row">
+              <div class="ai-status-pill" id="ai-status-pill">
+                <span class="ai-status-dot" aria-hidden="true"></span>
+                <span id="ai-status-text">Listening for your message</span>
+              </div>
+              <span id="ai-status-extra">Mode: AI &amp; human, live summary on.</span>
+            </div>
           </div>
 
           <div class="mode-toggle" aria-label="Choose how your request is handled">
@@ -820,6 +1110,7 @@
           </div>
         </div>
 
+        <!-- Suggested prompts -->
         <div class="support-suggestions" aria-label="Suggested questions">
           <button class="chip" data-suggest="I’m having trouble logging into my InfantBites account.">
             Login help
@@ -835,6 +1126,63 @@
           </button>
           <button class="chip" data-suggest="I’m not sure how to use a specific InfantBites feature.">
             How do I…?
+          </button>
+        </div>
+
+        <!-- AI control strip -->
+        <div class="ai-control-strip" aria-label="AI answer settings">
+          <div class="ai-control-group">
+            <span class="ai-control-label">Answer style</span>
+            <div class="segmented" role="radiogroup" aria-label="AI answer length">
+              <button type="button" class="ai-style-btn" data-style="concise" aria-pressed="false">
+                Short
+              </button>
+              <button type="button" class="ai-style-btn active" data-style="balanced" aria-pressed="true">
+                Balanced
+              </button>
+              <button type="button" class="ai-style-btn" data-style="detailed" aria-pressed="false">
+                Step-by-step
+              </button>
+            </div>
+          </div>
+
+          <div class="ai-control-group">
+            <span class="ai-control-label">Tone</span>
+            <div class="segmented" role="radiogroup" aria-label="AI answer tone">
+              <button type="button" class="ai-tone-btn active" data-tone="friendly" aria-pressed="true">
+                Friendly
+              </button>
+              <button type="button" class="ai-tone-btn" data-tone="direct" aria-pressed="false">
+                Direct
+              </button>
+              <button type="button" class="ai-tone-btn" data-tone="reassuring" aria-pressed="false">
+                Reassuring
+              </button>
+            </div>
+          </div>
+
+          <div class="ai-control-group">
+            <span class="ai-control-label">Language</span>
+            <select id="ai-language" class="ai-language-select">
+              <option value="auto">Auto-detect</option>
+              <option value="en" selected>English</option>
+              <option value="es">Spanish</option>
+              <option value="pt">Portuguese</option>
+              <option value="fr">French</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Goal chips -->
+        <div class="ai-goal-chips" aria-label="AI goal preferences">
+          <button type="button" class="ai-goal-chip" data-goal="actions">
+            ✅ Give me clear next steps
+          </button>
+          <button type="button" class="ai-goal-chip" data-goal="explain">
+            📘 Explain what’s happening
+          </button>
+          <button type="button" class="ai-goal-chip" data-goal="draft_email">
+            ✉️ Draft an email I can send
           </button>
         </div>
 
@@ -863,6 +1211,9 @@
               <span class="char-counter" id="char-counter">0 / 2000</span>
             </div>
             <div style="display:flex; align-items:center; gap:0.25rem;">
+              <button type="button" id="summarize-thread" class="btn-ghost">
+                🧾 Summarize conversation
+              </button>
               <button type="button" id="clear-thread" class="btn-ghost">
                 🧹 Clear chat
               </button>
@@ -964,6 +1315,47 @@
             <li>Summarize key details for the human support team if needed.</li>
             <li>Speed up follow-ups by sending context, not just a one-line ticket.</li>
           </ul>
+
+          <!-- AI-generated ticket summary preview -->
+          <div class="ai-summary-card" id="ai-ticket-summary" aria-live="polite">
+            <div class="ai-summary-header">
+              <div class="ai-summary-title">
+                <span aria-hidden="true">🧾</span>
+                <span>Summary for the support team</span>
+              </div>
+              <span class="ai-summary-pill" id="ai-summary-status">
+                Live AI summary
+              </span>
+            </div>
+            <div id="ai-ticket-summary-body" class="ai-summary-body">
+              As you chat, the assistant will keep a concise, support-friendly summary here.
+            </div>
+          </div>
+        </div>
+
+        <!-- AI Insights for agents (optional from backend) -->
+        <div class="support-meta-section">
+          <h2>AI insights</h2>
+          <div class="ai-insights-card" id="ai-insights-card">
+            <div class="ai-insights-header">
+              <span>Conversation snapshot</span>
+              <span class="ai-insights-pill" id="ai-insights-pill">Waiting for context</span>
+            </div>
+            <ul class="ai-insights-list">
+              <li>
+                <span class="ai-insights-label">Predicted topic</span>
+                <span class="ai-insights-value" id="ai-insights-topic">—</span>
+              </li>
+              <li>
+                <span class="ai-insights-label">Urgency</span>
+                <span class="ai-insights-value" id="ai-insights-urgency">—</span>
+              </li>
+              <li>
+                <span class="ai-insights-label">Customer sentiment</span>
+                <span class="ai-insights-value" id="ai-insights-sentiment">—</span>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </aside>
@@ -975,18 +1367,19 @@
 
   <script>
     (function () {
-      const STORAGE_KEY = 'infantbites_support_thread_v2';
+      const STORAGE_KEY = 'infantbites_support_thread_v4';
       const THEME_KEY = 'infantbites_support_theme';
 
       class SupportChat {
         constructor() {
-          // Core elements
+          // Core chat elements
           this.chatWindow = document.getElementById('chat-window');
           this.chatForm = document.getElementById('support-chat-form');
           this.chatInput = document.getElementById('chat-input');
           this.chatSubmit = document.getElementById('chat-submit');
           this.chatSubmitText = document.getElementById('chat-submit-text');
           this.clearThreadBtn = document.getElementById('clear-thread');
+          this.summarizeBtn = document.getElementById('summarize-thread');
           this.responseSection = document.getElementById('support-response');
           this.charCounter = document.getElementById('char-counter');
           this.attachmentInput = document.getElementById('attachment');
@@ -998,10 +1391,31 @@
           this.topicInput = document.getElementById('topic');
           this.emailError = document.getElementById('email-error');
 
-          // Mode
+          // Mode & AI controls
           this.modeAI = document.getElementById('mode-ai-first');
           this.modeHuman = document.getElementById('mode-human-only');
           this.currentMode = 'ai_first';
+
+          this.aiStyleButtons = document.querySelectorAll('.ai-style-btn');
+          this.aiToneButtons = document.querySelectorAll('.ai-tone-btn');
+          this.aiLanguageSelect = document.getElementById('ai-language');
+          this.aiGoalChips = document.querySelectorAll('.ai-goal-chip');
+          this.aiStyle = 'balanced';
+          this.aiTone = 'friendly';
+          this.aiGoal = null;
+
+          // Status / summary / insights
+          this.aiStatusText = document.getElementById('ai-status-text');
+          this.aiStatusExtra = document.getElementById('ai-status-extra');
+          this.summaryBox = document.getElementById('ai-ticket-summary');
+          this.summaryBody = document.getElementById('ai-ticket-summary-body');
+          this.summaryStatus = document.getElementById('ai-summary-status');
+
+          this.insightsCard = document.getElementById('ai-insights-card');
+          this.insightsTopic = document.getElementById('ai-insights-topic');
+          this.insightsUrgency = document.getElementById('ai-insights-urgency');
+          this.insightsSentiment = document.getElementById('ai-insights-sentiment');
+          this.insightsPill = document.getElementById('ai-insights-pill');
 
           // Misc
           this.suggestionChips = document.querySelectorAll('.chip');
@@ -1051,6 +1465,12 @@
             this.clearConversation();
           });
 
+          // Summarize thread
+          this.summarizeBtn.addEventListener('click', () => {
+            if (!this.conversation.length) return;
+            this.requestSummary();
+          });
+
           // Suggestions
           this.suggestionChips.forEach((chip) => {
             chip.addEventListener('click', () => {
@@ -1067,10 +1487,36 @@
 
           // Meta form validation
           this.emailInput.addEventListener('blur', () => this.validateEmail());
+
+          // Mode
           this.modeAI.addEventListener('click', () => this.setMode('ai_first'));
           this.modeHuman.addEventListener('click', () =>
             this.setMode('human_only')
           );
+
+          // AI style buttons
+          this.aiStyleButtons.forEach((btn) => {
+            btn.addEventListener('click', () => {
+              const style = btn.getAttribute('data-style');
+              this.setAIStyle(style);
+            });
+          });
+
+          // AI tone buttons
+          this.aiToneButtons.forEach((btn) => {
+            btn.addEventListener('click', () => {
+              const tone = btn.getAttribute('data-tone');
+              this.setAITone(tone);
+            });
+          });
+
+          // AI goal chips
+          this.aiGoalChips.forEach((chip) => {
+            chip.addEventListener('click', () => {
+              const goal = chip.getAttribute('data-goal');
+              this.setAIGoal(goal);
+            });
+          });
 
           // Footer year
           const yearEl = document.getElementById('current-year');
@@ -1147,6 +1593,9 @@
           this.saveConversation();
           this.chatWindow.innerHTML = '';
           this.responseSection.innerHTML = '';
+          this.updateSummaryCard(null, true);
+          this.updateInsights(null);
+          this.updateStatus('Listening for your message', 'Mode: AI & human, live summary on.');
           this.addAssistantMessage(
             "I’ve cleared this thread. 👌\n\nYou can start a new question whenever you’re ready.",
             'Thread reset'
@@ -1158,14 +1607,16 @@
           this.chatWindow.scrollTop = this.chatWindow.scrollHeight;
         }
 
-        setLoading(loading) {
+        setLoading(loading, isSummary) {
           this.isSending = loading;
-          this.chatSubmit.disabled = loading;
-          this.chatSubmitText.textContent = loading ? 'Sending…' : 'Send';
+          if (!isSummary) {
+            this.chatSubmit.disabled = loading;
+            this.chatSubmitText.textContent = loading ? 'Sending…' : 'Send';
+          }
         }
 
         updateCharCounter() {
-          const max = this.chatInput.getAttribute('maxlength') || 2000;
+          const max = parseInt(this.chatInput.getAttribute('maxlength') || '2000', 10);
           const current = this.chatInput.value.length;
           this.charCounter.textContent = current + ' / ' + max;
         }
@@ -1230,6 +1681,11 @@
           this.typingNode = null;
         }
 
+        updateStatus(mainText, extraText) {
+          if (this.aiStatusText) this.aiStatusText.textContent = mainText || '';
+          if (this.aiStatusExtra) this.aiStatusExtra.textContent = extraText || '';
+        }
+
         validateEmail() {
           this.emailError.textContent = '';
           this.emailInput.removeAttribute('aria-invalid');
@@ -1255,13 +1711,47 @@
           if (mode === 'ai_first') {
             this.modeAI.classList.add('active');
             this.modeHuman.classList.remove('active');
+            this.updateStatus('Listening for your message', 'Mode: AI & human, live summary on.');
           } else {
             this.modeAI.classList.remove('active');
             this.modeHuman.classList.add('active');
+            this.updateStatus('Forwarding straight to a human', 'AI will still help summarize your chat.');
           }
         }
 
-        // MESSAGES
+        setAIStyle(style) {
+          this.aiStyle = style;
+          this.aiStyleButtons.forEach((btn) => {
+            const s = btn.getAttribute('data-style');
+            const isActive = s === style;
+            btn.classList.toggle('active', isActive);
+            btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+          });
+        }
+
+        setAITone(tone) {
+          this.aiTone = tone;
+          this.aiToneButtons.forEach((btn) => {
+            const t = btn.getAttribute('data-tone');
+            const isActive = t === tone;
+            btn.classList.toggle('active', isActive);
+            btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+          });
+        }
+
+        setAIGoal(goal) {
+          if (this.aiGoal === goal) {
+            this.aiGoal = null;
+          } else {
+            this.aiGoal = goal;
+          }
+          this.aiGoalChips.forEach((chip) => {
+            const g = chip.getAttribute('data-goal');
+            chip.classList.toggle('active', g === this.aiGoal);
+          });
+        }
+
+        // MESSAGE RENDERING
         renderMessage(msg) {
           const wrapper = document.createElement('div');
           wrapper.className = `chat-message ${msg.role}`;
@@ -1284,10 +1774,11 @@
             bubbleWrap.appendChild(meta);
           }
 
-          // Ratings only on last assistant message
-          if (msg.role === 'assistant' && msg.id === this.getLastAssistantId()) {
-            const ratingBar = this.createRatingBar(msg.id);
-            bubbleWrap.appendChild(ratingBar);
+          const isLastAssistant = msg.role === 'assistant' && msg.id === this.getLastAssistantId();
+
+          if (msg.role === 'assistant' && isLastAssistant) {
+            const actions = this.createAssistantActions(msg.id, msg.content);
+            bubbleWrap.appendChild(actions);
           }
 
           if (msg.role === 'assistant') {
@@ -1299,6 +1790,36 @@
           }
 
           this.chatWindow.appendChild(wrapper);
+        }
+
+        createAssistantActions(messageId, content) {
+          const container = document.createElement('div');
+          container.className = 'assistant-actions';
+          container.dataset.messageId = messageId;
+
+          const actions = [
+            { id: 'simplify', label: 'Simplify', icon: '✨' },
+            { id: 'steps', label: 'Show steps only', icon: '📋' },
+            { id: 'translate', label: 'Translate', icon: '🌐' },
+            { id: 'summarize', label: 'Summarize', icon: '🧾' }
+          ];
+
+          actions.forEach((act) => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'assistant-action-btn';
+            btn.innerHTML = `<span aria-hidden="true">${act.icon}</span><span>${act.label}</span>`;
+            btn.addEventListener('click', () => {
+              this.handleAssistantAction(act.id, content);
+            });
+            container.appendChild(btn);
+          });
+
+          // Rating bar
+          const ratingBar = this.createRatingBar(messageId);
+          container.appendChild(ratingBar);
+
+          return container;
         }
 
         createRatingBar(messageId) {
@@ -1334,7 +1855,6 @@
           upBtn.classList.toggle('active', direction === 'up');
           downBtn.classList.toggle('active', direction === 'down');
 
-          // Best-effort rating API; failures are silently ignored
           try {
             fetch('/api/support/rate', {
               method: 'POST',
@@ -1346,6 +1866,29 @@
               })
             }).catch(() => {});
           } catch (_) {}
+        }
+
+        handleAssistantAction(actionId, lastContent) {
+          let prompt = '';
+          switch (actionId) {
+            case 'simplify':
+              prompt = 'Can you simplify your last answer so it is easier to skim?';
+              break;
+            case 'steps':
+              prompt = 'Can you show just the steps I need to follow, as a checklist?';
+              break;
+            case 'translate':
+              prompt = 'Can you translate your last answer into my preferred language?';
+              break;
+            case 'summarize':
+              prompt = 'Can you summarize your last answer in 2–3 bullet points?';
+              break;
+          }
+          if (!prompt) return;
+
+          this.chatInput.value = prompt;
+          this.updateCharCounter();
+          this.chatForm.requestSubmit();
         }
 
         addUserMessage(text) {
@@ -1373,7 +1916,7 @@
             timestamp: Date.now()
           };
           this.conversation.push(msg);
-          // re-render last assistant with rating
+          // re-render all to ensure actions on latest assistant msg
           this.chatWindow.innerHTML = '';
           this.conversation.forEach((m) => this.renderMessage(m));
           this.saveConversation();
@@ -1395,6 +1938,7 @@
             this.addAssistantMessage(
               "Hi! I’m the InfantBites AI assistant. 👋\n\n" +
                 "You can ask me anything about your InfantBites account, billing, technical issues, or how the app works.\n\n" +
+                "Use the controls above to choose how I answer (short vs. step-by-step, tone, language, and goal).\n" +
                 "If needed, I’ll package everything up and send it to our human support team with context."
             );
           } else {
@@ -1405,6 +1949,120 @@
           this.updateCharCounter();
         }
 
+        updateSummaryCard(summary, resetOnly) {
+          if (!this.summaryBox || !this.summaryBody || !this.summaryStatus) return;
+
+          if (resetOnly) {
+            this.summaryBody.textContent =
+              'As you chat, the assistant will keep a concise, support-friendly summary here.';
+            this.summaryStatus.textContent = 'Live AI summary';
+            return;
+          }
+
+          if (summary && summary.trim()) {
+            this.summaryBody.textContent = summary.trim();
+            this.summaryStatus.textContent = 'Updated just now';
+          }
+        }
+
+        updateInsights(insights) {
+          if (
+            !this.insightsCard ||
+            !this.insightsTopic ||
+            !this.insightsUrgency ||
+            !this.insightsSentiment ||
+            !this.insightsPill
+          ) {
+            return;
+          }
+
+          if (!insights) {
+            this.insightsTopic.textContent = '—';
+            this.insightsUrgency.textContent = '—';
+            this.insightsSentiment.textContent = '—';
+            this.insightsPill.textContent = 'Waiting for context';
+            return;
+          }
+
+          this.insightsTopic.textContent = insights.topic || '—';
+          this.insightsUrgency.textContent = insights.urgency || '—';
+          this.insightsSentiment.textContent = insights.sentiment || '—';
+
+          const labelParts = [];
+          if (insights.urgency) labelParts.push(insights.urgency);
+          if (insights.sentiment) labelParts.push(insights.sentiment + ' sentiment');
+          this.insightsPill.textContent =
+            labelParts.length ? labelParts.join(' • ') : 'AI analysis updated';
+        }
+
+        // SUMMARY REQUEST (user-triggered)
+        async requestSummary() {
+          if (!this.conversation.length) return;
+          this.setLoading(true, true);
+          this.updateStatus('Summarizing the conversation…', 'This only affects your view, not the ticket.');
+          this.showTypingIndicator();
+
+          const payload = {
+            message: '__summary_request__',
+            history: this.conversation.map((m) => ({
+              role: m.role,
+              content: m.content
+            })),
+            metadata: {
+              mode: this.currentMode,
+              command: 'summarize_thread',
+              source: 'support_web_chat',
+              aiControls: {
+                style: 'concise',
+                goal: 'actions',
+                language: this.aiLanguageSelect
+                  ? this.aiLanguageSelect.value
+                  : 'auto'
+              }
+            }
+          };
+
+          try {
+            const res = await fetch('/api/support/ask', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+
+            let data = {};
+            try {
+              data = await res.json();
+            } catch (_) {}
+
+            this.hideTypingIndicator();
+
+            if (!res.ok) {
+              this.showAlertError(
+                (data && (data.error || data.message)) ||
+                  'Could not generate a summary. Please try again.'
+              );
+              this.updateStatus('Listening for your message', 'Summary failed. You can try again.');
+              return;
+            }
+
+            const summary =
+              (data && (data.ticketSummary || data.summary || data.reply)) ||
+              'Summary generated.';
+
+            this.updateSummaryCard(summary, false);
+            this.showAlertSuccess('Conversation summary updated.');
+            this.updateStatus('Listening for your message', 'Summary updated just now.');
+          } catch (err) {
+            console.error('Summary error:', err);
+            this.hideTypingIndicator();
+            this.showAlertError('Network error while summarizing. Please try again.');
+            this.updateStatus('Listening for your message', 'Network error while summarizing.');
+          } finally {
+            this.setLoading(false, true);
+          }
+        }
+
+        // MAIN SEND
         async handleSubmit(e) {
           e.preventDefault();
           if (this.isSending) return;
@@ -1425,7 +2083,8 @@
           this.updateCharCounter();
           this.responseSection.innerHTML = '';
 
-          // Prepare payload
+          const attachmentFile = this.attachmentInput.files[0] || null;
+
           const payload = {
             message: message,
             history: this.conversation.map((m) => ({
@@ -1437,33 +2096,55 @@
               email: this.emailInput.value.trim() || null,
               topic: this.topicInput.value || null,
               mode: this.currentMode,
-              hasAttachment: !!this.attachmentInput.files[0],
-              attachmentName: this.attachmentInput.files[0]
-                ? this.attachmentInput.files[0].name
-                : null,
-              source: 'support_web_chat'
+              source: 'support_web_chat',
+              hasAttachment: !!attachmentFile,
+              attachmentName: attachmentFile ? attachmentFile.name : null,
+              aiControls: {
+                style: this.aiStyle,
+                goal: this.aiGoal,
+                tone: this.aiTone,
+                language: this.aiLanguageSelect
+                  ? this.aiLanguageSelect.value
+                  : 'auto'
+              }
             }
           };
 
-          // Note: if you want to actually upload the file, you'd adapt this
-          // to use FormData instead of JSON.
+          const online = navigator.onLine;
+          if (!online) {
+            this.showAlertError(
+              'You appear to be offline. I’ll save this locally — send again once you’re connected.'
+            );
+          }
 
-          this.setLoading(true);
+          this.setLoading(true, false);
           this.showTypingIndicator();
+          this.updateStatus('Thinking through your message…', 'Using your preferences for style, tone, and language.');
 
           try {
-            const res = await fetch('/api/support/ask', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(payload)
-            });
+            let fetchOptions;
+            if (attachmentFile) {
+              const formData = new FormData();
+              formData.append('payload', JSON.stringify(payload));
+              formData.append('attachment', attachmentFile);
+              fetchOptions = {
+                method: 'POST',
+                body: formData
+              };
+            } else {
+              fetchOptions = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+              };
+            }
+
+            const res = await fetch('/api/support/ask', fetchOptions);
 
             let data = {};
             try {
               data = await res.json();
-            } catch (_) {
-              // ignore JSON parse error; will fallback to generic messaging
-            }
+            } catch (_) {}
 
             this.hideTypingIndicator();
 
@@ -1477,6 +2158,7 @@
                 'Network / API error'
               );
               this.showAlertError(msg);
+              this.updateStatus('Listening for your message', 'There was a problem reaching the server.');
               return;
             }
 
@@ -1494,18 +2176,33 @@
 
             this.addAssistantMessage(replyText, meta);
 
+            // Update AI ticket summary preview if backend sends one
+            if (data && data.ticketSummary) {
+              this.updateSummaryCard(data.ticketSummary, false);
+            } else if (data && data.summary) {
+              this.updateSummaryCard(data.summary, false);
+            }
+
+            // Update insights card if backend sends insights
+            if (data && data.insights) {
+              this.updateInsights(data.insights);
+            }
+
             if (data && data.escalated) {
               this.showAlertSuccess(
                 'Your conversation has been shared with our support team. You’ll hear back via email.'
               );
+              this.updateStatus('Handed off to a human', 'We’ll email you when someone has reviewed it.');
             } else if (this.currentMode === 'human_only') {
               this.showAlertSuccess(
                 'Your message has been queued for a human support agent.'
               );
+              this.updateStatus('Forwarding straight to a human', 'You can keep chatting while you wait.');
             } else {
               this.showAlertSuccess(
                 'AI response generated. If you still need help, add more details or ask a follow-up question.'
               );
+              this.updateStatus('Listening for your follow-up', 'You can also tap actions below the last answer.');
             }
           } catch (err) {
             console.error('Support chat error:', err);
@@ -1518,8 +2215,9 @@
             this.showAlertError(
               'Network error while submitting your request. Please check your connection and try again.'
             );
+            this.updateStatus('Listening for your message', 'Network error while sending your last message.');
           } finally {
-            this.setLoading(false);
+            this.setLoading(false, false);
             // Clear attachment selection after sending
             this.attachmentInput.value = '';
             this.updateFileName();
