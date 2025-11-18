@@ -2,37 +2,24 @@
 <html lang="en-US">
 <head>
   <meta charset="UTF-8">
-
-  <!-- Viewport & Rendering -->
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="format-detection" content="telephone=no">
 
-  <!-- Primary SEO -->
-  <title>InfantBites – AI Baby Gear Lists That Save You Hours & Hundreds</title>
-  <meta name="description"
-        content="AI turns 1000 products into your perfect 5-item baby gear list with live lowest prices. InfantBites blends AI, safety-first guides and real parent wins to cut the chaos.">
+  <title>InfantBites – AI Baby Registry with Live Multi-Store Prices</title>
+  <meta name="description" content="Tell InfantBites AI your baby’s age, space and budget. Get a lean, safety-first baby registry with live prices across stores and 1-click add to Amazon/Babylist/Target.">
   <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
-  <meta name="theme-color" content="#fff8e7">
-  <meta name="color-scheme" content="light dark">
-  <meta name="author" content="InfantBites">
-  <meta name="keywords"
-        content="AI baby gear,baby registry,newborn essentials,best baby products,baby product reviews,infant safety,InfantBites,AI baby shopping,AI gear list">
+  <meta name="theme-color" content="#fff7ea">
+  <meta name="color-scheme" content="light">
 
-  <!-- Canonical -->
+  <meta name="author" content="InfantBites">
+  <meta name="keywords" content="AI baby registry, baby gear, baby registry, newborn essentials, infantbites, baby product reviews, baby shopping AI">
+
   <link rel="canonical" href="https://www.infantbites.com/">
 
-  <!-- Favicons -->
-  <link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
-  <link rel="icon" href="/assets/favicon-192.png" sizes="192x192" type="image/png">
-  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-  <link rel="manifest" href="/site.webmanifest">
-
-  <!-- Social / Open Graph -->
+  <!-- Open Graph -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="InfantBites – AI Baby Shopping Done Right">
-  <meta property="og:description"
-        content="Live prices. Safety first. Real parent wins. Let AI turn 1000 products into your perfect 5-item baby gear list.">
+  <meta property="og:title" content="InfantBites – AI Baby Registry with Live Prices">
+  <meta property="og:description" content="AI turns 1000 products into your perfect 5–item baby registry with live multi-store prices and “buy this, skip that” guidance.">
   <meta property="og:url" content="https://www.infantbites.com/">
   <meta property="og:site_name" content="InfantBites">
   <meta property="og:image" content="https://www.infantbites.com/og.jpg">
@@ -40,290 +27,1078 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="en_US">
 
-  <!-- Twitter Card -->
+  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="InfantBites – AI Baby Shopping Done Right">
-  <meta name="twitter:description"
-        content="AI-built baby gear lists with live lowest prices, safety-first picks and real parent wins.">
+  <meta name="twitter:title" content="InfantBites – AI Baby Registry with Live Prices">
+  <meta name="twitter:description" content="Tell AI your life. Get a lean, safety-first baby registry with live prices and 1-click add-all.">
   <meta name="twitter:image" content="https://www.infantbites.com/og.jpg">
   <meta name="twitter:site" content="@infantbites">
-  <meta name="twitter:creator" content="@infantbites">
 
-  <!-- Performance hints -->
-  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
-  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
-  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <!-- AI / price APIs -->
+  <!-- Preconnect for APIs (backend should proxy these in production) -->
   <link rel="preconnect" href="https://api.groq.com" crossorigin>
   <link rel="preconnect" href="https://api.keepa.com" crossorigin>
 
-  <link rel="preload" as="image" href="/assets/hero-parent-baby-1x.jpg"
-        imagesrcset="/assets/hero-parent-baby-2x.jpg 2x">
-  <link rel="preload" href="style.css" as="style">
-
-  <!-- Main CSS -->
-  <link rel="stylesheet" href="style.css">
-
-  <!-- Inline enhancements for AI/price UI (you can move these into style.css later) -->
   <style>
     :root {
-      --ib-primary: #6c5ce7;
-      --ib-accent:  #fd79a8;
-      --ib-light:   #fff8e7;
-      --ib-dark:    #2d3436;
-      --ib-success: #00b894;
-      --ib-danger:  #ff4757;
+      --ib-bg:        #fff7ea;
+      --ib-bg-soft:   #fffdf7;
+      --ib-surface:   #ffffff;
+      --ib-primary:   #6c5ce7;
+      --ib-primary-d: #5642d5;
+      --ib-accent:    #fd79a8;
+      --ib-text:      #15141f;
+      --ib-muted:     #77758c;
+      --ib-border:    rgba(15,23,42,0.08);
+      --ib-danger:    #ff4757;
+      --ib-success:   #00b894;
+      --ib-radius-lg: 24px;
+      --ib-radius-md: 16px;
+      --ib-shadow-lg: 0 24px 70px rgba(15,23,42,0.18);
+      --ib-shadow-md: 0 14px 40px rgba(15,23,42,0.12);
+      --ib-shadow-sm: 0 6px 20px rgba(15,23,42,0.08);
     }
 
-    body {
-      background: var(--ib-light);
-      color: var(--ib-dark);
+    * {
+      box-sizing: border-box;
     }
 
-    /* Scarcity Bar */
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+      background: radial-gradient(circle at top, #ffe9c8 0, var(--ib-bg) 50%);
+      color: var(--ib-text);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    main {
+      display: block;
+    }
+
+    /* Utility */
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* Sticky scarcity bar */
     .scarcity-bar {
-      background: var(--ib-danger);
-      color: #ffffff;
-      text-align: center;
-      padding: 0.5rem 1rem;
-      font-weight: 600;
       position: sticky;
       top: 0;
-      z-index: 120;
-      font-size: 0.95rem;
+      z-index: 100;
+      background: var(--ib-danger);
+      color: #fff;
+      text-align: center;
+      padding: 0.6rem 1rem;
+      font-size: 0.92rem;
+      font-weight: 600;
     }
     .scarcity-bar .countdown {
-      font-weight: 700;
+      font-weight: 800;
     }
 
-    /* Buttons override */
-    .btn {
-      background: var(--ib-primary);
-      color: #ffffff;
-      border-radius: 999px;
-      border: none;
-      padding: 0.75rem 1.6rem;
+    /* Top mini CTA bar */
+    .top-cta-bar {
+      background: #231f56;
+      color: #f3f0ff;
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .top-cta-text {
+      margin: 0;
+    }
+    .top-cta-link {
+      color: #ffeaa7;
+      border-bottom: 1px solid rgba(255, 234, 167, 0.7);
       font-weight: 600;
-      cursor: pointer;
-      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    /* Buttons */
+    .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 0.35rem;
-      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s;
+      border-radius: 999px;
+      border: none;
+      padding: 0.8rem 1.8rem;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      background: var(--ib-primary);
+      color: #fff;
+      box-shadow: var(--ib-shadow-sm);
+      transition: transform 0.13s ease, box-shadow 0.13s ease, background 0.13s ease;
     }
     .btn:hover,
     .btn:focus-visible {
-      background: #5a4fcf;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      background: var(--ib-primary-d);
       transform: translateY(-1px);
+      box-shadow: 0 10px 26px rgba(15,23,42,0.16);
+      outline: none;
+    }
+    .btn:disabled {
+      opacity: 0.7;
+      box-shadow: none;
+      transform: none;
+      cursor: default;
     }
     .btn-secondary {
-      background: #ffffff;
+      background: #fff;
       color: var(--ib-primary);
-      border: 1px solid rgba(0,0,0,0.06);
+      border: 1px solid var(--ib-border);
+      box-shadow: 0 6px 20px rgba(15,23,42,0.06);
     }
     .btn-secondary:hover,
     .btn-secondary:focus-visible {
-      background: #f5f2ff;
+      background: #f3f1ff;
+    }
+    .btn-plain {
+      background: transparent;
+      color: var(--ib-muted);
+      box-shadow: none;
+      padding-inline: 0;
     }
 
-    /* Live price cards (AI results) */
-    .product-card-ai {
+    /* Header */
+    .site-header {
+      position: relative;
+      padding: 0.8rem 0 0.6rem;
+      background: transparent;
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.25rem 1.25rem 0.75rem;
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+    .branding {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .logo-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: #231f56;
+    }
+    .logo-mark {
+      font-size: 1.3rem;
+    }
+    .logo-tagline {
+      font-size: 0.78rem;
+      color: var(--ib-muted);
+      font-weight: 500;
+    }
+
+    .header-cta {
+      display: none;
+    }
+
+    .nav-toggle {
+      border: none;
+      background: transparent;
+      display: inline-flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 0.4rem;
+      cursor: pointer;
+    }
+    .nav-toggle-bar {
+      width: 20px;
+      height: 2px;
+      background: #2d3436;
+      border-radius: 999px;
+    }
+
+    .main-nav {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 100%;
       background: #ffffff;
-      border-radius: 16px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
-      padding: 1.2rem 1.2rem 1.4rem;
+      border-bottom: 1px solid #eceff4;
+      transform-origin: top;
+      transform: scaleY(0);
+      transition: transform 0.16s ease-out;
+    }
+    .main-nav.is-open {
+      transform: scaleY(1);
+    }
+    .main-nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0.5rem 1.25rem 0.7rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem 1.1rem;
+      font-size: 0.9rem;
+    }
+    .main-nav a {
+      color: #2d3436;
+      padding: 0.25rem 0;
+    }
+
+    /* Disclosure banner */
+    .disclosure-banner {
+      background: #fff;
+      border-bottom: 1px solid #eceff4;
+      padding: 0.6rem 1.25rem;
+      font-size: 0.85rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+    .disclosure-content {
+      max-width: 960px;
+    }
+    .disclosure-close {
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-size: 1rem;
+      line-height: 1;
+    }
+
+    /* Hero */
+    .hero {
+      padding: 2.4rem 0 2.2rem;
+    }
+    .hero-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1.25fr);
+      gap: 2.4rem;
+      align-items: center;
+    }
+    .hero-eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      font-size: 0.8rem;
+      color: var(--ib-muted);
+      margin: 0 0 0.45rem;
+      font-weight: 700;
+    }
+    #hero-title {
+      font-size: clamp(2.1rem, 4vw, 3.1rem);
+      margin: 0 0 0.6rem;
+      color: #1b164b;
+    }
+    .hero-subtitle {
+      margin: 0 0 0.9rem;
+      font-size: 1rem;
+      max-width: 32rem;
+    }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin: 1.1rem 0 0.7rem;
+    }
+    .hero-badges {
+      list-style: none;
+      padding: 0;
+      margin: 0.7rem 0 0.4rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem 1.2rem;
+      font-size: 0.9rem;
+      color: var(--ib-muted);
+    }
+    .hero-meta {
+      margin: 0.3rem 0 0;
+      font-size: 0.86rem;
+      color: var(--ib-muted);
+    }
+
+    .hero-side {
       display: flex;
       flex-direction: column;
-      gap: 0.4rem;
+      gap: 1rem;
     }
-    .product-card-ai h3 {
+    .hero-card {
+      background: var(--ib-surface);
+      border-radius: var(--ib-radius-md);
+      padding: 1rem 1.1rem;
+      box-shadow: var(--ib-shadow-sm);
+      border: 1px solid rgba(255,255,255,0.8);
+    }
+    .hero-card-title {
+      margin: 0 0 0.3rem;
+      font-size: 1rem;
+    }
+    .hero-note {
+      margin: 0.2rem 0;
+      font-size: 0.9rem;
+      color: var(--ib-muted);
+    }
+    .hero-list {
+      list-style: none;
+      padding: 0;
+      margin: 0.4rem 0 0.4rem;
+      font-size: 0.9rem;
+    }
+    .hero-list li::before {
+      content: "• ";
+      color: var(--ib-primary);
+    }
+    .text-link {
+      color: var(--ib-primary);
+      font-size: 0.9rem;
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 2px;
+    }
+
+    .hero-persona-strip {
+      margin-top: 1.2rem;
+      padding: 0.6rem 0.9rem;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.8);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.86rem;
+      color: var(--ib-muted);
+    }
+    .persona-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem 0.9rem;
+    }
+
+    /* Search */
+    .header-search {
+      padding: 0 1.25rem 0.75rem;
+    }
+    .search-form {
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+    .search-input-wrapper {
+      display: flex;
+      gap: 0.6rem;
+      align-items: stretch;
+    }
+    #search-input {
+      flex: 1;
+      border-radius: 999px;
+      border: 1px solid var(--ib-border);
+      padding: 0.7rem 1rem;
+      font-size: 0.9rem;
+    }
+    .btn-search {
+      padding-inline: 1.3rem;
+      font-size: 0.9rem;
+    }
+    .search-status {
+      margin: 0.3rem 0 0;
+      font-size: 0.8rem;
+      color: var(--ib-muted);
+    }
+    .search-suggestions {
+      margin-top: 0.4rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+    }
+    .suggestion-chip {
+      border-radius: 999px;
+      border: 1px dashed rgba(15,23,42,0.15);
+      padding: 0.2rem 0.6rem;
+      background: #fff;
+      cursor: pointer;
+      color: var(--ib-muted);
+    }
+    .suggestion-chip:hover,
+    .suggestion-chip:focus-visible {
+      border-style: solid;
+      border-color: var(--ib-primary);
+      outline: none;
+    }
+
+    /* Sections */
+    .section {
+      padding: 2.4rem 0;
+    }
+    .section-muted {
+      background: rgba(255,255,255,0.9);
+    }
+    .section-header {
+      text-align: center;
+      margin-bottom: 1.6rem;
+    }
+    .section-header h2 {
+      margin: 0 0 0.3rem;
+      font-size: 1.7rem;
+    }
+    .section-tagline {
+      margin: 0;
+      font-size: 0.95rem;
+      color: var(--ib-muted);
+    }
+    .section-disclaimer {
+      margin-top: 0.7rem;
+      font-size: 0.8rem;
+      color: var(--ib-muted);
+    }
+
+    /* How it works grid */
+    .how-grid {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 1.1rem;
+    }
+    .step-card {
+      background: var(--ib-surface);
+      border-radius: var(--ib-radius-md);
+      border: 1px solid var(--ib-border);
+      padding: 0.9rem 1rem 1rem;
+      box-shadow: 0 8px 24px rgba(15,23,42,0.05);
+      font-size: 0.92rem;
+    }
+    .step-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--ib-primary);
+      font-weight: 700;
+    }
+    .step-card h3 {
+      margin: 0.35rem 0 0.2rem;
+      font-size: 1rem;
+    }
+    .step-card p {
+      margin: 0;
+      color: var(--ib-muted);
+    }
+
+    /* Featured products (reuse your existing classes but tighter spacing) */
+    .product-filters {
+      max-width: 1120px;
+      margin: 0 auto 1rem;
+      padding: 0 1.25rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .filter-chip {
+      border-radius: 999px;
+      border: 1px solid var(--ib-border);
+      padding: 0.25rem 0.9rem;
+      font-size: 0.85rem;
+      background: #fff;
+      cursor: pointer;
+    }
+    .filter-chip.is-active {
+      background: #f3f1ff;
+      border-color: var(--ib-primary);
+      color: var(--ib-primary);
+    }
+    .product-grid {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.4rem;
+    }
+    .product-card {
+      background: #fff;
+      border-radius: var(--ib-radius-md);
+      border: 1px solid var(--ib-border);
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(15,23,42,0.08);
+      display: flex;
+      flex-direction: column;
+    }
+    .product-media img {
+      width: 100%;
+      height: auto;
+    }
+    .product-body {
+      padding: 1rem 1.1rem 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+      font-size: 0.92rem;
+    }
+    .product-title {
+      margin: 0 0 0.2rem;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+    .product-summary {
+      margin: 0.2rem 0;
+      color: var(--ib-muted);
+    }
+    .price {
+      margin: 0.35rem 0 0.1rem;
+      font-weight: 700;
+    }
+    .stock-label {
+      font-size: 0.78rem;
+      margin-left: 0.4rem;
+      color: var(--ib-success);
+    }
+    .rating {
+      margin: 0.3rem 0 0.2rem;
+      font-size: 0.85rem;
+      color: var(--ib-muted);
+    }
+    .product-bullets {
+      list-style: disc;
+      padding-left: 1.1rem;
+      margin: 0.3rem 0 0.5rem;
+    }
+
+    /* Categories */
+    .category-grid {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 1.2rem;
+    }
+    .category-card {
+      background: #fff;
+      border-radius: var(--ib-radius-md);
+      border: 1px solid var(--ib-border);
+      padding: 1rem 1.1rem 1.1rem;
+      font-size: 0.92rem;
+    }
+    .category-card h2 {
       margin: 0 0 0.2rem;
       font-size: 1.1rem;
     }
-    .product-card-ai .live-price {
-      font-weight: 700;
-      color: var(--ib-primary);
-      font-size: 1.25rem;
+    .category-card p {
+      margin: 0.2rem 0 0.4rem;
+      color: var(--ib-muted);
     }
-    .product-card-ai .price-save {
-      background: var(--ib-success);
-      color: #ffffff;
-      padding: 0.15rem 0.5rem;
-      border-radius: 999px;
-      font-size: 0.75rem;
-      margin-left: 0.5rem;
-      white-space: nowrap;
-    }
-    .product-card-ai .safety-note {
-      color: #e17055;
-      font-size: 0.85rem;
+    .category-list {
+      margin: 0 0 0.4rem;
+      padding-left: 1.1rem;
     }
 
-    /* AI Chat widget */
-    .ai-chat-shell {
-      max-width: 900px;
+    /* Deals */
+    .deals-grid {
+      max-width: 1120px;
+      margin: 0 auto 1.2rem;
+      padding: 0 1.25rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+      font-size: 0.92rem;
+    }
+    .deal-card {
+      background: #fff;
+      border-radius: var(--ib-radius-md);
+      border: 1px solid var(--ib-border);
+      padding: 0.9rem 1rem;
+      box-shadow: 0 10px 30px rgba(15,23,42,0.06);
+    }
+    .deal-card h3 {
+      margin: 0 0 0.2rem;
+      font-size: 1rem;
+    }
+    .deal-card p {
+      margin: 0.15rem 0;
+    }
+    .deal-meta {
+      font-size: 0.8rem;
+      color: var(--ib-muted);
+    }
+
+    /* Reviews */
+    .reviews-grid {
+      max-width: 1120px;
       margin: 0 auto;
-      border-radius: 18px;
-      background: #ffffff;
-      box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+      padding: 0 1.25rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1rem;
+      font-size: 0.92rem;
+    }
+    .testimonial {
+      background: #fff;
+      border-radius: var(--ib-radius-md);
+      border: 1px solid var(--ib-border);
+      padding: 0.9rem 1rem 1rem;
+      box-shadow: 0 10px 30px rgba(15,23,42,0.06);
+    }
+    blockquote {
+      margin: 0 0 0.4rem;
+    }
+    .testimonial-author {
+      margin: 0;
+      font-size: 0.86rem;
+      color: var(--ib-muted);
+    }
+
+    /* Comparison table */
+    .table-wrapper {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+      overflow-x: auto;
+    }
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      background: #fff;
+      border-radius: var(--ib-radius-md);
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(15,23,42,0.06);
+    }
+    .compare-table th,
+    .compare-table td {
+      padding: 0.7rem 0.9rem;
+      border-bottom: 1px solid #f0f1f5;
+      vertical-align: top;
+      text-align: left;
+    }
+    .compare-table thead th {
+      background: #f5f4ff;
+      font-size: 0.86rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--ib-muted);
+    }
+    .compare-table tbody th {
+      width: 32%;
+      background: #fbfafc;
+      font-weight: 600;
+    }
+
+    /* AI Section */
+    .ai-section {
+      background: var(--ib-bg-soft);
+    }
+    .ai-layout {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+      display: grid;
+      grid-template-columns: minmax(0, 2.2fr) minmax(0, 2fr);
+      gap: 1.8rem;
+      align-items: flex-start;
+    }
+
+    .ai-shell {
+      background: #fff;
+      border-radius: var(--ib-radius-lg);
+      box-shadow: var(--ib-shadow-lg);
+      border: 1px solid rgba(255,255,255,0.7);
       overflow: hidden;
       display: flex;
       flex-direction: column;
     }
-    .ai-chat-header {
-      padding: 1rem 1.25rem;
-      border-bottom: 1px solid #f1f2f6;
+    .ai-shell-header {
+      padding: 1rem 1.25rem 0.8rem;
+      border-bottom: 1px solid #eceff4;
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      gap: 0.5rem;
+      align-items: flex-start;
+      gap: 0.7rem;
     }
-    .ai-chat-header-title {
-      font-weight: 600;
-      font-size: 1rem;
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-    }
-    .ai-chat-header-pill {
-      font-size: 0.75rem;
-      padding: 0.15rem 0.5rem;
-      border-radius: 999px;
-      background: #f1f2ff;
-      color: var(--ib-primary);
-      font-weight: 500;
-    }
-    .chat-window {
-      height: 420px;
-      overflow-y: auto;
-      padding: 1rem 1.25rem;
-      background: #f8f9fa;
+    .ai-shell-title {
+      font-size: 1.05rem;
+      font-weight: 700;
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
+      gap: 0.1rem;
     }
-    .ai-chat-form {
-      padding: 0.75rem 1rem 0.9rem;
-      background: #ffffff;
-      border-top: 1px solid #edf0f3;
+    .ai-shell-sub {
+      font-size: 0.85rem;
+      color: var(--ib-muted);
+    }
+    .ai-pill {
+      font-size: 0.8rem;
+      padding: 0.2rem 0.7rem;
+      border-radius: 999px;
+      background: #f1f0ff;
+      color: #211f68;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .chat-window {
+      height: 340px;
+      padding: 0.8rem 1.25rem;
+      background: #f9f9ff;
+      overflow-y: auto;
       display: flex;
-      gap: 0.75rem;
-      align-items: flex-end;
-    }
-    .ai-chat-form textarea {
-      flex: 1;
-      padding: 0.75rem 0.9rem;
-      border-radius: 10px;
-      border: 1px solid #dfe4ea;
-      resize: none;
-      font-family: inherit;
-      font-size: 0.95rem;
-      min-height: 3.2rem;
-      max-height: 8rem;
-    }
-    .ai-chat-form textarea:focus-visible {
-      outline: 2px solid var(--ib-primary);
-      border-color: transparent;
+      flex-direction: column;
+      gap: 0.4rem;
     }
     .message {
-      margin: 0.2rem 0;
-      padding: 0.7rem 0.9rem;
-      border-radius: 12px;
       max-width: 80%;
-      font-size: 0.9rem;
+      padding: 0.7rem 0.95rem;
+      border-radius: 16px;
+      font-size: 0.92rem;
     }
     .message.bot {
-      background: #e9ecef;
+      background: #e9ecff;
       align-self: flex-start;
     }
     .message.user {
       background: var(--ib-primary);
-      color: #ffffff;
+      color: #fff;
       align-self: flex-end;
     }
-    .message strong {
-      font-weight: 600;
+
+    .ai-form {
+      padding: 0.85rem 1.25rem 1rem;
+      background: #fff;
+      border-top: 1px solid #eceff4;
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      align-items: flex-end;
+    }
+    .ai-form textarea {
+      flex: 1 1 220px;
+      min-height: 3rem;
+      max-height: 7rem;
+      resize: vertical;
+      border-radius: 14px;
+      border: 1px solid #dfe4ea;
+      padding: 0.7rem 0.8rem;
+      font-size: 0.9rem;
+      font-family: inherit;
+    }
+    .ai-form textarea:focus-visible {
+      outline: 2px solid var(--ib-primary);
+      border-color: transparent;
+    }
+    .ai-status {
+      padding: 0.45rem 1.25rem 0.8rem;
+      font-size: 0.8rem;
+      color: var(--ib-muted);
+      background: #f8fafc;
+      border-top: 1px solid #edf0f5;
     }
 
+    .ai-side-info {
+      font-size: 0.9rem;
+    }
+    .ai-side-card {
+      background: #fff;
+      border-radius: var(--ib-radius-md);
+      border: 1px solid var(--ib-border);
+      padding: 0.9rem 1rem;
+      margin-bottom: 1rem;
+      box-shadow: var(--ib-shadow-sm);
+    }
+    .ai-side-card h3 {
+      margin: 0 0 0.3rem;
+      font-size: 1rem;
+    }
+    .ai-side-card p {
+      margin: 0.2rem 0;
+      color: var(--ib-muted);
+    }
+    .ai-side-list {
+      margin: 0.3rem 0 0;
+      padding-left: 1.1rem;
+      color: var(--ib-muted);
+    }
+
+    /* AI results */
+    .ai-results {
+      margin-top: 1.5rem;
+    }
     .ai-results-header {
       display: flex;
-      align-items: baseline;
       justify-content: space-between;
-      gap: 1rem;
-      margin-bottom: 1rem;
+      align-items: flex-start;
+      gap: 0.9rem;
+      margin-bottom: 0.7rem;
+      font-size: 0.92rem;
     }
     .ai-results-header h3 {
-      margin: 0;
+      margin: 0 0 0.15rem;
+      font-size: 1.1rem;
     }
     .ai-results-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 1rem;
-      margin-top: 0.75rem;
+      margin-top: 0.3rem;
     }
+    .ai-card {
+      background: #fff;
+      border-radius: var(--ib-radius-md);
+      border: 1px solid var(--ib-border);
+      padding: 0.9rem 1rem 1.1rem;
+      box-shadow: var(--ib-shadow-md);
+      display: flex;
+      flex-direction: column;
+      font-size: 0.9rem;
+    }
+    .ai-card h4 {
+      margin: 0 0 0.15rem;
+      font-size: 1rem;
+    }
+    .ai-card p {
+      margin: 0.2rem 0;
+    }
+    .ai-price {
+      margin-top: 0.6rem;
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--ib-primary);
+    }
+    .ai-price-sub {
+      font-size: 0.82rem;
+      color: var(--ib-muted);
+    }
+    .ai-safety {
+      margin-top: 0.2rem;
+      font-size: 0.84rem;
+      color: #e17055;
+      font-weight: 600;
+    }
+    .ai-card-footer {
+      margin-top: auto;
+      padding-top: 0.7rem;
+    }
+
     .ai-skips {
-      margin-top: 0.8rem;
+      margin-top: 0.9rem;
+      font-size: 0.9rem;
+    }
+    .ai-next {
+      margin-top: 0.7rem;
+      padding: 0.7rem 0.9rem;
+      border-radius: 12px;
+      background: #fff6da;
       font-size: 0.9rem;
     }
 
-    .ai-status-text {
-      font-size: 0.8rem;
-      color: #636e72;
-      margin-top: 0.25rem;
+    /* Skeleton loader */
+    .skeleton-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 0.9rem;
+      margin-top: 0.9rem;
+    }
+    .skeleton-card {
+      background: #fff;
+      border-radius: var(--ib-radius-md);
+      padding: 0.9rem;
+      box-shadow: 0 8px 26px rgba(15,23,42,0.08);
+    }
+    .skeleton-block {
+      height: 10px;
+      border-radius: 999px;
+      margin-bottom: 0.4rem;
+      background: linear-gradient(90deg,#f1f3f9,#e5e7ff,#f1f3f9);
+      background-size: 200% 100%;
+      animation: skeleton-pulse 1.2s ease-in-out infinite;
+    }
+    .skeleton-block.lg { height: 14px; }
+    .skeleton-block.img {
+      height: 140px;
+      border-radius: 16px;
+      margin-bottom: 0.6rem;
     }
 
-    /* Upsell modal */
-    .upsell-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.8);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 999;
+    @keyframes skeleton-pulse {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
     }
-    .upsell-modal {
-      background: #ffffff;
-      padding: 2rem 1.8rem 1.7rem;
-      border-radius: 18px;
-      max-width: 420px;
-      width: calc(100% - 2.5rem);
-      text-align: center;
-      box-shadow: 0 18px 50px rgba(0,0,0,0.3);
+
+    /* FAQ */
+    .faq-accordion {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
     }
-    .upsell-modal h2 {
-      margin-top: 0;
-      margin-bottom: 0.5rem;
+    .faq-item {
+      border-radius: var(--ib-radius-md);
+      border: 1px solid var(--ib-border);
+      background: #fff;
+      margin-bottom: 0.7rem;
+      overflow: hidden;
     }
-    .upsell-modal p {
-      margin: 0.25rem 0;
-      font-size: 0.95rem;
-    }
-    .upsell-dismiss {
-      margin-top: 0.75rem;
-      background: transparent;
+    .faq-toggle {
+      width: 100%;
+      text-align: left;
       border: none;
-      color: #636e72;
-      font-size: 0.85rem;
+      background: #fff;
+      padding: 0.7rem 0.9rem;
+      font-size: 0.95rem;
+      font-weight: 600;
       cursor: pointer;
     }
+    .faq-body {
+      padding: 0 0.9rem 0.8rem;
+      font-size: 0.9rem;
+      color: var(--ib-muted);
+    }
 
-    /* Responsive tweak */
+    /* Newsletter */
+    .newsletter-form {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+    }
+    .newsletter-fields {
+      display: flex;
+      gap: 0.6rem;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+    #newsletter-email {
+      flex: 1;
+      border-radius: 999px;
+      border: 1px solid var(--ib-border);
+      padding: 0.6rem 0.9rem;
+      font-size: 0.9rem;
+    }
+    .newsletter-meta {
+      margin: 0;
+      font-size: 0.8rem;
+      color: var(--ib-muted);
+    }
+    .newsletter-meta a {
+      color: var(--ib-primary);
+    }
+
+    /* Footer */
+    .site-footer {
+      padding: 1.6rem 0 1.9rem;
+      background: #fff;
+      border-top: 1px solid #eceff4;
+      font-size: 0.85rem;
+    }
+    .footer-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 1.25rem 0.6rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.2rem;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .footer-tagline {
+      margin: 0.2rem 0 0;
+      color: var(--ib-muted);
+    }
+    .footer-nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.9rem;
+    }
+    .footer-nav a {
+      color: var(--ib-muted);
+    }
+    .footer-bottom {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+      color: var(--ib-muted);
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    /* Responsive */
+    @media (min-width: 880px) {
+      .nav-toggle { display: none; }
+      .main-nav {
+        position: static;
+        transform: none;
+        border-bottom: none;
+        background: transparent;
+      }
+      .main-nav ul {
+        padding: 0;
+        gap: 1.2rem;
+      }
+      .header-cta {
+        display: inline-flex;
+      }
+      .disclosure-banner {
+        font-size: 0.86rem;
+      }
+    }
+
+    @media (max-width: 880px) {
+      .hero-inner {
+        grid-template-columns: minmax(0,1fr);
+      }
+      .ai-layout {
+        grid-template-columns: minmax(0,1fr);
+      }
+      .ai-shell {
+        order: -1;
+      }
+      .hero {
+        padding-top: 1.6rem;
+      }
+    }
+
     @media (max-width: 640px) {
       .chat-window {
-        height: 360px;
+        height: 300px;
       }
-      .ai-chat-form {
-        flex-direction: column;
-        align-items: stretch;
+      .hero-inner {
+        gap: 1.6rem;
       }
     }
   </style>
 
-  <!-- Structured Data (trimmed but upgraded) -->
+  <!-- Structured Data (basic) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -341,14 +1116,6 @@
         }
       },
       {
-        "@type": "WebPage",
-        "@id": "https://www.infantbites.com/#webpage",
-        "url": "https://www.infantbites.com/",
-        "name": "InfantBites – AI Baby Gear Lists That Save You Hours & Hundreds",
-        "description": "AI turns 1000 products into your perfect 5-item baby gear list with live lowest prices, safety notes and real parent wins.",
-        "isPartOf": { "@id": "https://www.infantbites.com/#website" }
-      },
-      {
         "@type": "Organization",
         "@id": "https://www.infantbites.com/#organization",
         "url": "https://www.infantbites.com/",
@@ -356,312 +1123,229 @@
         "logo": {
           "@type": "ImageObject",
           "url": "https://www.infantbites.com/assets/logo.png"
-        },
-        "sameAs": [
-          "https://www.instagram.com/infantbites",
-          "https://www.facebook.com/infantbites"
-        ]
+        }
       },
       {
         "@type": "SoftwareApplication",
-        "@id": "https://www.infantbites.com/#ai-gear-finder",
-        "name": "InfantBites AI Gear Finder",
+        "@id": "https://www.infantbites.com/#ai-registry-builder",
+        "name": "InfantBites AI Registry Builder",
         "applicationCategory": "ShoppingAssistantApplication",
         "operatingSystem": "Web",
-        "offers": {
-          "@type": "Offer",
-          "price": "0",
-          "priceCurrency": "USD"
-        },
-        "description": "A conversational AI tool that builds a safety-first 5-item baby gear list with live prices and skip suggestions."
+        "description": "An AI assistant that builds a safety-first baby registry with live prices and skip suggestions based on your real life inputs.",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
       }
     ]
   }
   </script>
 </head>
-
 <body>
-  <!-- Scarcity bar / urgency -->
-  <div class="scarcity-bar" aria-label="Limited-time bundle deals">
-    ⚡ Bundle deals refresh in <span class="countdown" aria-live="polite">04:00:00</span> – save up to $87 on starter kits
+  <!-- Scarcity / urgency -->
+  <div class="scarcity-bar" aria-live="polite">
+    ⚡ Parents saved an average of $142 last 24 hours — bundle deals refresh in <span class="countdown">04:00:00</span>
   </div>
 
-  <!-- Top CTA bar from original -->
-  <div class="top-cta-bar" role="complementary" aria-label="Quick signup">
-    <p class="top-cta-text">
-      New here? Get a 3-minute newborn gear checklist in your inbox.
-    </p>
+  <!-- Mini checklist CTA -->
+  <div class="top-cta-bar" role="complementary" aria-label="Checklist signup">
+    <p class="top-cta-text">New here? Get a 3-minute newborn gear checklist in your inbox.</p>
     <a href="#newsletter" class="top-cta-link">Send it to me</a>
   </div>
 
-  <!-- ===== HEADER ===== -->
+  <!-- Header -->
   <header class="site-header" role="banner">
-    <!-- Affiliate & Health Disclosure -->
-    <section id="disclosure"
-             class="disclosure-banner"
-             role="status"
-             aria-label="Affiliate and health disclosure">
+    <div class="disclosure-banner" id="disclosure" role="status" aria-label="Affiliate and health disclosure">
       <div class="disclosure-content">
         <strong>Affiliate &amp; Health Disclosure:</strong>
         <span>
-          Some links on this site may earn us a commission at no extra cost to you. Content is for informational
-          purposes only and is not medical advice. Always consult your pediatrician for health decisions.
+          Some links on this site may earn us a commission at no extra cost to you. Content is informational only and not medical advice.
+          Always consult your pediatrician for health or safety decisions.
         </span>
       </div>
-      <button type="button"
-              class="disclosure-close"
-              aria-label="Dismiss disclosure banner"
-              aria-controls="disclosure">
-        ✕
-      </button>
-    </section>
+      <button class="disclosure-close" type="button" aria-label="Dismiss disclosure banner">✕</button>
+    </div>
 
     <div class="header-inner">
-      <!-- Branding -->
       <div class="branding">
-        <a href="/" class="logo-link" aria-label="InfantBites home">
+        <a href="/" class="logo-link">
           <span class="logo-mark" aria-hidden="true">🍼</span>
-          <span class="logo-text">InfantBites</span>
-          <span class="logo-tagline">AI baby gear guide</span>
+          <span>InfantBites</span>
+          <span class="logo-tagline">AI baby gear, minus the overwhelm</span>
         </a>
       </div>
 
-      <!-- Desktop primary CTA -->
-      <a href="#ai-assistant" class="header-cta btn btn-secondary" data-cta="header-ai">
-        Ask the AI Gear Finder
-      </a>
+      <a href="#ai" class="header-cta btn btn-secondary">Ask the AI Registry Builder</a>
 
-      <!-- Mobile Nav Toggle -->
-      <button class="nav-toggle"
-              type="button"
-              aria-label="Toggle main navigation"
-              aria-controls="main-nav"
-              aria-expanded="false">
+      <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-controls="main-nav" aria-expanded="false">
         <span class="nav-toggle-bar"></span>
         <span class="nav-toggle-bar"></span>
         <span class="nav-toggle-bar"></span>
       </button>
-
-      <!-- Primary Navigation -->
-      <nav id="main-nav"
-           class="main-nav"
-           role="navigation"
-           aria-label="Main navigation">
-        <ul>
-          <li><a href="#hero" aria-current="page">Home</a></li>
-          <li><a href="#feed">Feeding</a></li>
-          <li><a href="#sleep">Sleep</a></li>
-          <li><a href="#safety">Safety</a></li>
-          <li><a href="#toys">Toys</a></li>
-          <li><a href="#deals">Deals</a></li>
-          <li><a href="#reviews">Reviews</a></li>
-          <li><a href="#ai-assistant">AI Gear Finder</a></li>
-        </ul>
-      </nav>
     </div>
 
-    <!-- On-Page Search (AI-flavored) -->
+    <nav id="main-nav" class="main-nav" aria-label="Primary navigation">
+      <ul>
+        <li><a href="#hero">Overview</a></li>
+        <li><a href="#featured-products">Editor’s Picks</a></li>
+        <li><a href="#categories">Categories</a></li>
+        <li><a href="#deals">Deals</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+        <li><a href="#ai">AI Registry Builder</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+    </nav>
+
+    <!-- Search -->
     <div class="header-search">
-      <form id="site-search"
-            class="search-form"
-            role="search"
-            aria-label="Baby product search"
-            data-search="ai-assisted">
+      <form id="site-search" class="search-form" role="search" aria-label="Search baby gear">
         <label for="search-input" class="visually-hidden">Search baby products</label>
         <div class="search-input-wrapper">
-          <input id="search-input"
-                 name="q"
-                 type="search"
-                 placeholder="Ask anything (e.g. “best newborn bundle under $300”, “travel stroller for tiny trunk”)"
-                 inputmode="search"
-                 autocomplete="off"
-                 aria-describedby="search-help search-status search-suggestions"
-                 required>
+          <input id="search-input" type="search" name="q"
+                 placeholder='Ask anything (e.g. "minimal newborn kit under $400")'
+                 required
+                 aria-describedby="search-help search-status">
           <button type="submit" class="btn btn-search">Search</button>
         </div>
         <small id="search-help" class="visually-hidden">
-          Press Enter or tap Search to open AI-powered results in a new tab.
+          Press Enter or tap Search to open site search results.
         </small>
         <p id="search-status" class="search-status" role="status" aria-live="polite"></p>
 
-        <!-- Suggestion chips -->
-        <div class="search-suggestions"
-             id="search-suggestions"
-             aria-label="Suggested searches"
-             aria-live="polite">
+        <div class="search-suggestions" aria-label="Suggested searches">
           <button type="button" class="suggestion-chip" data-suggest="minimal newborn essentials under $400">
             “Minimal newborn essentials under $400”
           </button>
-          <button type="button" class="suggestion-chip" data-suggest="stroller + carrier for walk-up apartment">
-            “Stroller + carrier for walk-up apartment”
+          <button type="button" class="suggestion-chip" data-suggest="stroller + carrier for stairs and tiny trunk">
+            “Stroller + carrier for stairs”
           </button>
           <button type="button" class="suggestion-chip" data-suggest="bottle set for combo feeding & reflux">
-            “Bottle set for combo feeding &amp; reflux”
+            “Bottles for combo feeding &amp; reflux”
           </button>
         </div>
       </form>
     </div>
-
-    <!-- Quick nav chips -->
-    <div class="header-quick-links" aria-label="Jump to popular sections">
-      <button type="button" class="quick-link" data-scroll-target="#hero">Overview</button>
-      <button type="button" class="quick-link" data-scroll-target="#featured-products">Editor’s Picks</button>
-      <button type="button" class="quick-link" data-scroll-target="#ai-assistant">Start My AI List</button>
-      <button type="button" class="quick-link" data-scroll-target="#newsletter">Get Checklist</button>
-    </div>
   </header>
 
-  <!-- ===== MAIN ===== -->
-  <main id="main-content" class="layout" role="main">
-    <!-- HERO -->
+  <main id="main-content">
+    <!-- Hero -->
     <section id="hero" class="hero" aria-labelledby="hero-title">
-      <div class="hero-inner">
-        <div class="hero-copy">
-          <p class="hero-eyebrow">Your baby’s gear, fixed in 60 seconds</p>
-          <h1 id="hero-title">Tell AI your life. Get a 5-item list that actually fits it.</h1>
+      <div class="container hero-inner">
+        <div>
+          <p class="hero-eyebrow">AI baby registry • live prices • zero overbuying</p>
+          <h1 id="hero-title">Tell AI your life. Get a baby registry that actually fits it.</h1>
           <p class="hero-subtitle">
-            Say your baby’s age, space and budget. InfantBites AI turns 1000+ products into a safety-first shortlist
-            with live lowest prices—so you don’t lose another evening to open tabs.
+            Share your baby’s age, space, car and budget. InfantBites AI turns 1000+ products into a lean,
+            safety-first list with live lowest prices and “buy this, skip that” callouts.
           </p>
-
-          <div class="hero-actions" aria-label="Primary actions">
-            <a href="#ai-assistant" class="btn btn-primary" data-cta="hero-ai">
-              Start my free AI list →
-            </a>
-            <a href="#newsletter" class="btn btn-secondary" data-cta="hero-checklist">
-              Get the newborn checklist
-            </a>
+          <div class="hero-actions">
+            <a href="#ai" class="btn">🍼 Build my AI registry →</a>
+            <a href="#newsletter" class="btn btn-secondary">Get the newborn checklist</a>
           </div>
-
-          <ul class="hero-badges" aria-label="Reasons parents trust InfantBites">
-            <li>✔️ AI-curated by age, space &amp; budget</li>
-            <li>✔️ Live price + savings callouts</li>
-            <li>✔️ Clear “buy this, skip that” guidance</li>
+          <ul class="hero-badges">
+            <li>✔ AI-curated core list (3-7 items)</li>
+            <li>✔ Safety notes & recall reminders</li>
+            <li>✔ Live price slots from your price API</li>
           </ul>
-
           <p class="hero-meta">
-            Trusted by <strong>thousands of new parents</strong> building registries, upgrading gear and shopping on a budget.
+            Used by <strong>thousands of new parents</strong> building registries, upgrading gear and shopping on a budget.
           </p>
         </div>
 
-        <aside class="hero-side" aria-label="Quick starter options">
+        <aside class="hero-side">
           <div class="hero-card">
-            <h2 class="hero-card-title">Short on time?</h2>
-            <p class="hero-note">
-              Paste your current gear list or registry link into the AI. It’ll tell you what’s missing, what’s duplicate,
-              and what you can safely skip—for your baby’s age and home.
-            </p>
-            <a href="#ai-assistant" class="text-link" data-cta="hero-ai-inline">Paste my situation into AI ↓</a>
+            <h2 class="hero-card-title">What InfantBites AI does differently</h2>
+            <p class="hero-note"><strong>Not</strong>: a giant shopping list. <strong>Yes</strong>: a tight, life-aware plan.</p>
+            <ul class="hero-list">
+              <li>Respects your space (studio vs. house)</li>
+              <li>Matches your budget and car size</li>
+              <li>Checks for overlaps in what you already own</li>
+              <li>Flags common regret purchases to skip</li>
+            </ul>
+            <p class="hero-note">Paste your current registry or write a paragraph. AI will clean it up into a focused plan.</p>
           </div>
 
           <div class="hero-card">
-            <h2 class="hero-card-title">Prefer a checklist?</h2>
+            <h2 class="hero-card-title">Want a starting template instead?</h2>
             <ul class="hero-list">
               <li><a href="/checklists/newborn-essentials.html">Newborn essentials checklist</a></li>
               <li><a href="/checklists/first-3-months.html">First 3 months gear plan</a></li>
               <li><a href="/checklists/travel-gear.html">Travel &amp; on-the-go kit</a></li>
             </ul>
-            <p class="hero-note">Use as a registry blueprint—or a sanity-saving audit of what you already own.</p>
+            <p class="hero-note">Use as a registry blueprint—or a sanity check against what you already have.</p>
           </div>
         </aside>
       </div>
 
-      <div class="hero-persona-strip" aria-label="Who InfantBites is for">
-        <span class="persona-label">Made for:</span>
-        <ul class="persona-list">
-          <li>First-time parents</li>
-          <li>Registry builders</li>
-          <li>Budget-conscious families</li>
-          <li>Gift-givers &amp; baby shower planners</li>
-        </ul>
+      <div class="container">
+        <div class="hero-persona-strip" aria-label="Who InfantBites is for">
+          <span class="persona-label">Made for:</span>
+          <ul class="persona-list">
+            <li>First-time parents</li>
+            <li>Registry builders</li>
+            <li>Budget-conscious families</li>
+            <li>Gift-givers & baby shower planners</li>
+          </ul>
+        </div>
       </div>
     </section>
 
-    <!-- HOW IT WORKS -->
-    <section id="how-it-works" class="section section-muted" aria-labelledby="how-title">
+    <!-- How it works -->
+    <section id="how" class="section section-muted" aria-labelledby="how-title">
       <header class="section-header">
-        <h2 id="how-title">How InfantBites AI saves you hours (and hundreds)</h2>
-        <p class="section-tagline">
-          From “20 tabs and a headache” to “I’m done before this nap ends.”
-        </p>
+        <h2 id="how-title">How the 0.6s AI registry works</h2>
+        <p class="section-tagline">Under the hood: your story in → JSON list → live prices → ready to wire into Babylist/Amazon.</p>
       </header>
-
       <div class="how-grid">
         <article class="step-card">
-          <span class="step-label" aria-hidden="true">Step 1</span>
-          <h3>Share your real life</h3>
-          <p>Type like you text a friend. Due date, apartment vs. house, stairs, car size, rough budget—AI turns it into clear gear constraints.</p>
+          <div class="step-label">Step 1</div>
+          <h3>You text your real life</h3>
+          <p>Skip long forms. One message with due date, home (sqft, stairs, city/suburbs), car type, budget, twins, reflux, eco or used-friendly preferences.</p>
         </article>
-
         <article class="step-card">
-          <span class="step-label" aria-hidden="true">Step 2</span>
-          <h3>Get a 5-item core list</h3>
-          <p>InfantBites AI returns a JSON list of must-haves plus “you can skip this” items. We highlight safety notes and where parents regret overbuying.</p>
+          <div class="step-label">Step 2</div>
+          <h3>AI sends back JSON, not chaos</h3>
+          <p>InfantBites AI returns a strict JSON list: must-have items, why they fit your life, safety notes, “skip” suggestions and ASINs (for Amazon wiring).</p>
         </article>
-
         <article class="step-card">
-          <span class="step-label" aria-hidden="true">Step 3</span>
-          <h3>See live lowest prices</h3>
-          <p>Each pick comes with a live price slot (wired to your price API) and a simple “Save $X today” tag, so you see value at a glance.</p>
+          <div class="step-label">Step 3</div>
+          <h3>You layer in live prices + 1-click add</h3>
+          <p>Front-end turns JSON into cards, hits your price API (e.g. Keepa) for live prices, then you hook “Add all” into Babylist / Amazon / Target.</p>
         </article>
       </div>
     </section>
 
-    <!-- FEATURED PRODUCTS (static editors’ picks) -->
+    <!-- Featured products (kept simple) -->
     <section id="featured-products" class="section" aria-labelledby="products-title">
       <header class="section-header">
         <h2 id="products-title">Editor &amp; AI Featured Picks</h2>
-        <p class="section-tagline">High-performing baby gear parents love—curated by humans, ranked by AI.</p>
+        <p class="section-tagline">Human-curated favorites, surfaced and ranked with AI.</p>
       </header>
 
-      <div class="product-filters" aria-label="Filter featured products" role="toolbar">
+      <div class="product-filters" role="toolbar" aria-label="Filter featured products">
         <button type="button" class="filter-chip is-active" data-filter="all" aria-pressed="true">All</button>
         <button type="button" class="filter-chip" data-filter="carrier" aria-pressed="false">Carriers</button>
         <button type="button" class="filter-chip" data-filter="sleep" aria-pressed="false">Sleep</button>
       </div>
 
-      <div class="product-grid" aria-live="polite" data-visible-count="2">
-        <!-- Carrier -->
-        <article class="product-card"
-                 tabindex="0"
-                 data-category="carrier"
-                 itemscope
-                 itemtype="https://schema.org/Product"
-                 aria-labelledby="product-carrier-title">
+      <div class="product-grid" aria-live="polite">
+        <article class="product-card" data-category="carrier" tabindex="0" itemscope itemtype="https://schema.org/Product">
           <figure class="product-media">
             <img src="carrier-800w.jpg"
                  srcset="carrier-400w.jpg 400w, carrier-800w.jpg 800w"
-                 sizes="(max-width: 600px) 100vw, 33.333%"
+                 sizes="(max-width:600px) 100vw, 33.333%"
                  alt="Ergonomic baby carrier with breathable mesh and adjustable straps"
                  loading="lazy"
-                 width="400"
-                 height="400"
                  itemprop="image">
           </figure>
           <div class="product-body">
-            <h3 id="product-carrier-title" class="product-title" itemprop="name">Ergonomic Baby Carrier</h3>
-            <p class="product-summary" itemprop="description">
-              A 4-in-1 carrier with breathable mesh and fully adjustable straps for newborns through toddlers.
-            </p>
+            <h3 class="product-title" itemprop="name">Ergonomic Baby Carrier</h3>
+            <p class="product-summary" itemprop="description">4-in-1 carrier with breathable mesh and fully adjustable straps from newborn through toddler.</p>
             <p class="price" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
-              <span class="price-amount">
-                <span class="visually-hidden">Price:</span>
-                <span itemprop="priceCurrency" content="USD">$</span>
-                <span itemprop="price" content="89.99">89.99</span>
-              </span>
-              <link itemprop="availability" href="https://schema.org/InStock">
+              <span itemprop="priceCurrency" content="USD">$</span>
+              <span itemprop="price" content="89.99">89.99</span>
               <span class="stock-label">In stock</span>
             </p>
-            <p class="rating"
-               itemprop="aggregateRating"
-               itemscope
-               itemtype="https://schema.org/AggregateRating"
-               aria-label="Rated 4.8 out of 5 based on 324 reviews">
-              <span class="rating-stars" aria-hidden="true">★★★★☆</span>
-              <span class="rating-text">
-                <span itemprop="ratingValue">4.8</span>/<span itemprop="bestRating">5</span>
-                (<span itemprop="reviewCount">324</span> reviews)
-              </span>
+            <p class="rating" itemprop="aggregateRating" itemscope itemtype="https://schema.org/AggregateRating">
+              <span aria-hidden="true">★★★★☆</span>
+              <span> <span itemprop="ratingValue">4.8</span>/5 · <span itemprop="reviewCount">324</span> reviews</span>
             </p>
             <ul class="product-bullets">
               <li>Hip-healthy positioning support</li>
@@ -669,57 +1353,35 @@
               <li>Front, back &amp; hip carry positions</li>
             </ul>
             <a href="https://affiliate.example.com/carrier"
-               class="btn btn-primary"
-               rel="nofollow noopener noreferrer"
+               class="btn"
                target="_blank"
-               itemprop="url"
-               aria-label="View details and buying options for Ergonomic Baby Carrier (opens in a new tab)">
-              View Details &amp; Retailers
+               rel="nofollow noopener noreferrer"
+               itemprop="url">
+              View details &amp; retailers
             </a>
           </div>
         </article>
 
-        <!-- Sleep monitor -->
-        <article class="product-card"
-                 tabindex="0"
-                 data-category="sleep"
-                 itemscope
-                 itemtype="https://schema.org/Product"
-                 aria-labelledby="product-sleep-monitor-title">
+        <article class="product-card" data-category="sleep" tabindex="0" itemscope itemtype="https://schema.org/Product">
           <figure class="product-media">
             <img src="sleep-monitor-800w.jpg"
                  srcset="sleep-monitor-400w.jpg 400w, sleep-monitor-800w.jpg 800w"
-                 sizes="(max-width: 600px) 100vw, 33.333%"
+                 sizes="(max-width:600px) 100vw, 33.333%"
                  alt="Smart baby sleep monitor tracking heart rate, breathing and movement"
                  loading="lazy"
-                 width="400"
-                 height="400"
                  itemprop="image">
           </figure>
           <div class="product-body">
-            <h3 id="product-sleep-monitor-title" class="product-title" itemprop="name">Smart Sleep Monitor</h3>
-            <p class="product-summary" itemprop="description">
-              Real-time app-connected monitoring for heart rate, breathing and movement, with custom alerts.
-            </p>
+            <h3 class="product-title" itemprop="name">Smart Sleep Monitor</h3>
+            <p class="product-summary" itemprop="description">App-connected monitoring for heart rate, breathing and movement with custom alerts.</p>
             <p class="price" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
-              <span class="price-amount">
-                <span class="visually-hidden">Price:</span>
-                <span itemprop="priceCurrency" content="USD">$</span>
-                <span itemprop="price" content="129.99">129.99</span>
-              </span>
-              <link itemprop="availability" href="https://schema.org/InStock">
+              <span itemprop="priceCurrency" content="USD">$</span>
+              <span itemprop="price" content="129.99">129.99</span>
               <span class="stock-label">In stock</span>
             </p>
-            <p class="rating"
-               itemprop="aggregateRating"
-               itemscope
-               itemtype="https://schema.org/AggregateRating"
-               aria-label="Rated 4.6 out of 5 based on 198 reviews">
-              <span class="rating-stars" aria-hidden="true">★★★★☆</span>
-              <span class="rating-text">
-                <span itemprop="ratingValue">4.6</span>/<span itemprop="bestRating">5</span>
-                (<span itemprop="reviewCount">198</span> reviews)
-              </span>
+            <p class="rating" itemprop="aggregateRating" itemscope itemtype="https://schema.org/AggregateRating">
+              <span aria-hidden="true">★★★★☆</span>
+              <span> <span itemprop="ratingValue">4.6</span>/5 · <span itemprop="reviewCount">198</span> reviews</span>
             </p>
             <ul class="product-bullets">
               <li>Connects to iOS &amp; Android apps</li>
@@ -727,27 +1389,29 @@
               <li>Includes washable fabric sock</li>
             </ul>
             <a href="https://affiliate.example.com/sleep-monitor"
-               class="btn btn-primary"
-               rel="nofollow noopener noreferrer"
+               class="btn"
                target="_blank"
-               itemprop="url"
-               aria-label="View details and buying options for Smart Sleep Monitor (opens in a new tab)">
-              View Details &amp; Retailers
+               rel="nofollow noopener noreferrer"
+               itemprop="url">
+              View details &amp; retailers
             </a>
           </div>
         </article>
       </div>
     </section>
 
-    <!-- CATEGORIES (unchanged structure, still valuable for SEO UX) -->
+    <!-- Categories -->
     <section id="categories" class="section" aria-label="Baby gear categories">
+      <div class="section-header">
+        <h2>Explore by category</h2>
+      </div>
       <div class="category-grid">
         <section id="feed" class="category-card" aria-labelledby="feed-title">
           <h2 id="feed-title">Feeding Essentials</h2>
-          <p>From bottles to high chairs, see which feeding gear works best at each stage.</p>
+          <p>From bottles to high chairs, see what actually gets used day-to-day.</p>
           <ul class="category-list">
             <li>Best bottles for gassy babies</li>
-            <li>Top-rated breast pumps &amp; accessories</li>
+            <li>Top-rated pumps &amp; accessories</li>
             <li>Easy-clean, space-saving high chairs</li>
           </ul>
           <a href="/feeding.html" class="text-link">View all feeding guides</a>
@@ -755,9 +1419,9 @@
 
         <section id="sleep" class="category-card" aria-labelledby="sleep-title">
           <h2 id="sleep-title">Sleep Must-Haves</h2>
-          <p>Compare cribs, monitors and sleep aids with safety at the center of every pick.</p>
+          <p>Cribs, bassinets and monitors with safety at the center of every pick.</p>
           <ul class="category-list">
-            <li>Safe cribs and bassinets</li>
+            <li>Safe cribs &amp; bassinets</li>
             <li>Swaddles &amp; sleep sacks by age</li>
             <li>Monitors, sound machines &amp; more</li>
           </ul>
@@ -766,7 +1430,7 @@
 
         <section id="safety" class="category-card" aria-labelledby="safety-title">
           <h2 id="safety-title">Safety &amp; Health</h2>
-          <p>Gear to help you baby-proof, stay organized and feel more prepared for the “what-ifs”.</p>
+          <p>Gear to baby-proof, stay organized and be ready for the “what-ifs”.</p>
           <ul class="category-list">
             <li>Baby gates, locks &amp; outlet covers</li>
             <li>Car seats by age &amp; vehicle type</li>
@@ -777,7 +1441,7 @@
 
         <section id="toys" class="category-card" aria-labelledby="toys-title">
           <h2 id="toys-title">Toys &amp; Development</h2>
-          <p>Developmentally appropriate toys that support motor skills, sensory play and curiosity.</p>
+          <p>Developmentally-appropriate toys that support motor skills and curiosity.</p>
           <ul class="category-list">
             <li>Newborn black-and-white toys</li>
             <li>Tummy time &amp; floor play</li>
@@ -788,82 +1452,68 @@
       </div>
     </section>
 
-    <!-- DEALS -->
-    <section id="deals" class="section deals-section" aria-labelledby="deals-title">
+    <!-- Deals -->
+    <section id="deals" class="section section-muted" aria-labelledby="deals-title">
       <header class="section-header">
         <h2 id="deals-title">Today’s Baby Gear Highlights</h2>
-        <p class="section-tagline">
-          Handpicked savings and bundles so you can stock up without overbuying.
-        </p>
+        <p class="section-tagline">Curated bundles and deals so you can stock up without overbuying.</p>
       </header>
-
       <div class="deals-grid">
         <article class="deal-card">
           <h3>Carrier &amp; Diaper Bag Bundle</h3>
-          <p>Save up to 20% when you bundle a best-selling carrier with a parent-approved diaper bag.</p>
-          <p class="deal-meta">Updated daily • Limited quantities</p>
+          <p>Pair a best-selling carrier with a parent-approved diaper bag and save up to 20%.</p>
+          <p class="deal-meta">Updated daily · Limited quantities</p>
         </article>
-
         <article class="deal-card">
           <h3>Sleep Starter Set</h3>
-          <p>A curated mix of swaddles, sleep sacks and sound machines at a lower combined price.</p>
+          <p>A lean set of swaddles, sleep sacks and a sound machine at a better combined price.</p>
           <p class="deal-meta">Perfect for newborn registry add-ons</p>
         </article>
-
         <article class="deal-card">
           <h3>Feeding Essentials Kit</h3>
-          <p>Starter kits for bottle or combo feeding, with only the pieces parents actually use.</p>
-          <p class="deal-meta">Avoid buying extras you won’t touch</p>
+          <p>Starter bundles for bottle or combo feeding—only the pieces parents actually use.</p>
+          <p class="deal-meta">Avoid the gadgets that collect dust</p>
         </article>
       </div>
-
-      <a href="/deals.html" class="btn btn-secondary">View all current deals</a>
+      <div class="container" style="text-align:center;">
+        <a href="/deals.html" class="btn btn-secondary">View all current deals</a>
+      </div>
     </section>
 
-    <!-- REVIEWS -->
-    <section id="reviews" class="section reviews-section" aria-labelledby="reviews-title">
+    <!-- Reviews -->
+    <section id="reviews" class="section" aria-labelledby="reviews-title">
       <header class="section-header">
         <h2 id="reviews-title">Parents who use InfantBites say…</h2>
       </header>
       <div class="reviews-grid">
-        <article class="testimonial" aria-labelledby="testimonial-jamie">
+        <article class="testimonial">
           <blockquote>
-            <p id="testimonial-jamie">
-              “InfantBites helped me pick a sleep monitor and a carrier in one nap-time. The breakdowns were clear,
-              and the safety notes made me feel way calmer.”
-            </p>
+            <p>“InfantBites helped me choose a sleep monitor and a carrier in one nap-time. The layout was simple and the safety notes calmed my brain.”</p>
           </blockquote>
           <p class="testimonial-author">— Jamie, first-time parent</p>
         </article>
-        <article class="testimonial" aria-labelledby="testimonial-alex">
+        <article class="testimonial">
           <blockquote>
-            <p id="testimonial-alex">
-              “Instead of reading 20 tabs of reviews, I checked one InfantBites list. The deals section alone saved us
-              more than a few late-night impulse buys.”
-            </p>
+            <p>“Instead of 20 tabs, I checked one list. The ‘skip this’ section alone saved us from a bunch of impulse buys.”</p>
           </blockquote>
           <p class="testimonial-author">— Alex, dad of two</p>
         </article>
-        <article class="testimonial" aria-labelledby="testimonial-priya">
+        <article class="testimonial">
           <blockquote>
-            <p id="testimonial-priya">
-              “I love that the affiliate and safety info is upfront. I know what’s an ad, what’s a deal, and what’s just
-              honestly recommended.”
-            </p>
+            <p>“I like that the affiliate piece is upfront. I know what’s a deal, what’s recommended, and why.”</p>
           </blockquote>
           <p class="testimonial-author">— Priya, working mom</p>
         </article>
       </div>
     </section>
 
-    <!-- COMPARISON -->
+    <!-- Comparison -->
     <section class="section section-muted" aria-labelledby="compare-title">
       <header class="section-header">
         <h2 id="compare-title">Why shop with InfantBites?</h2>
         <p class="section-tagline">We design every guide to save you time, money and mental energy.</p>
       </header>
-
-      <div class="table-wrapper" role="group" aria-label="Comparison of InfantBites vs. typical shopping">
+      <div class="table-wrapper" role="group" aria-label="Comparison of InfantBites vs typical shopping">
         <table class="compare-table">
           <thead>
             <tr>
@@ -880,13 +1530,13 @@
             </tr>
             <tr>
               <th scope="row">Safety info</th>
-              <td>Hidden in manuals or long threads</td>
+              <td>Buried in manuals or long comment threads</td>
               <td>Surfaced in plain-language safety summaries</td>
             </tr>
             <tr>
               <th scope="row">Understanding total cost</th>
               <td>Hard to compare across retailers</td>
-              <td>Side-by-side prices &amp; deal highlights</td>
+              <td>Live price slots &amp; deal highlights</td>
             </tr>
             <tr>
               <th scope="row">Affiliate transparency</th>
@@ -898,183 +1548,168 @@
       </div>
     </section>
 
-    <!-- AI GEAR FINDER (with your Groq JSON + results) -->
-    <section id="ai-assistant" class="section ai-section" aria-labelledby="ai-title">
+    <!-- AI Registry Builder -->
+    <section id="ai" class="section ai-section" aria-labelledby="ai-title">
       <header class="section-header">
-        <h2 id="ai-title">InfantBites AI: Build My 5-Item Gear List</h2>
-        <p class="section-tagline">
-          Tell AI your baby’s age, space and budget → get a safety-first shortlist with live lowest prices.
-        </p>
+        <h2 id="ai-title">InfantBites AI – Build My 5-Item Registry</h2>
+        <p class="section-tagline">Tell AI your life (space, car, budget, preferences) → get a lean, safety-first list with live price slots.</p>
         <p class="section-disclaimer">
-          AI can help you research, but it can’t replace safety checks or medical advice. Always follow manufacturer
-          instructions and speak with your pediatrician for health decisions.
+          AI helps you research faster, not replace safety checks or medical advice. Always follow manufacturer instructions,
+          check recalls and talk with your pediatrician about health decisions.
         </p>
       </header>
 
-      <div class="ai-chat-shell">
-        <div class="ai-chat-header">
-          <div class="ai-chat-header-title">
-            🍼 InfantBites AI
-            <span class="ai-chat-header-pill">Beta · JSON → cards</span>
+      <div class="ai-layout">
+        <!-- AI Shell -->
+        <section class="ai-shell" aria-label="AI baby registry builder">
+          <div class="ai-shell-header">
+            <div class="ai-shell-title">
+              🍼 InfantBites AI Registry Builder
+              <span class="ai-shell-sub">Groq + your price API + your affiliate tags (wired on your backend)</span>
+            </div>
+            <span class="ai-pill">JSON-first · 0.6s · Dev-friendly</span>
           </div>
-          <small>Don’t share full names, exact addresses or medical details.</small>
-        </div>
 
-        <div class="chat-window" id="chat" aria-live="polite">
-          <div class="message bot">
-            <strong>InfantBites AI:</strong> Hey! Tell me:
-            <br>• Baby’s age or due date?
-            <br>• Apartment, house, stairs?
-            <br>• Car size + rough budget?
-            <br><br>I’ll build you a 3–7 item list with safety notes, live prices and “you can skip this” items.
+          <div class="chat-window" id="chat" aria-live="polite">
+            <div class="message bot">
+              <strong>InfantBites AI:</strong><br>
+              Tell me everything in one message:
+              <ul style="margin:0.4rem 0 0.2rem 1.2rem;padding:0;">
+                <li>Baby’s age or due date</li>
+                <li>Home (sqft, stairs, city vs suburbs)</li>
+                <li>Car type + rough budget</li>
+                <li>Priorities (eco, minimal, reflux, twins, pets…)</li>
+              </ul>
+              I’ll send back a lean list of must-haves, what to skip for now, and safety notes.
+            </div>
           </div>
-        </div>
 
-        <form id="chat-form" class="ai-chat-form" aria-label="Ask the AI Gear Finder">
-          <textarea id="user-input"
-                    placeholder="e.g. Due in March, tiny NYC walk-up, hatchback car, under $500 total, planning to combo feed"
-                    rows="3"
-                    required
-                    aria-describedby="ai-status-text"></textarea>
-          <button type="submit" class="btn">
-            Start My Free AI List →
-          </button>
-        </form>
+          <form id="chat-form" class="ai-form">
+            <label for="user-input" class="visually-hidden">Describe your situation</label>
+            <textarea id="user-input"
+                      placeholder="e.g. Due April 2026, 700 sqft walk-up in Chicago, small SUV, $1500 budget, reflux history, eco where it matters, okay buying used except car seat…"
+                      required></textarea>
+            <button type="submit" class="btn">⚡ Build my registry</button>
+          </form>
 
-        <div class="ai-status-text" id="ai-status-text" role="status" aria-live="polite">
-          Your prompt stays in this browser for this session. In production, run the AI + price calls from your backend (never expose real keys here).
-        </div>
+          <div class="ai-status" id="ai-status" role="status" aria-live="polite">
+            Front-end demo only. In production, proxy Groq + Keepa requests through your backend—never ship real API keys in this file.
+          </div>
+        </section>
+
+        <!-- Side info + results -->
+        <section class="ai-side-info">
+          <div class="ai-side-card">
+            <h3>What you’ll get back</h3>
+            <ul class="ai-side-list">
+              <li>3–7 core items that fit your life.</li>
+              <li>Short “why this” explanation per pick.</li>
+              <li>Safety notes and recall reminders to check.</li>
+              <li>“You can skip” list with reasons.</li>
+              <li>“Next stage” suggestions for later.</li>
+            </ul>
+          </div>
+
+          <div class="ai-side-card">
+            <h3>How we think about safety</h3>
+            <p>We highlight common safety considerations (e.g. car seat install, safe sleep basics, babywearing positioning) that you should double-check.</p>
+            <p>Always read product manuals, confirm with your pediatrician and follow local laws (especially for car seats).</p>
+          </div>
+
+          <div id="results" class="ai-results"></div>
+
+          <!-- Skeleton loader -->
+          <div id="skeleton" style="display:none;">
+            <p style="font-size:0.88rem;color:var(--ib-muted);margin:0.7rem 0 0.3rem;">Building your list + pulling live price slots…</p>
+            <div class="skeleton-row">
+              <div class="skeleton-card">
+                <div class="skeleton-block img"></div>
+                <div class="skeleton-block lg"></div>
+                <div class="skeleton-block"></div>
+                <div class="skeleton-block"></div>
+              </div>
+              <div class="skeleton-card">
+                <div class="skeleton-block img"></div>
+                <div class="skeleton-block lg"></div>
+                <div class="skeleton-block"></div>
+                <div class="skeleton-block"></div>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
-
-      <div id="results" style="margin-top:2rem"></div>
     </section>
 
     <!-- FAQ -->
-    <section id="faq" class="section faq-section" aria-labelledby="faq-title">
+    <section id="faq" class="section" aria-labelledby="faq-title">
       <header class="section-header">
         <h2 id="faq-title">Questions parents ask most</h2>
       </header>
-
       <div class="faq-accordion" role="list">
         <article class="faq-item" role="listitem">
           <h3>
-            <button class="faq-toggle"
-                    type="button"
-                    aria-expanded="false"
-                    aria-controls="faq-1-body"
-                    id="faq-1-label">
+            <button class="faq-toggle" type="button" aria-expanded="false" aria-controls="faq-1">
               How do you choose products?
             </button>
           </h3>
-          <div id="faq-1-body"
-               class="faq-body"
-               role="region"
-               aria-labelledby="faq-1-label"
-               hidden>
-            <p>
-              We blend expert criteria with InfantBites AI and real parent reviews. We compare product specs, safety information,
-              recall history and pricing across major retailers. Then we feature products that balance safety, usability and value for real families.
-            </p>
+          <div id="faq-1" class="faq-body" role="region" hidden>
+            <p>We combine expert criteria, InfantBites AI and real parent reviews. We look at safety info, recall history, real-world usability and pricing across major retailers before suggesting anything.</p>
           </div>
         </article>
 
         <article class="faq-item" role="listitem">
           <h3>
-            <button class="faq-toggle"
-                    type="button"
-                    aria-expanded="false"
-                    aria-controls="faq-2-body"
-                    id="faq-2-label">
+            <button class="faq-toggle" type="button" aria-expanded="false" aria-controls="faq-2">
               Do affiliate links change what you recommend?
             </button>
           </h3>
-          <div id="faq-2-body"
-               class="faq-body"
-               role="region"
-               aria-labelledby="faq-2-label"
-               hidden>
-            <p>
-              No. Affiliate links never change which products we recommend or the price you pay. We show affiliate
-              relationships clearly and keep our evaluation criteria separate from how we’re compensated.
-            </p>
+          <div id="faq-2" class="faq-body" role="region" hidden>
+            <p>No. Affiliate links never change which products we recommend or the price you pay. We keep evaluation criteria separate from how we’re compensated and label affiliate participation clearly.</p>
           </div>
         </article>
 
         <article class="faq-item" role="listitem">
           <h3>
-            <button class="faq-toggle"
-                    type="button"
-                    aria-expanded="false"
-                    aria-controls="faq-3-body"
-                    id="faq-3-label">
+            <button class="faq-toggle" type="button" aria-expanded="false" aria-controls="faq-3">
               Is InfantBites medical advice?
             </button>
           </h3>
-          <div id="faq-3-body"
-               class="faq-body"
-               role="region"
-               aria-labelledby="faq-3-label"
-               hidden>
-            <p>
-              No. InfantBites does not provide medical advice, diagnosis or treatment. Our content is educational only.
-              Always speak with your pediatrician or qualified health provider about health-related questions.
-            </p>
+          <div id="faq-3" class="faq-body" role="region" hidden>
+            <p>No. InfantBites does not provide medical advice, diagnosis or treatment. Our content is educational. Always speak with your pediatrician or qualified health provider about health-related questions.</p>
           </div>
         </article>
 
         <article class="faq-item" role="listitem">
           <h3>
-            <button class="faq-toggle"
-                    type="button"
-                    aria-expanded="false"
-                    aria-controls="faq-4-body"
-                    id="faq-4-label">
-              How should I use InfantBites AI safely?
+            <button class="faq-toggle" type="button" aria-expanded="false" aria-controls="faq-4">
+              How should I use the AI safely?
             </button>
           </h3>
-          <div id="faq-4-body"
-               class="faq-body"
-               role="region"
-               aria-labelledby="faq-4-label"
-               hidden>
-            <p>
-              Use AI suggestions as a fast starting point to narrow choices—not a final verdict. Always:
-            </p>
+          <div id="faq-4" class="faq-body" role="region" hidden>
+            <p>Use AI outputs as a fast starting point—not a final verdict. Always:</p>
             <ul>
               <li>Check product details and recall information yourself.</li>
-              <li>Read the manufacturer’s instructions before use.</li>
+              <li>Read manuals before using gear.</li>
               <li>Follow local safety guidelines and car seat laws.</li>
-              <li>Talk with your pediatrician for health-related decisions.</li>
+              <li>Talk with your pediatrician about medical or developmental questions.</li>
             </ul>
           </div>
         </article>
       </div>
     </section>
 
-    <!-- NEWSLETTER -->
-    <section id="newsletter" class="section newsletter-section" aria-labelledby="newsletter-title">
+    <!-- Newsletter -->
+    <section id="newsletter" class="section section-muted" aria-labelledby="newsletter-title">
       <header class="section-header">
         <h2 id="newsletter-title">Get InfantBites in your inbox</h2>
-        <p class="section-tagline">
-          Bite-sized baby gear advice, AI shortlists and deal alerts—no spam, no overwhelm.
-        </p>
+        <p class="section-tagline">Bite-sized gear advice, AI shortlists and deal alerts—no spam, no overwhelm.</p>
       </header>
-
-      <form class="newsletter-form" aria-label="Email newsletter signup" novalidate>
+      <form class="newsletter-form" novalidate>
         <div class="newsletter-fields">
           <label for="newsletter-email" class="visually-hidden">Email address</label>
-          <input id="newsletter-email"
-                 type="email"
-                 name="email"
-                 placeholder="you@example.com"
-                 autocomplete="email"
-                 required
-                 aria-describedby="newsletter-help newsletter-status">
-          <button type="submit" class="btn btn-primary" data-cta="newsletter-submit">Join free</button>
+          <input id="newsletter-email" type="email" name="email" placeholder="you@example.com" autocomplete="email" required>
+          <button type="submit" class="btn">Join free</button>
         </div>
-        <p id="newsletter-help" class="visually-hidden">
-          Enter a valid email address to receive InfantBites tips and checklists.
-        </p>
         <p id="newsletter-status" class="newsletter-meta" role="status" aria-live="polite">
           By subscribing, you agree to our <a href="/privacy.html">Privacy Policy</a>. You can unsubscribe anytime.
         </p>
@@ -1082,386 +1717,371 @@
     </section>
   </main>
 
-  <!-- FOOTER -->
+  <!-- Footer -->
   <footer class="site-footer" role="contentinfo">
     <div class="footer-inner">
-      <div class="footer-brand">
+      <div>
         <a href="/" class="logo-link" aria-label="InfantBites home">
           <span class="logo-mark" aria-hidden="true">🍼</span>
-          <span class="logo-text">InfantBites</span>
+          <span>InfantBites</span>
         </a>
-        <p class="footer-tagline">
-          Helping you feel less overwhelmed—and more confident—about what your baby actually needs.
-        </p>
+        <p class="footer-tagline">Helping you feel less overwhelmed—and more confident—about what your baby actually needs.</p>
       </div>
       <nav class="footer-nav" aria-label="Footer navigation">
         <ul>
           <li><a href="/about.html">About</a></li>
-          <li><a href="/privacy.html">Privacy Policy</a></li>
-          <li><a href="/terms.html">Terms of Use</a></li>
+          <li><a href="/privacy.html">Privacy</a></li>
+          <li><a href="/terms.html">Terms</a></li>
           <li><a href="/support.html">Support</a></li>
           <li><a href="/contact.html">Contact</a></li>
         </ul>
       </nav>
     </div>
-
     <div class="footer-bottom">
-      <p class="footer-meta">
-        &copy; 2025 InfantBites. All rights reserved.
-      </p>
-      <p class="footer-meta">
-        InfantBites participates in affiliate programs (including Amazon Associates). We may earn from qualifying
-        purchases at no extra cost to you.
-      </p>
+      <p>&copy; 2025 InfantBites. All rights reserved.</p>
+      <p>InfantBites participates in affiliate programs (including Amazon Associates). We may earn from qualifying purchases at no extra cost to you.</p>
     </div>
   </footer>
 
-  <!-- JAVASCRIPT -->
-  <script defer>
-    // === Safe localStorage detection ===
-    function ibStorageAvailable() {
+  <script>
+    // --------- Helper: safe storage ----------
+    function storageAvailable() {
       try {
-        const testKey = "__ib_test__";
-        localStorage.setItem(testKey, "1");
-        localStorage.removeItem(testKey);
+        const k = "__ib_test__";
+        localStorage.setItem(k, "1");
+        localStorage.removeItem(k);
         return true;
       } catch (e) {
         return false;
       }
     }
-    const ibHasStorage = ibStorageAvailable();
+    const HAS_STORAGE = storageAvailable();
 
-    document.addEventListener("DOMContentLoaded", function () {
-      // === Scarcity countdown (4-hour rolling window) ===
+    // --------- Config (keys MUST be proxied in prod) ----------
+    const IB_CONFIG = {
+      GROQ_KEY: "YOUR_GROQ_KEY_HERE",   // proxy via backend in production
+      KEEPA_KEY: "YOUR_KEEPA_KEY_HERE", // proxy via backend in production
+      AMAZON_TAG: "infantbites-20"
+    };
+
+    document.addEventListener("DOMContentLoaded", () => {
+      // Disclosure banner
       (function () {
-        const countdownEl = document.querySelector(".scarcity-bar .countdown");
-        if (!countdownEl) return;
+        const banner = document.getElementById("disclosure");
+        const closeBtn = banner?.querySelector(".disclosure-close");
+        const KEY = "ib_disclosure_dismissed";
+        if (!banner || !closeBtn) return;
+        if (HAS_STORAGE && localStorage.getItem(KEY) === "true") {
+          banner.hidden = true;
+          banner.setAttribute("aria-hidden", "true");
+          return;
+        }
+        closeBtn.addEventListener("click", () => {
+          banner.hidden = true;
+          banner.setAttribute("aria-hidden", "true");
+          if (HAS_STORAGE) localStorage.setItem(KEY, "true");
+        });
+      })();
 
-        const WINDOW_SECONDS = 4 * 60 * 60;
+      // Sticky countdown (4h window)
+      (function () {
+        const el = document.querySelector(".scarcity-bar .countdown");
+        if (!el) return;
+        const WINDOW = 4 * 60 * 60;
+        const KEY = "ib_countdown_end";
         let remaining;
-
-        if (ibHasStorage) {
-          const stored = localStorage.getItem("ib_countdown_end");
-          const now = Date.now();
-          if (stored && Number(stored) > now) {
-            remaining = Math.floor((Number(stored) - now) / 1000);
+        const now = Date.now();
+        if (HAS_STORAGE) {
+          const stored = Number(localStorage.getItem(KEY) || 0);
+          if (stored > now) {
+            remaining = Math.floor((stored - now) / 1000);
           } else {
-            const end = now + WINDOW_SECONDS * 1000;
-            localStorage.setItem("ib_countdown_end", String(end));
-            remaining = WINDOW_SECONDS;
+            const end = now + WINDOW * 1000;
+            localStorage.setItem(KEY, String(end));
+            remaining = WINDOW;
           }
         } else {
-          remaining = WINDOW_SECONDS;
+          remaining = WINDOW;
         }
-
-        function render(seconds) {
-          const h = Math.floor(seconds / 3600);
-          const m = Math.floor((seconds % 3600) / 60);
-          const s = seconds % 60;
-          countdownEl.textContent =
-            String(h).padStart(2, "0") + ":" +
-            String(m).padStart(2, "0") + ":" +
-            String(s).padStart(2, "0");
+        function render(sec) {
+          const h = Math.floor(sec / 3600).toString().padStart(2, "0");
+          const m = Math.floor((sec % 3600) / 60).toString().padStart(2, "0");
+          const s = (sec % 60).toString().padStart(2, "0");
+          el.textContent = `${h}:${m}:${s}`;
         }
-
         render(remaining);
-
-        setInterval(function () {
-          remaining -= 1;
+        setInterval(() => {
+          remaining--;
           if (remaining <= 0) {
-            remaining = WINDOW_SECONDS;
-            if (ibHasStorage) {
-              const end = Date.now() + WINDOW_SECONDS * 1000;
-              localStorage.setItem("ib_countdown_end", String(end));
+            remaining = WINDOW;
+            if (HAS_STORAGE) {
+              const end = Date.now() + WINDOW * 1000;
+              localStorage.setItem(KEY, String(end));
             }
           }
           render(remaining);
         }, 1000);
       })();
 
-      // === Disclosure banner persist ===
+      // Mobile nav
       (function () {
-        const banner = document.getElementById("disclosure");
-        const closeBtn = banner ? banner.querySelector(".disclosure-close") : null;
-        const STORAGE_KEY = "infantbites_disclosure_dismissed";
-
-        if (!banner || !closeBtn) return;
-
-        if (ibHasStorage && localStorage.getItem(STORAGE_KEY) === "true") {
-          banner.hidden = true;
-          banner.setAttribute("aria-hidden", "true");
-          return;
-        }
-
-        closeBtn.addEventListener("click", function () {
-          banner.hidden = true;
-          banner.setAttribute("aria-hidden", "true");
-          if (ibHasStorage) {
-            localStorage.setItem(STORAGE_KEY, "true");
-          }
-        });
-      })();
-
-      // === Mobile nav toggle ===
-      (function () {
-        const navToggle = document.querySelector(".nav-toggle");
+        const toggle = document.querySelector(".nav-toggle");
         const nav = document.getElementById("main-nav");
-        if (!navToggle || !nav) return;
-
-        navToggle.addEventListener("click", function () {
-          const expanded = navToggle.getAttribute("aria-expanded") === "true";
-          navToggle.setAttribute("aria-expanded", String(!expanded));
+        if (!toggle || !nav) return;
+        toggle.addEventListener("click", () => {
+          const expanded = toggle.getAttribute("aria-expanded") === "true";
+          toggle.setAttribute("aria-expanded", String(!expanded));
           nav.classList.toggle("is-open", !expanded);
         });
       })();
 
-      // === Smooth scroll for anchor + quick links ===
-      (function () {
-        const SCROLL_OFFSET = 80;
-        const links = document.querySelectorAll('a[href^="#"], .quick-link[data-scroll-target]');
-
-        function getTarget(selectorOrHash) {
-          if (!selectorOrHash) return null;
-          const selector = selectorOrHash.startsWith("#") ? selectorOrHash : selectorOrHash;
-          try { return document.querySelector(selector); } catch { return null; }
-        }
-
-        function handleClick(evt, targetSelector) {
-          const hash = targetSelector || evt.currentTarget.getAttribute("href");
-          if (!hash || hash === "#" || hash === "#0") return;
-          const target = getTarget(hash) || getTarget(evt.currentTarget.getAttribute("data-scroll-target"));
-          if (!target) return;
-
-          evt.preventDefault();
-          const rect = target.getBoundingClientRect();
-          const absoluteY = rect.top + window.scrollY;
-          const offsetY = absoluteY - SCROLL_OFFSET;
-
-          window.scrollTo({
-            top: offsetY >= 0 ? offsetY : 0,
-            behavior: "smooth"
-          });
-
-          target.setAttribute("tabindex", "-1");
-          target.focus({ preventScroll: true });
-          target.addEventListener("blur", function cleanup() {
-            target.removeAttribute("tabindex");
-            target.removeEventListener("blur", cleanup);
-          });
-        }
-
-        links.forEach(function (link) {
-          if (link.matches(".quick-link")) {
-            link.addEventListener("click", function (evt) {
-              const selector = link.getAttribute("data-scroll-target");
-              handleClick(evt, selector);
-            });
-          } else {
-            link.addEventListener("click", function (evt) {
-              handleClick(evt, null);
-            });
-          }
-        });
-      })();
-
-      // === Search with suggestion chips (still Google site search placeholder) ===
+      // Search + suggestion chips
       (function () {
         const form = document.getElementById("site-search");
         if (!form) return;
-
         const input = document.getElementById("search-input");
         const status = document.getElementById("search-status");
-        const suggestionContainer = document.getElementById("search-suggestions");
-        const suggestionChips = suggestionContainer
-          ? suggestionContainer.querySelectorAll(".suggestion-chip")
-          : [];
-
-        suggestionChips.forEach(function (chip) {
-          chip.addEventListener("click", function () {
+        document.querySelectorAll(".suggestion-chip").forEach(chip => {
+          chip.addEventListener("click", () => {
             const text = chip.getAttribute("data-suggest") || chip.textContent;
             input.value = text.trim();
             input.focus();
-            if (status) {
-              status.textContent = "Loaded a suggested prompt. Edit it or press Search.";
-            }
+            if (status) status.textContent = "Loaded a suggested search. Edit it or press Search.";
           });
         });
-
-        form.addEventListener("submit", function (event) {
-          event.preventDefault();
-          const query = input.value.trim();
-          if (!query) {
-            status.textContent = "Please enter a product or question to search.";
+        form.addEventListener("submit", evt => {
+          evt.preventDefault();
+          const q = input.value.trim();
+          if (!q) {
+            status.textContent = "Please enter what you’re shopping for.";
             input.focus();
             return;
           }
-          status.textContent = "Opening AI-enhanced results in a new tab…";
-
-          // TODO: replace with your internal AI/search route
+          status.textContent = "Opening results in a new tab…";
+          // Replace with your own internal search route when ready
           const url = "https://www.google.com/search?q=" +
-            encodeURIComponent(query + " site:infantbites.com");
+                      encodeURIComponent(q + " site:infantbites.com");
           window.open(url, "_blank", "noopener,noreferrer");
         });
       })();
 
-      // === FAQ accordion ===
+      // Product filter chips
       (function () {
-        const toggles = document.querySelectorAll(".faq-toggle");
-        if (!toggles.length) return;
+        const chips = document.querySelectorAll(".filter-chip");
+        const cards = document.querySelectorAll(".product-card");
+        if (!chips.length || !cards.length) return;
+        chips.forEach(chip => {
+          chip.addEventListener("click", () => {
+            const filter = chip.getAttribute("data-filter");
+            chips.forEach(c => {
+              const state = c === chip;
+              c.classList.toggle("is-active", state);
+              c.setAttribute("aria-pressed", String(state));
+            });
+            cards.forEach(card => {
+              const cat = card.getAttribute("data-category");
+              const show = !filter || filter === "all" || cat === filter;
+              card.hidden = !show;
+            });
+          });
+        });
+      })();
 
-        toggles.forEach(function (btn) {
-          btn.addEventListener("click", function () {
+      // FAQ accordion
+      (function () {
+        document.querySelectorAll(".faq-toggle").forEach(btn => {
+          btn.addEventListener("click", () => {
             const expanded = btn.getAttribute("aria-expanded") === "true";
             const bodyId = btn.getAttribute("aria-controls");
             const body = document.getElementById(bodyId);
             if (!body) return;
-
             btn.setAttribute("aria-expanded", String(!expanded));
             body.hidden = expanded;
           });
         });
       })();
 
-      // === Product filter chips ===
-      (function () {
-        const chips = document.querySelectorAll(".filter-chip");
-        const cards = document.querySelectorAll(".product-card");
-        const grid = document.querySelector(".product-grid");
-        if (!chips.length || !cards.length || !grid) return;
-
-        chips.forEach(function (chip) {
-          chip.addEventListener("click", function () {
-            const filter = chip.getAttribute("data-filter");
-
-            chips.forEach(function (c) {
-              const isActive = c === chip;
-              c.classList.toggle("is-active", isActive);
-              c.setAttribute("aria-pressed", String(isActive));
-            });
-
-            let visibleCount = 0;
-            cards.forEach(function (card) {
-              const category = card.getAttribute("data-category");
-              const shouldShow = !filter || filter === "all" || category === filter;
-              card.hidden = !shouldShow;
-              if (shouldShow) visibleCount++;
-            });
-
-            grid.setAttribute("data-visible-count", String(visibleCount));
-          });
-        });
-      })();
-
-      // === Newsletter validation ===
+      // Newsletter validation (simple front-end only)
       (function () {
         const form = document.querySelector(".newsletter-form");
         if (!form) return;
-
-        const emailInput = document.getElementById("newsletter-email");
+        const email = document.getElementById("newsletter-email");
         const status = document.getElementById("newsletter-status");
-
-        function isValidEmail(value) {
-          return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-        }
-
-        form.addEventListener("submit", function (event) {
-          event.preventDefault();
-          const value = (emailInput.value || "").trim();
-
+        form.addEventListener("submit", evt => {
+          evt.preventDefault();
+          const value = (email.value || "").trim();
           if (!value) {
-            status.textContent = "Please enter your email address to join.";
-            emailInput.focus();
-            emailInput.setAttribute("aria-invalid", "true");
+            status.textContent = "Please add your email to join.";
+            email.focus();
             return;
           }
-
-          if (!isValidEmail(value)) {
+          if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
             status.textContent = "That doesn’t look like a valid email. Please check and try again.";
-            emailInput.focus();
-            emailInput.setAttribute("aria-invalid", "true");
+            email.focus();
             return;
           }
-
           status.textContent = "You’re in! Check your inbox for your first InfantBites checklist.";
-          form.classList.add("is-success");
-          emailInput.setAttribute("aria-invalid", "false");
-        });
-
-        emailInput.addEventListener("input", function () {
-          if (!status) return;
-          if (form.classList.contains("is-success")) {
-            form.classList.remove("is-success");
-          }
-          status.innerHTML = 'By subscribing, you agree to our <a href="/privacy.html">Privacy Policy</a>. You can unsubscribe anytime.';
         });
       })();
 
-      // === AI Gear Finder (Groq JSON → cards) ===
+      // AI Registry Builder
       (function () {
         const chatForm = document.getElementById("chat-form");
-        const chatWindow = document.getElementById("chat");
-        const userInput = document.getElementById("user-input");
-        const resultsEl = document.getElementById("results");
-        const statusText = document.getElementById("ai-status-text");
+        const chat = document.getElementById("chat");
+        const input = document.getElementById("user-input");
+        const status = document.getElementById("ai-status");
+        const results = document.getElementById("results");
+        const skeleton = document.getElementById("skeleton");
+        if (!chatForm || !chat || !input || !results) return;
 
-        if (!chatForm || !chatWindow || !userInput || !resultsEl) return;
-
-        // IMPORTANT: for production, DO NOT keep your real API key in client-side JS.
-        // Route this request through your backend and inject the key server-side.
-        const API_KEY = "YOUR_GROQ_KEY_HERE"; // placeholder only
-
-        function addMessage(text, type) {
+        function addMessage(html, role) {
           const div = document.createElement("div");
-          div.className = "message " + type;
-          div.innerHTML = text;
-          chatWindow.appendChild(div);
-          chatWindow.scrollTop = chatWindow.scrollHeight;
+          div.className = "message " + role;
+          div.innerHTML = html;
+          chat.appendChild(div);
+          chat.scrollTop = chat.scrollHeight;
           return div;
         }
 
-        function renderResults(payload) {
-          const items = payload.items || [];
-          const skips = payload.skips || [];
-          const summary = payload.summary || "Here’s a starter list based on your situation.";
+        function mockPayload() {
+          return {
+            summary: "For a small walk-up, mid-range budget and reflux concerns, focus on compact, easy-clean gear that earns its footprint.",
+            items: [
+              {
+                name: "Compact Travel System with Infant Car Seat",
+                asin: "B0EXAMPLE01",
+                why: "Lightweight stroller + infant car seat that fits stairs and small trunks, with one-hand fold for city errands.",
+                safety: "Have a certified tech check your car seat install; keep baby rear-facing as long as your seat allows."
+              },
+              {
+                name: "Soft Structured Carrier (Newborn to Toddler)",
+                asin: "B0EXAMPLE02",
+                why: "Hands-free stairs and dog walks with ergonomic support from newborn through toddler, plus good support for refluxy babies.",
+                safety: "Keep airway visible, chin off chest and follow T.I.C.K.S. babywearing guidelines."
+              },
+              {
+                name: "Slim Folding High Chair",
+                asin: "B0EXAMPLE03",
+                why: "Easy-wipe surfaces and a fold-flat profile so it can live behind a door instead of in the middle of your living room.",
+                safety: "Always buckle the harness and never leave baby unattended while seated."
+              }
+            ],
+            skips: [
+              "Multiple fancy bottle warmers — one simple option is enough.",
+              "Full-size swing on day one — borrow or wait to see if baby likes motion."
+            ],
+            next: "Around 6–9 months, add a floor-friendly seat alternative, simple suction toys and a rolling cart to move supplies between rooms."
+          };
+        }
+
+        async function callGroq(prompt) {
+          if (!IB_CONFIG.GROQ_KEY || IB_CONFIG.GROQ_KEY === "YOUR_GROQ_KEY_HERE") {
+            return mockPayload();
+          }
+          const system = `You are InfantBites AI. Return ONLY valid JSON (no markdown):
+{
+  "summary": "1–2 sentence overview tailored to this family",
+  "items": [{
+    "name": "Exact product name",
+    "asin": "B0XXXXXXXX",
+    "why": "2–3 short sentences on why this fits their life",
+    "safety": "Critical safety note or empty string"
+  }],
+  "skips": ["item + short reason to skip"],
+  "next": "1–2 sentences on what to add at the next stage"
+}`;
+          const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+            method: "POST",
+            headers: {
+              "Authorization": "Bearer " + IB_CONFIG.GROQ_KEY,
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              model: "llama-3.1-70b-versatile",
+              temperature: 0.35,
+              messages: [
+                { role: "system", content: system },
+                { role: "user", content: prompt }
+              ]
+            })
+          });
+          if (!res.ok) throw new Error("Groq API error " + res.status);
+          const data = await res.json();
+          const content = data.choices?.[0]?.message?.content || "{}";
+          return JSON.parse(content);
+        }
+
+        async function fetchPrices(asins) {
+          if (!asins.length) return {};
+          if (!IB_CONFIG.KEEPA_KEY || IB_CONFIG.KEEPA_KEY === "YOUR_KEEPA_KEY_HERE") {
+            const fake = {};
+            asins.forEach((a, idx) => {
+              fake[a] = (69.99 + idx * 30).toFixed(2);
+            });
+            return fake;
+          }
+          const url = `https://api.keepa.com/product/?key=${encodeURIComponent(IB_CONFIG.KEEPA_KEY)}&domain=1&asin=${encodeURIComponent(asins.join(','))}&buybox=1`;
+          const res = await fetch(url);
+          if (!res.ok) throw new Error("Keepa API error " + res.status);
+          const json = await res.json();
+          const prices = {};
+          (json.products || []).forEach(p => {
+            const history = p.csv?.[1];
+            if (!Array.isArray(history) || !history.length) return;
+            const last = [...history].reverse().find(v => typeof v === "number" && v > 0);
+            if (last) prices[p.asin] = (last / 100).toFixed(2);
+          });
+          return prices;
+        }
+
+        async function renderResults(payload) {
+          const items = Array.isArray(payload.items) ? payload.items : [];
+          const skips = Array.isArray(payload.skips) ? payload.skips : [];
+          const summary = payload.summary || "Here’s a lean registry based on your situation.";
+          const next = payload.next || "";
+          const asins = items.map(i => i.asin).filter(Boolean);
+          let prices = {};
+          try {
+            prices = await fetchPrices(asins);
+          } catch (e) {
+            console.warn("Price fetch error", e);
+          }
 
           let html = `
-            <section aria-label="Your AI gear list">
-              <div class="ai-results-header">
-                <div>
-                  <h3>Your AI Gear List</h3>
-                  <p style="margin:0;font-size:0.95rem;">${summary}</p>
-                </div>
-                <button type="button" class="btn btn-secondary" onclick="window.ibExportList && window.ibExportList()">
-                  Export &amp; add to registry →
-                </button>
+            <div class="ai-results-header">
+              <div>
+                <h3>Your AI-built registry</h3>
+                <p style="margin:0;">${summary}</p>
               </div>
-              <div class="ai-results-grid">
+              <button type="button" class="btn btn-secondary" onclick="window.ibExport && window.ibExport()">
+                Export &amp; add to registry →
+              </button>
+            </div>
+            <div class="ai-results-grid">
           `;
 
-          items.forEach(function (p) {
-            const name = p.name || "Baby gear pick";
-            const price = p.price || "—";
-            const url = p.url || "#";
-            const save = p.save || 0;
-            const why = p.why || "";
-            const safety = p.safety || "";
-
+          items.forEach(item => {
+            const asin = item.asin || "";
+            const price = asin && prices[asin] ? prices[asin] : "Check";
+            const url = asin
+              ? `https://www.amazon.com/dp/${asin}?tag=${encodeURIComponent(IB_CONFIG.AMAZON_TAG)}`
+              : "#";
             html += `
-              <article class="product-card-ai">
-                <h3>${name}</h3>
-                ${why ? `<p>${why}</p>` : ""}
-                <p class="live-price">
-                  $${price}
-                  ${save ? `<span class="price-save">Save $${save} today</span>` : ""}
+              <article class="ai-card">
+                <h4>${item.name || "Baby gear pick"}</h4>
+                ${item.why ? `<p>${item.why}</p>` : ""}
+                <p class="ai-price">
+                  ${price !== "Check" ? `$${price}` : "Price"}
+                  <span class="ai-price-sub">
+                    ${price !== "Check" ? "&nbsp;· lowest today (via your price API)*" : "&nbsp;· check latest price"}
+                  </span>
                 </p>
-                ${safety ? `<p class="safety-note">⚠️ ${safety}</p>` : ""}
-                <a href="${url ? url + (url.includes("?") ? "&" : "?") + "tag=youraffid" : "#"}"
-                   target="_blank"
-                   rel="nofollow noopener noreferrer"
-                   class="btn"
-                   style="width:100%;margin-top:0.5rem">
-                  Buy at lowest price
-                </a>
+                ${item.safety ? `<p class="ai-safety">⚠️ ${item.safety}</p>` : ""}
+                <div class="ai-card-footer">
+                  <a href="${url}" target="_blank" rel="nofollow noopener noreferrer" class="btn" style="width:100%;justify-content:center;">
+                    Buy now on Amazon
+                  </a>
+                </div>
               </article>
             `;
           });
@@ -1471,140 +2091,52 @@
           if (skips.length) {
             html += `
               <div class="ai-skips">
-                <strong>You can probably skip for now:</strong>
-                <span>${skips.join(", ")}</span>
+                <strong>You can probably skip for now:</strong><br>
+                ${skips.map(s => `• ${s}`).join("<br>")}
               </div>
             `;
           }
 
-          html += `</section>`;
+          if (next) {
+            html += `<div class="ai-next"><strong>Next stage:</strong> ${next}</div>`;
+          }
 
-          resultsEl.innerHTML = html;
+          results.innerHTML = html;
         }
 
-        async function callGroq(prompt) {
-          if (!API_KEY || API_KEY === "YOUR_GROQ_KEY_HERE") {
-            // Dev-mode fallback: simulate a JSON response if key isn't set yet
-            return {
-              items: [
-                {
-                  name: "Compact newborn-friendly travel system",
-                  price: "329.00",
-                  url: "https://example.com/travel-system",
-                  save: "40",
-                  why: "Lightweight stroller + compatible infant seat that fits small trunks and walk-up stairs.",
-                  safety: "Always install the car seat using your vehicle’s manual and check local car seat laws."
-                },
-                {
-                  name: "Soft structured baby carrier",
-                  price: "89.99",
-                  url: "https://example.com/carrier",
-                  save: "15",
-                  why: "Works from newborn with insert, keeps hands free for stairs and errands.",
-                  safety: "Keep airway visible and chin off chest; follow T.I.C.K.S. babywearing guidelines."
-                }
-              ],
-              skips: [
-                "Full-size swing right away",
-                "Multiple fancy bottle warmers"
-              ],
-              summary: "For a small walk-up and budget under $500, focus on a compact travel system, one great carrier, a simple safe sleep setup and a small bottle kit."
-            };
-          }
+        // export hook (placeholder)
+        window.ibExport = function () {
+          const names = Array.from(document.querySelectorAll(".ai-card h4")).map(h => h.textContent.trim());
+          alert("In production, this would send these items to Babylist/Amazon with your affiliate tags:\n\n" + names.join("\n"));
+        };
 
-          const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-            method: "POST",
-            headers: {
-              "Authorization": "Bearer " + API_KEY,
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-              model: "llama-3.1-70b-versatile",
-              messages: [
-                {
-                  role: "system",
-                  content: "You are InfantBites AI. Return ONLY valid JSON with this shape: {\"items\":[{\"name\":string,\"price\":number|string,\"url\":string,\"save\":number|string,\"why\":string,\"safety\":string}],\"skips\":[string],\"summary\":string}. Do not include Markdown or code fences."
-                },
-                {
-                  role: "user",
-                  content: prompt
-                }
-              ]
-            })
-          });
-
-          if (!res.ok) {
-            throw new Error("API error " + res.status);
-          }
-
-          const data = await res.json();
-          const content = data.choices?.[0]?.message?.content || "{}";
-
-          try {
-            return JSON.parse(content);
-          } catch (e) {
-            throw new Error("Invalid JSON from AI");
-          }
-        }
-
-        chatForm.addEventListener("submit", async function (event) {
-          event.preventDefault();
-          const text = (userInput.value || "").trim();
-          if (!text) {
-            statusText.textContent = "Share a bit about your baby and what you’re shopping for to get started.";
-            userInput.focus();
+        chatForm.addEventListener("submit", async evt => {
+          evt.preventDefault();
+          const prompt = (input.value || "").trim();
+          if (!prompt) {
+            status.textContent = "Share a bit about your baby, home, car and budget to get started.";
+            input.focus();
             return;
           }
-
-          addMessage(text, "user");
-          userInput.value = "";
-          const thinking = addMessage("Building your list…", "bot");
-          statusText.textContent = "Thinking through age, space and budget for you…";
-
+          addMessage(prompt.replace(/\n/g,"<br>"), "user");
+          input.value = "";
+          const thinking = addMessage("Building your registry…", "bot");
+          status.textContent = "Reasoning through your situation and getting price slots…";
+          skeleton.style.display = "block";
           try {
-            const payload = await callGroq(text);
+            const data = await callGroq(prompt);
             thinking.remove();
-            renderResults(payload);
-            statusText.textContent = "List updated. Tweak your prompt or ask a follow-up to refine picks.";
-          } catch (err) {
-            console.error(err);
+            await renderResults(data);
+            status.textContent = "List updated. Adjust your prompt or add details to refine picks.";
+          } catch (e) {
+            console.error(e);
             thinking.remove();
-            addMessage("Something went wrong fetching your AI list. Please try again in a moment.", "bot");
-            statusText.textContent = "Error talking to AI. Check your connection or API key setup.";
-          }
-
-          // Light upsell after first real list
-          if (ibHasStorage && !localStorage.getItem("ib_premium_seen")) {
-            setTimeout(function () {
-              const overlay = document.createElement("div");
-              overlay.className = "upsell-overlay";
-              overlay.innerHTML = `
-                <div class="upsell-modal" role="dialog" aria-modal="true" aria-labelledby="upsell-title">
-                  <h2 id="upsell-title">Want unlimited AI lists + deal alerts?</h2>
-                  <p>$1 for 7 days → then $9/mo (cancel anytime).</p>
-                  <p>Perfect if you’re building a registry or juggling multiple kids.</p>
-                  <button class="btn" onclick="location.href='https://buy.stripe.com/yourlink'">
-                    Yes – unlock premium →
-                  </button>
-                  <button class="upsell-dismiss" type="button">
-                    No thanks, maybe later
-                  </button>
-                </div>
-              `;
-              document.body.appendChild(overlay);
-
-              overlay.querySelector(".upsell-dismiss").addEventListener("click", function () {
-                overlay.remove();
-                localStorage.setItem("ib_premium_seen", "1");
-              });
-            }, 2500);
+            addMessage("Something glitched on our side. Try again in a bit—this is usually lightning-fast ⚡", "bot");
+            status.textContent = "AI request failed. Check your connection or backend logs.";
+          } finally {
+            skeleton.style.display = "none";
           }
         });
-
-        // Export hook (currently just a placeholder)
-        window.ibExportList = function () {
-          alert("In production, this would send your list to Amazon/Babylist/etc. with your affiliate tags.");
-        };
       })();
     });
   </script>
