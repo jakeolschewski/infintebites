@@ -4,28 +4,99 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Privacy Policy | InfantBites</title>
-  <meta name="description" content="Learn how InfantBites collects, uses, and protects your information when you use our baby feeding and development tools.">
+
+  <meta name="description" content="Learn how InfantBites uses AI to provide baby feeding guidance while keeping your data private, secure, and under your control.">
   <meta name="robots" content="index,follow">
 
   <!-- Open Graph / Social -->
   <meta property="og:title" content="Privacy Policy | InfantBites">
-  <meta property="og:description" content="See how InfantBites keeps your information private, secure, and in your control.">
+  <meta property="og:description" content="See how InfantBites collects, uses, and protects information, including for AI-powered guidance and product recommendations.">
   <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.infantbites.com/privacy">
+  <meta property="og:site_name" content="InfantBites">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Privacy Policy | InfantBites">
+  <meta name="twitter:description" content="See how InfantBites keeps your information private, secure, and in your control.">
 
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header class="page-header">
     <div class="page-header-inner">
-      <h1>Privacy Policy</h1>
+      <h1>
+        Privacy Policy
+        <span class="badge badge-neutral" aria-label="AI-enabled service">AI-enabled</span>
+      </h1>
       <p class="page-header-subtitle">
         Your child’s privacy and your peace of mind are our priority.
       </p>
       <p class="page-meta">Last updated: November 17, 2025</p>
+      <p class="page-meta-secondary">
+        This Privacy Policy explains how we collect, use, and protect information when you use the InfantBites
+        website, tools, and AI-powered guidance.
+      </p>
+
+      <div class="pill-row" aria-label="Key commitments">
+        <span class="pill">No selling of personal data</span>
+        <span class="pill">AI used with safeguards</span>
+        <span class="pill">Data export & deletion controls</span>
+      </div>
     </div>
   </header>
 
   <main id="main-content">
+    <!-- At-a-glance summary & mode toggle -->
+    <section class="policy-section policy-section--summary" aria-labelledby="summary-heading">
+      <div class="summary-header">
+        <h2 id="summary-heading">Privacy at a glance</h2>
+        <div class="view-toggle" role="radiogroup" aria-label="Reading mode">
+          <button type="button" class="view-toggle-btn is-active" data-mode="plain" aria-pressed="true">
+            Plain-language view
+          </button>
+          <button type="button" class="view-toggle-btn" data-mode="detail" aria-pressed="false">
+            Detailed / legal-ish view
+          </button>
+        </div>
+      </div>
+
+      <div class="summary-grid" data-view-mode="plain">
+        <article class="summary-card">
+          <h3>We use AI, not magic</h3>
+          <p>
+            InfantBites uses AI and other automated tools to help generate feeding and development guidance.
+            We design prompts to use minimal personal information and encourage you not to overshare.
+          </p>
+        </article>
+        <article class="summary-card">
+          <h3>Your data stays yours</h3>
+          <p>
+            You can ask us to access, export, or delete the information we hold about you, subject to legal requirements.
+          </p>
+        </article>
+        <article class="summary-card">
+          <h3>No personal data sales</h3>
+          <p>
+            We do <strong>not</strong> sell your personal information. We may use anonymized or aggregated data
+            to improve our service and AI systems.
+          </p>
+        </article>
+        <article class="summary-card">
+          <h3>Built for adults</h3>
+          <p>
+            InfantBites is built for parents and caregivers, not children. We only ask for your baby’s age in months,
+            which we treat as non-identifying on its own.
+          </p>
+        </article>
+      </div>
+
+      <div class="callout callout-info">
+        <strong>Plain language first:</strong> We’ve written this policy to be human-readable.
+        Where laws require more detail, those details are included — but you should still talk to a lawyer for formal legal advice.
+      </div>
+    </section>
+
     <!-- Table of Contents -->
     <nav class="toc" aria-label="Privacy policy sections">
       <h2 class="toc-title">On this page</h2>
@@ -34,18 +105,23 @@
         <li><a href="#section-who-we-are">2. Who We Are</a></li>
         <li><a href="#section-scope">3. Scope</a></li>
         <li><a href="#section-data-we-collect">4. Information We Collect</a></li>
-        <li><a href="#section-how-we-use">5. How We Use Your Information</a></li>
-        <li><a href="#section-legal-bases">6. Legal Bases (Where Applicable)</a></li>
-        <li><a href="#section-sharing">7. When We Share Information</a></li>
-        <li><a href="#section-cookies">8. Cookies & Tracking</a></li>
-        <li><a href="#section-retention">9. Data Retention</a></li>
-        <li><a href="#section-children">10. Children’s Privacy</a></li>
-        <li><a href="#section-rights">11. Your Rights & Choices</a></li>
-        <li><a href="#section-requests">12. Submit a Data Request</a></li>
-        <li><a href="#section-security">13. How We Protect Your Information</a></li>
-        <li><a href="#section-intl">14. International Users</a></li>
-        <li><a href="#section-changes">15. Changes to This Policy</a></li>
-        <li><a href="#section-contact">16. Contact Us</a></li>
+        <li><a href="#section-data-map">5. Data Map (What, Why, and Legal Basis)</a></li>
+        <li><a href="#section-how-we-use">6. How We Use Your Information</a></li>
+        <li><a href="#section-ai">7. How We Use AI & Automated Systems</a></li>
+        <li><a href="#section-lifecycle">8. Your Data Life Cycle</a></li>
+        <li><a href="#section-legal-bases">9. Legal Bases (Where Applicable)</a></li>
+        <li><a href="#section-sharing">10. When We Share Information</a></li>
+        <li><a href="#section-cookies">11. Cookies & Tracking</a></li>
+        <li><a href="#section-retention">12. Data Retention</a></li>
+        <li><a href="#section-children">13. Children’s Privacy</a></li>
+        <li><a href="#section-rights">14. Your Rights & Choices</a></li>
+        <li><a href="#section-region-rights">15. Region-Specific Notices (GDPR / CCPA & Similar)</a></li>
+        <li><a href="#section-requests">16. Submit a Data Request</a></li>
+        <li><a href="#section-security">17. How We Protect Your Information</a></li>
+        <li><a href="#section-intl">18. International Users</a></li>
+        <li><a href="#section-glossary">19. Glossary (Quick Definitions)</a></li>
+        <li><a href="#section-ai-faq">20. AI FAQ</a></li>
+        <li><a href="#section-contact">21. Contact Us</a></li>
       </ol>
     </nav>
 
@@ -54,22 +130,23 @@
       <h2 id="intro-heading">1. Introduction</h2>
       <p>
         Thank you for using InfantBites (“<strong>InfantBites</strong>,” “<strong>we</strong>,” 
-        “<strong>our</strong>,” or “<strong>us</strong>”). We create tools to help parents and caregivers 
+        “<strong>our</strong>,” or “<strong>us</strong>”). We create AI-enabled tools to help parents and caregivers 
         make confident, informed decisions about their baby’s feeding and development.
       </p>
       <p>
-        We know that anything related to your child is deeply personal. This Privacy Policy explains
-        in clear, plain language:
+        Anything related to your child is deeply personal. This Privacy Policy explains:
       </p>
       <ul>
-        <li>What information we collect</li>
-        <li>How and why we use it</li>
-        <li>When we share it</li>
-        <li>What rights and choices you have</li>
+        <li>What information we collect, including through AI features;</li>
+        <li>How and why we use it;</li>
+        <li>When and with whom we share it;</li>
+        <li>How AI models are involved and what that means for your data;</li>
+        <li>What rights and choices you have, depending on where you live.</li>
       </ul>
       <div class="callout callout-info">
-        <strong>Short version:</strong> We collect only what we need to run the service, 
-        we don’t sell your personal information, and you can ask us to delete or export your data.
+        <strong>Short version:</strong> We collect only what we need to run and improve the Service
+        (including AI-powered features), we do not sell your personal information, and you can ask us
+        to access, delete, or export your data.
       </div>
     </section>
 
@@ -80,6 +157,11 @@
         InfantBites is a digital product that provides baby feeding and development guidance,
         personalized plans, and curated product recommendations, including affiliate product bundles.
       </p>
+      <p>
+        Parts of the guidance we provide are generated or assisted by AI models and decision-support tools,
+        which are designed to augment — not replace — professional medical advice from your pediatrician
+        or other qualified health providers.
+      </p>
     </section>
 
     <!-- 3. Scope -->
@@ -88,12 +170,13 @@
       <p>This Privacy Policy applies to information we collect when you:</p>
       <ul>
         <li>Visit or use our website, web app, and associated tools;</li>
-        <li>Interact with our emails, forms, or support channels;</li>
+        <li>Use features that generate AI-assisted plans or recommendations;</li>
+        <li>Interact with our emails, forms, surveys, or support channels;</li>
         <li>Click on or interact with product and affiliate recommendations within InfantBites.</li>
       </ul>
       <p>
-        This policy does <strong>not</strong> cover third-party websites or services that link to, or from, InfantBites.
-        Those services have their own privacy policies.
+        This policy does <strong>not</strong> cover third-party websites or services that link to or from InfantBites
+        (including retailers, payment providers, app stores, or affiliate partners). Those services have their own privacy policies.
       </p>
     </section>
 
@@ -102,28 +185,44 @@
       <h2 id="data-heading">4. Information We Collect</h2>
 
       <h3>4.1 Information You Provide to Us</h3>
-      <p>We collect information that you choose to give us, for example when you generate a plan or contact us.</p>
+      <p>We collect information that you choose to give us, for example when you generate a plan, use AI features, or contact us.</p>
       <dl class="data-list">
         <div>
           <dt>Baby’s age and concern</dt>
           <dd>
             When you use InfantBites, you can enter your baby’s age in months and select a concern
             (such as feeding, solids, growth, or other topics). We design this input to be 
-            non-identifying on its own.
+            non-identifying on its own and recommend that you avoid including your child’s name or other
+            identifiers within free-text fields.
+          </dd>
+        </div>
+        <div>
+          <dt>AI prompts and inputs</dt>
+          <dd>
+            When you interact with AI-assisted features (for example, asking follow-up questions about a plan),
+            we collect the text you type and related context so that our AI models can generate responses.
+            Please avoid entering more sensitive personal information than is necessary for the question you’re asking.
           </dd>
         </div>
         <div>
           <dt>Contact information (optional)</dt>
           <dd>
-            If you choose to receive your plan by email, or contact us for support, we collect your email address
-            and any information you include in your message.
+            If you choose to receive your plan by email, sign up for updates, or contact us for support,
+            we collect your email address and any information you include in your message.
+          </dd>
+        </div>
+        <div>
+          <dt>Feedback and survey responses (optional)</dt>
+          <dd>
+            If you respond to surveys, give feedback, or participate in research or beta features,
+            we may collect your responses, ratings, and comments to improve the Service and our AI systems.
           </dd>
         </div>
         <div>
           <dt>Data request information</dt>
           <dd>
             When you submit a privacy request (such as export or deletion), we collect the email address and 
-            request details you provide so we can identify your records and respond.
+            request details you provide so we can identify your records, verify your identity, and respond.
           </dd>
         </div>
       </dl>
@@ -134,7 +233,8 @@
         <li>IP address and approximate location (city or region, not precise address);</li>
         <li>Browser type, language, device type, and operating system;</li>
         <li>Referring URL (how you arrived at our website);</li>
-        <li>Pages and features you use, time and date of visits, and interactions (clicks, scrolls).</li>
+        <li>Pages and features you use, time and date of visits, and interactions (clicks, scrolls);</li>
+        <li>Performance data (load times, errors, and diagnostics) to help keep the Service reliable.</li>
       </ul>
 
       <h3>4.3 Affiliate Interaction Data</h3>
@@ -147,19 +247,104 @@
         <li>Whether a partner reports a purchase attributed to our referral (where applicable).</li>
       </ul>
       <p>
-        We use this primarily to understand which recommendations are helpful and to receive 
-        credit from partners.
+        We use this primarily to understand which recommendations are helpful, improve our suggestions,
+        and receive credit from partners.
+      </p>
+
+      <h3>4.4 Aggregated and De-identified Data</h3>
+      <p>
+        We may create aggregated and/or de-identified data from your information (for example, statistics
+        about usage by age range). This data does not reasonably identify you and may be used to improve
+        our AI models, service design, and business decisions.
+      </p>
+
+      <h3>4.5 Information We Prefer Not to Receive</h3>
+      <p>
+        We do not need and do not want information like your child’s full name, full postal address, or
+        highly sensitive medical details to provide general guidance. Please avoid including this type
+        of information in prompts, messages, or uploads.
       </p>
     </section>
 
-    <!-- 5. How We Use Your Information -->
+    <!-- 5. Data Map -->
+    <section id="section-data-map" class="policy-section" aria-labelledby="data-map-heading">
+      <h2 id="data-map-heading">5. Data Map (What, Why, and Legal Basis)</h2>
+      <p>
+        This table summarizes the main categories of information we process, why we process them, and typical legal bases
+        where privacy laws (like GDPR) apply. Not every legal basis will apply in every region.
+      </p>
+
+      <div class="table-wrapper">
+        <table class="data-map-table">
+          <thead>
+            <tr>
+              <th scope="col">Category</th>
+              <th scope="col">Examples</th>
+              <th scope="col">Primary purpose</th>
+              <th scope="col">Typical legal basis</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Basic usage data</td>
+              <td>Pages visited, clicks, device type, approximate region</td>
+              <td>Run, secure, and improve the Service; diagnostics and analytics</td>
+              <td>Legitimate interests; consent (for certain analytics)</td>
+            </tr>
+            <tr>
+              <td>Plan inputs</td>
+              <td>Baby’s age in months, selected concerns</td>
+              <td>Generate AI-assisted guidance and plans</td>
+              <td>Contract (to provide the Service); legitimate interests</td>
+            </tr>
+            <tr>
+              <td>AI prompts & context</td>
+              <td>Questions you ask, clarifications, follow-up details</td>
+              <td>Provide responses, improve relevance and safety of AI outputs</td>
+              <td>Contract; legitimate interests</td>
+            </tr>
+            <tr>
+              <td>Contact details</td>
+              <td>Email address for plans, updates, or support</td>
+              <td>Deliver plans, respond to questions, send important notices</td>
+              <td>Contract; consent (for certain communications)</td>
+            </tr>
+            <tr>
+              <td>Affiliate interaction data</td>
+              <td>Links clicked, conversion reports from partners</td>
+              <td>Measure performance, refine recommendations, maintain partnerships</td>
+              <td>Legitimate interests</td>
+            </tr>
+            <tr>
+              <td>Support & feedback</td>
+              <td>Support messages, survey responses, bug reports</td>
+              <td>Resolve issues, improve UX, refine AI behavior</td>
+              <td>Legitimate interests; contract</td>
+            </tr>
+            <tr>
+              <td>Privacy request data</td>
+              <td>Email, identity verification details, request content</td>
+              <td>Comply with privacy laws, honor your rights</td>
+              <td>Legal obligation</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 6. How We Use Your Information -->
     <section id="section-how-we-use" class="policy-section" aria-labelledby="use-heading">
-      <h2 id="use-heading">5. How We Use Your Information</h2>
+      <h2 id="use-heading">6. How We Use Your Information</h2>
       <p>We use the information we collect for the following purposes:</p>
       <ul class="bullet-rich">
         <li>
           <strong>To provide and personalize the Service.</strong><br>
-          Generate tailored guidance and plans based on your inputs, and show relevant product bundles.
+          Generate tailored guidance and plans based on your inputs, including via AI models, and show relevant product bundles.
+        </li>
+        <li>
+          <strong>To improve our content and AI systems.</strong><br>
+          Analyze usage patterns, anonymized prompts, and aggregated results to make our guidance more accurate,
+          clear, and helpful over time.
         </li>
         <li>
           <strong>To communicate with you.</strong><br>
@@ -168,7 +353,8 @@
         </li>
         <li>
           <strong>To understand what’s working.</strong><br>
-          Analyze aggregated and de-identified usage data to improve content, design, and product recommendations.
+          Analyze aggregated and de-identified usage data to improve content, design, AI behavior,
+          and product recommendations.
         </li>
         <li>
           <strong>To support affiliate relationships.</strong><br>
@@ -186,32 +372,152 @@
       </ul>
     </section>
 
-    <!-- 6. Legal Bases -->
+    <!-- 7. How We Use AI -->
+    <section id="section-ai" class="policy-section" aria-labelledby="ai-heading">
+      <h2 id="ai-heading">7. How We Use AI & Automated Systems</h2>
+      <p>
+        InfantBites uses AI and other automated systems to generate guidance and recommendations. These tools
+        help us deliver more personalized and context-aware support, but they do not replace professional
+        medical advice.
+      </p>
+
+      <h3>7.1 Types of AI-assisted features</h3>
+      <ul>
+        <li>Generating tailored feeding and development guidance based on your inputs;</li>
+        <li>Suggesting follow-up questions or clarifications;</li>
+        <li>Summarizing information you provide in an easier-to-read format;</li>
+        <li>Ranking or recommending product bundles that may be relevant to your situation;</li>
+        <li>Improving our models using aggregated and de-identified usage patterns.</li>
+      </ul>
+
+      <h3>7.2 Information sent to AI providers</h3>
+      <p>
+        To provide these features, we may send certain information — such as your prompts, baby’s age in months,
+        selected concerns, and contextual usage details — to AI infrastructure providers that operate models on
+        our behalf. These providers act as our service providers (sometimes called “processors”) and are
+        contractually limited to using the information only to provide services to us.
+      </p>
+      <p>
+        We design our prompts to minimize the amount of personal information included and encourage you not
+        to share more detail than is necessary for your question.
+      </p>
+
+      <h3>7.3 Training and improvement of AI systems</h3>
+      <p>
+        We may use anonymized or aggregated information from your interactions (for example, prompts with
+        identifying details removed, usage statistics, and model outputs) to evaluate and improve our AI systems.
+      </p>
+      <p>
+        We do not intend for your identifiable personal information (such as your email address) to be used
+        to train general-purpose AI models that can be accessed outside of our relationship with you. Where we
+        rely on third-party AI providers, we seek to configure and contract with them in a way that prevents
+        your identifiable personal data from being used to train their foundation models for other customers.
+      </p>
+
+      <h3>7.4 Human review</h3>
+      <p>
+        We may occasionally review a small sample of interactions (for example, prompts with identifying
+        details removed) to:
+      </p>
+      <ul>
+        <li>Audit AI output quality and safety;</li>
+        <li>Investigate abuse, misuse, or technical issues;</li>
+        <li>Improve user experience and product design.</li>
+      </ul>
+      <p>
+        Where possible, this review is conducted on data that is aggregated, pseudonymized, or de-identified.
+      </p>
+
+      <h3>7.5 No fully automated decisions with legal or similarly significant effects</h3>
+      <p>
+        InfantBites does not use AI to make decisions that produce legal or similarly significant effects
+        about you without human involvement (for example, we do not use AI to determine eligibility for
+        essential services or credit).
+      </p>
+
+      <div class="callout callout-note">
+        <strong>Reminder:</strong> InfantBites is for informational purposes only and does not provide
+        medical diagnosis or treatment. Always consult your pediatrician or another qualified health
+        provider with questions about your child’s health.
+      </div>
+    </section>
+
+    <!-- 8. Data Life Cycle -->
+    <section id="section-lifecycle" class="policy-section" aria-labelledby="lifecycle-heading">
+      <h2 id="lifecycle-heading">8. Your Data Life Cycle</h2>
+      <p>
+        This is the high-level journey of your data inside InfantBites.
+      </p>
+
+      <ol class="lifecycle-list">
+        <li>
+          <h3>1. Collect</h3>
+          <p>
+            You enter information (like age in months and concerns), interact with AI features, or contact us.
+            We also collect limited technical information (like device type) to keep things running.
+          </p>
+        </li>
+        <li>
+          <h3>2. Process</h3>
+          <p>
+            Our systems — including AI models — use your inputs to generate guidance, personalize content,
+            and measure what’s working. Some processing happens via trusted service providers.
+          </p>
+        </li>
+        <li>
+          <h3>3. Store</h3>
+          <p>
+            We store necessary information in secure systems for as long as needed to provide the Service,
+            improve it, comply with law, and honor your choices.
+          </p>
+        </li>
+        <li>
+          <h3>4. De-identify (where possible)</h3>
+          <p>
+            Where we can, we remove or transform identifiers so information is aggregated or de-identified.
+            This helps us learn from usage patterns without directly tying every insight back to a specific person.
+          </p>
+        </li>
+        <li>
+          <h3>5. Delete or archive</h3>
+          <p>
+            When information is no longer needed, we delete it or anonymize it. In some cases we may keep limited
+            records as required by law (for example, proof that we responded to a privacy request).
+          </p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- 9. Legal Bases -->
     <section id="section-legal-bases" class="policy-section" aria-labelledby="legal-bases-heading">
-      <h2 id="legal-bases-heading">6. Legal Bases (Where Applicable)</h2>
+      <h2 id="legal-bases-heading">9. Legal Bases (Where Applicable)</h2>
       <p>
         In some regions (for example, the European Economic Area or United Kingdom), we process personal
         information only when we have a valid legal basis, such as:
       </p>
       <ul>
-        <li><strong>Consent</strong> – for example, when you ask us to email your plan.</li>
-        <li><strong>Contract</strong> – where processing is necessary to provide the Service you request.</li>
-        <li><strong>Legitimate interests</strong> – such as improving the Service, preventing fraud, 
+        <li><strong>Consent</strong> – for example, when you ask us to email your plan or agree to optional analytics.</li>
+        <li><strong>Contract</strong> – where processing is necessary to provide the Service you request, including AI-assisted features.</li>
+        <li><strong>Legitimate interests</strong> – such as improving the Service and AI systems, preventing fraud, 
           and running analytics, provided those interests are not outweighed by your rights and interests.</li>
         <li><strong>Legal obligation</strong> – where we must process or retain data to comply with the law.</li>
       </ul>
     </section>
 
-    <!-- 7. Sharing -->
+    <!-- 10. Sharing -->
     <section id="section-sharing" class="policy-section" aria-labelledby="sharing-heading">
-      <h2 id="sharing-heading">7. When We Share Information</h2>
+      <h2 id="sharing-heading">10. When We Share Information</h2>
       <p>We do <strong>not</strong> sell your personal information.</p>
       <p>We may share information in these limited situations:</p>
       <ul>
         <li>
           <strong>Service providers.</strong> With trusted vendors who help us host, maintain, analyze, or 
-          support the Service (for example: cloud hosting, analytics, email delivery). They may access 
-          your information only to perform work on our behalf.
+          support the Service and AI features (for example: cloud hosting, AI infrastructure, analytics, email delivery).
+          They may access your information only to perform work on our behalf and must protect it.
+        </li>
+        <li>
+          <strong>AI infrastructure providers.</strong> With third-party AI providers that process prompts and
+          outputs under our instructions, subject to contractual safeguards and technical controls.
         </li>
         <li>
           <strong>Affiliate partners.</strong> We may share aggregated or de-identified statistics about
@@ -225,20 +531,20 @@
         <li>
           <strong>Business transfers.</strong> If we undergo a merger, acquisition, or sale of all or a portion
           of our assets, your information may be transferred as part of that transaction, subject to 
-          appropriate safeguards.
+          appropriate safeguards and any rights you have under applicable law.
         </li>
       </ul>
     </section>
 
-    <!-- 8. Cookies -->
+    <!-- 11. Cookies -->
     <section id="section-cookies" class="policy-section" aria-labelledby="cookies-heading">
-      <h2 id="cookies-heading">8. Cookies & Tracking Technologies</h2>
+      <h2 id="cookies-heading">11. Cookies & Tracking Technologies</h2>
       <p>
         We may use cookies and similar technologies (such as local storage or pixels) to:
       </p>
       <ul>
         <li>Remember your preferences and basic session details;</li>
-        <li>Measure how many people use certain features;</li>
+        <li>Measure how many people use certain features and how they navigate the site;</li>
         <li>Track affiliate link clicks and performance;</li>
         <li>Improve the speed, reliability, and experience of the Service.</li>
       </ul>
@@ -246,16 +552,20 @@
         You can typically control cookies in your browser settings. If you block or delete cookies, 
         some parts of the Service may not function properly.
       </p>
+      <p>
+        Where required by law, we will present you with a cookie notice or preference manager so you
+        can control optional cookies (such as analytics).
+      </p>
     </section>
 
-    <!-- 9. Retention -->
+    <!-- 12. Retention -->
     <section id="section-retention" class="policy-section" aria-labelledby="retention-heading">
-      <h2 id="retention-heading">9. Data Retention</h2>
+      <h2 id="retention-heading">12. Data Retention</h2>
       <p>
         We keep your information only for as long as needed to:
       </p>
       <ul>
-        <li>Provide and improve the Service;</li>
+        <li>Provide and improve the Service and AI-assisted features;</li>
         <li>Support affiliate operations and accurate reporting;</li>
         <li>Comply with legal, tax, or accounting obligations;</li>
         <li>Resolve disputes and enforce our agreements.</li>
@@ -266,16 +576,17 @@
       </p>
     </section>
 
-    <!-- 10. Children -->
+    <!-- 13. Children -->
     <section id="section-children" class="policy-section" aria-labelledby="children-heading">
-      <h2 id="children-heading">10. Children’s Privacy</h2>
+      <h2 id="children-heading">13. Children’s Privacy</h2>
       <p>
         InfantBites is designed for use by adults (parents and caregivers), not children. 
         We do not knowingly collect personal information from children under 13 years of age.
       </p>
       <p>
         The only child-related detail we ask for is age in months, which we treat as non-identifying.
-        Please do not share your child’s full name, address, or other identifying information with us.
+        Please do not share your child’s full name, address, or other identifying information with us
+        in prompts, messages, or free-text fields.
       </p>
       <p>
         If you believe that a child under 13 has provided us with personal information, 
@@ -283,9 +594,9 @@
       </p>
     </section>
 
-    <!-- 11. Rights -->
+    <!-- 14. Rights -->
     <section id="section-rights" class="policy-section" aria-labelledby="rights-heading">
-      <h2 id="rights-heading">11. Your Rights & Choices</h2>
+      <h2 id="rights-heading">14. Your Rights & Choices</h2>
       <p>
         Depending on where you live, you may have some or all of the following rights regarding your personal information:
       </p>
@@ -308,9 +619,37 @@
       </div>
     </section>
 
-    <!-- 12. Requests Form -->
+    <!-- 15. Region-specific notices -->
+    <section id="section-region-rights" class="policy-section" aria-labelledby="region-rights-heading">
+      <h2 id="region-rights-heading">15. Region-Specific Notices (GDPR / CCPA & Similar)</h2>
+      <h3>15.1 European Economic Area (EEA), United Kingdom, and similar jurisdictions</h3>
+      <p>
+        If you are in the EEA, UK, or a jurisdiction with similar data protection laws, you may have additional
+        rights such as the right to lodge a complaint with your local data protection authority. Our legal bases
+        for processing are described in Section 9 above.
+      </p>
+
+      <h3>15.2 California and similar US state laws</h3>
+      <p>
+        If you are a resident of California or a US state with a comparable privacy law, you may have rights to:
+      </p>
+      <ul>
+        <li>Know what categories of personal information we collect and how we use them;</li>
+        <li>Access specific pieces of information we hold about you;</li>
+        <li>Request deletion of your personal information, subject to exceptions;</li>
+        <li>Correct inaccurate information about you;</li>
+        <li>Opt out of certain types of data “sharing” for cross-context behavioral advertising (if we ever engage in that).</li>
+      </ul>
+      <p>
+        At the time of this policy, we do not sell your personal information, and we do not knowingly share it
+        for cross-context behavioral advertising in a way that would require a “Do Not Sell or Share” link.
+        If our practices change, we will update this policy and, where required, provide additional notices or controls.
+      </p>
+    </section>
+
+    <!-- 16. Requests Form -->
     <section id="section-requests" class="policy-section" aria-labelledby="requests-heading">
-      <h2 id="requests-heading">12. Submit a Data Request</h2>
+      <h2 id="requests-heading">16. Submit a Data Request</h2>
       <p>
         Use this form to request an export of your data or to ask us to delete the personal information we hold 
         under your email address. We’ll respond as soon as reasonably possible and within the time frames required by law.
@@ -364,6 +703,11 @@
         <button type="submit" id="privacy-request-submit" class="btn-primary">
           Submit Request
         </button>
+
+        <p class="form-disclaimer">
+          By submitting this form, you confirm that you are the account holder or are otherwise authorized
+          to make this request.
+        </p>
       </form>
 
       <section
@@ -374,81 +718,200 @@
       </section>
     </section>
 
-    <!-- 13. Security -->
+    <!-- 17. Security -->
     <section id="section-security" class="policy-section" aria-labelledby="security-heading">
-      <h2 id="security-heading">13. How We Protect Your Information</h2>
+      <h2 id="security-heading">17. How We Protect Your Information</h2>
       <p>
         We use reasonable technical and organizational measures to protect your information 
         from loss, misuse, unauthorized access, disclosure, alteration, or destruction.
       </p>
+      <ul>
+        <li>Encryption in transit for data sent between your browser and our servers;</li>
+        <li>Access controls and authentication for internal systems;</li>
+        <li>Monitoring for unusual activity and potential abuse;</li>
+        <li>Regular review of our security practices.</li>
+      </ul>
       <p>
         However, no method of transmitting or storing data is completely secure. 
-        We cannot guarantee absolute security, but we do work continuously to improve our safeguards.
+        We cannot guarantee absolute security, but we work continuously to improve our safeguards.
       </p>
     </section>
 
-    <!-- 14. International Users -->
+    <!-- 18. International Users -->
     <section id="section-intl" class="policy-section" aria-labelledby="intl-heading">
-      <h2 id="intl-heading">14. International Users</h2>
+      <h2 id="intl-heading">18. International Users</h2>
       <p>
         If you access InfantBites from outside the country where our servers are located, 
         your information may be transferred across borders and processed in other countries.
       </p>
       <p>
         Data protection laws in those countries may be different from those in your country of residence.
-        Where required, we take steps to ensure appropriate protections for such transfers.
+        Where required, we take steps to ensure appropriate protections for such transfers, such as
+        standard contractual clauses or other lawful transfer mechanisms.
       </p>
     </section>
 
-    <!-- 15. Changes -->
-    <section id="section-changes" class="policy-section" aria-labelledby="changes-heading">
-      <h2 id="changes-heading">15. Changes to This Policy</h2>
-      <p>
-        We may update this Privacy Policy from time to time to reflect changes in our practices,
-        technologies, or legal requirements.
-      </p>
-      <p>
-        When we do, we will update the “Last updated” date at the top of this page and, where appropriate,
-        provide additional notice (for example, a banner on the site or an email).
-      </p>
-      <p>
-        Your continued use of InfantBites after a change means you accept the updated policy.
-      </p>
+    <!-- 19. Glossary -->
+    <section id="section-glossary" class="policy-section" aria-labelledby="glossary-heading">
+      <h2 id="glossary-heading">19. Glossary (Quick Definitions)</h2>
+      <dl class="glossary-list">
+        <div>
+          <dt>AI (Artificial Intelligence)</dt>
+          <dd>
+            Computer systems that can generate or understand text in a way that feels conversational.
+            In InfantBites, AI helps create and explain feeding and development guidance.
+          </dd>
+        </div>
+        <div>
+          <dt>Aggregated data</dt>
+          <dd>
+            Data combined from many users so it no longer reasonably identifies any one person
+            (for example, “30% of users ask about solids at 6 months”).
+          </dd>
+        </div>
+        <div>
+          <dt>De-identified data</dt>
+          <dd>
+            Data that has been stripped of direct identifiers (like email) and processed so it should
+            not reasonably identify a person.
+          </dd>
+        </div>
+        <div>
+          <dt>Processor / Service provider</dt>
+          <dd>
+            A company that processes data for us, under our instructions, to help deliver the Service
+            (for example, hosting or AI infrastructure providers).
+          </dd>
+        </div>
+        <div>
+          <dt>Personal information / Personal data</dt>
+          <dd>
+            Information that relates to an identified or identifiable person, such as an email address
+            or a combination of details that can reasonably point back to you.
+          </dd>
+        </div>
+      </dl>
     </section>
 
-    <!-- 16. Contact -->
+    <!-- 20. AI FAQ -->
+    <section id="section-ai-faq" class="policy-section" aria-labelledby="ai-faq-heading">
+      <h2 id="ai-faq-heading">20. AI FAQ</h2>
+
+      <details class="faq-item">
+        <summary>Does InfantBites use my data to train AI?</summary>
+        <p>
+          We may use anonymized or aggregated information from your interactions to evaluate and improve our AI systems.
+          We do not intend for identifiable personal information (like your email) to be used to train general-purpose
+          models that are accessible outside our relationship with you.
+        </p>
+      </details>
+
+      <details class="faq-item">
+        <summary>Can someone else see what I type into the AI?</summary>
+        <p>
+          Day to day, interactions are processed automatically by our systems and service providers. We may review
+          a small sample of anonymized or de-identified interactions to audit safety and quality, investigate abuse,
+          or debug technical issues.
+        </p>
+      </details>
+
+      <details class="faq-item">
+        <summary>Is AI making decisions about my child’s health?</summary>
+        <p>
+          No. InfantBites provides informational guidance only. It does not diagnose, treat, or make medical decisions.
+          You remain responsible for decisions about your child’s health, and you should always consult your pediatrician
+          or another qualified health provider.
+        </p>
+      </details>
+
+      <details class="faq-item">
+        <summary>Can I use InfantBites without AI?</summary>
+        <p>
+          Some core features rely on AI, so turning AI off completely may not be possible. However, you can always
+          choose how much detail you share and you can stop using the Service at any time. You can also request
+          deletion of your data.
+        </p>
+      </details>
+    </section>
+
+    <!-- 21. Contact -->
     <section id="section-contact" class="policy-section" aria-labelledby="contact-heading">
-      <h2 id="contact-heading">16. Contact Us</h2>
+      <h2 id="contact-heading">21. Contact Us</h2>
       <p>
-        If you have questions, concerns, or complaints about this Privacy Policy or how we handle your information,
-        you can contact us at:
+        If you have questions, concerns, or complaints about this Privacy Policy, our use of AI, 
+        or how we handle your information, you can contact us at:
       </p>
       <p>
         <strong>Email:</strong> <a href="mailto:support@infantbites.com">support@infantbites.com</a>
       </p>
       <p>
-        We will do our best to respond promptly and resolve any concerns.
+        If you are in a region with a data protection authority, you may also have the right to lodge
+        a complaint with that authority.
       </p>
       <div class="callout callout-warning">
         <strong>Important:</strong> This Privacy Policy is for informational purposes only and is not legal advice.
-        You may wish to consult a qualified attorney to review and adapt it for your specific circumstances.
+        You should consult a qualified attorney to review and adapt it for your specific circumstances,
+        especially given your use of AI technologies.
       </div>
     </section>
   </main>
 
-  <!-- Basic JSON-LD to describe this as a privacy policy page -->
+  <!-- JSON-LD describing this as a privacy policy page + FAQ -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "PrivacyPolicy",
-    "name": "InfantBites Privacy Policy",
-    "url": "https://www.infantbites.com/privacy",
-    "description": "Privacy Policy describing how InfantBites collects, uses, and protects user information.",
-    "publisher": {
-      "@type": "Organization",
-      "name": "InfantBites",
-      "url": "https://www.infantbites.com"
-    }
+    "@graph": [
+      {
+        "@type": "PrivacyPolicy",
+        "name": "InfantBites Privacy Policy",
+        "url": "https://www.infantbites.com/privacy",
+        "description": "Privacy Policy describing how InfantBites collects, uses, and protects user information, including for its AI-powered tools.",
+        "inLanguage": "en",
+        "dateModified": "2025-11-17",
+        "publisher": {
+          "@type": "Organization",
+          "name": "InfantBites",
+          "url": "https://www.infantbites.com"
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Does InfantBites use my data to train AI?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "We may use anonymized or aggregated information from your interactions to evaluate and improve our AI systems. We do not intend for identifiable personal information to be used to train general-purpose models that are accessible outside our relationship with you."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can someone else see what I type into the AI?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Day to day, interactions are processed automatically by our systems and service providers. We may review a small sample of anonymized or de-identified interactions to audit safety and quality, investigate abuse, or debug technical issues."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is AI making decisions about my child’s health?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. InfantBites provides informational guidance only. It does not diagnose, treat, or make medical decisions. You remain responsible for decisions about your child’s health and should always consult your pediatrician or another qualified health provider."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I use InfantBites without AI?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Some core features rely on AI, so turning AI off completely may not be possible. However, you can always choose how much detail you share and you can stop using the Service at any time. You can also request deletion of your data."
+            }
+          }
+        ]
+      }
+    ]
   }
   </script>
 
@@ -457,32 +920,70 @@
       const form = document.getElementById('privacy-request-form');
       const responseEl = document.getElementById('privacy-response');
       const submitButton = document.getElementById('privacy-request-submit');
+      const emailInput = document.getElementById('request-email');
+      const typeSelect = document.getElementById('request-type');
+      const viewToggleButtons = document.querySelectorAll('.view-toggle-btn');
+      const summaryGrid = document.querySelector('.summary-grid');
 
       function setResponse(message, status) {
         responseEl.textContent = message;
         responseEl.dataset.status = status || '';
       }
 
+      function validateEmail(email) {
+        // Simple, user-friendly email check
+        return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
+      }
+
+      // Plain vs detail reading mode toggle (CSS can key off data-view-mode)
+      viewToggleButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const mode = btn.getAttribute('data-mode');
+
+          viewToggleButtons.forEach(b => {
+            const isActive = b === btn;
+            b.classList.toggle('is-active', isActive);
+            b.setAttribute('aria-pressed', isActive.toString());
+          });
+
+          if (summaryGrid) {
+            summaryGrid.setAttribute('data-view-mode', mode);
+          }
+        });
+      });
+
       form.addEventListener('submit', async function (event) {
         event.preventDefault();
         setResponse('', '');
-        
-        const emailInput = document.getElementById('request-email');
-        const typeSelect = document.getElementById('request-type');
+
         const notesInput = document.getElementById('request-notes');
 
         const email = emailInput.value.trim();
         const type = typeSelect.value;
         const notes = notesInput ? notesInput.value.trim() : '';
 
+        // Reset basic error states for progressive enhancement
+        emailInput.removeAttribute('aria-invalid');
+        typeSelect.removeAttribute('aria-invalid');
+
         // Simple client-side validation
-        if (!email || !type) {
-          setResponse('Please enter a valid email and select a request type.', 'error');
+        if (!email || !validateEmail(email)) {
+          emailInput.setAttribute('aria-invalid', 'true');
+          setResponse('Please enter a valid email address.', 'error');
+          emailInput.focus();
+          return;
+        }
+
+        if (!type) {
+          typeSelect.setAttribute('aria-invalid', 'true');
+          setResponse('Please select a request type.', 'error');
+          typeSelect.focus();
           return;
         }
 
         submitButton.disabled = true;
-        submitButton.textContent = 'Submitting...';
+        submitButton.textContent = 'Submitting…';
+        submitButton.setAttribute('aria-busy', 'true');
         setResponse('Submitting your request…', 'pending');
 
         try {
@@ -496,7 +997,7 @@
           try {
             data = await res.json();
           } catch (e) {
-            // Response may not always be JSON; that’s fine, we’ll fall back to default messages.
+            // Response may not always be JSON; we’ll fall back to default messages.
           }
 
           if (res.ok) {
@@ -520,6 +1021,7 @@
         } finally {
           submitButton.disabled = false;
           submitButton.textContent = 'Submit Request';
+          submitButton.removeAttribute('aria-busy');
         }
       });
     });
