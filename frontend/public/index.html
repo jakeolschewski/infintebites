@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
   <title>InfantBites – AI Baby Registry That Builds Itself (With Live Prices)</title>
-  <meta name="description" content="Tell InfantBites AI your space, car, budget and baby details. Get a lean, safety-first baby registry with live prices, what to skip, and 1-click add to Amazon/Babylist/Target.">
+  <meta name="description" content="Tell InfantBites AI your space, car, budget, and baby details. Get a lean, safety-first baby registry with live prices, what to skip, and 1-click add to Amazon/Babylist/Target.">
   <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
   <meta name="theme-color" content="#050517">
   <meta name="color-scheme" content="light dark">
@@ -56,22 +56,21 @@
       --ib-shadow-sm: 0 8px 24px rgba(15,23,42,0.10);
       color-scheme: light;
     }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --ib-bg:        #050517;
-        --ib-bg-soft:   #090921;
-        --ib-surface:   #111126;
-        --ib-surface-subtle: #181832;
-        --ib-primary:   #8f88ff;
-        --ib-primary-d: #7a73f5;
-        --ib-accent:    #ff9bba;
-        --ib-text:      #f8f7ff;
-        --ib-muted:     #a5a4c2;
-        --ib-border:    rgba(148,163,184,0.35);
-        --ib-danger:    #ff6b81;
-        --ib-success:   #00dba2;
-        color-scheme: dark;
-      }
+
+    body[data-theme="dark"] {
+      --ib-bg:        #050517;
+      --ib-bg-soft:   #090921;
+      --ib-surface:   #111126;
+      --ib-surface-subtle: #181832;
+      --ib-primary:   #8f88ff;
+      --ib-primary-d: #7a73f5;
+      --ib-accent:    #ff9bba;
+      --ib-text:      #f8f7ff;
+      --ib-muted:     #a5a4c2;
+      --ib-border:    rgba(148,163,184,0.35);
+      --ib-danger:    #ff6b81;
+      --ib-success:   #00dba2;
+      color-scheme: dark;
     }
 
     * { box-sizing: border-box; }
@@ -111,7 +110,7 @@
       border: 0;
     }
 
-    /* Sticky urgency bar (combo of both versions) */
+    /* Sticky urgency bar */
     .scarcity-bar {
       position: sticky;
       top: 0;
@@ -123,9 +122,7 @@
       font-size: 0.88rem;
       font-weight: 600;
     }
-    .scarcity-bar strong {
-      font-weight: 800;
-    }
+    .scarcity-bar strong { font-weight: 800; }
     .scarcity-bar .countdown {
       font-weight: 800;
       padding-inline: 0.2rem;
@@ -291,9 +288,7 @@
       transition: transform 0.18s ease-out;
       box-shadow: 0 14px 40px rgba(15,23,42,0.22);
     }
-    .main-nav.is-open {
-      transform: scaleY(1);
-    }
+    .main-nav.is-open { transform: scaleY(1); }
     .main-nav ul {
       list-style: none;
       margin: 0;
@@ -411,7 +406,7 @@
       color: var(--ib-muted);
     }
 
-    /* Hero (mixed copy from both) */
+    /* Hero */
     .hero {
       padding: 2.3rem 0 2.1rem;
     }
@@ -550,7 +545,7 @@
       gap: 0.4rem 0.9rem;
     }
 
-    /* How it works grid (from both) */
+    /* How it works grid */
     .how-grid {
       max-width: 1120px;
       margin: 0 auto;
@@ -720,6 +715,9 @@
       font-size: 0.8rem;
       color: var(--ib-muted);
     }
+    .deals-cta {
+      text-align: center;
+    }
 
     /* Reviews */
     .reviews-grid {
@@ -782,7 +780,7 @@
       color: var(--ib-text);
     }
 
-    /* AI Section (merged shell) */
+    /* AI Section */
     .ai-section {
       background: rgba(6,5,22,0.96);
     }
@@ -1147,6 +1145,105 @@
       font-size: 0.8rem;
     }
 
+    /* Grok floating widget */
+    .grok-toggle {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      z-index: 120;
+      border-radius: 999px;
+      border: none;
+      padding: 0.75rem 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      cursor: pointer;
+      background: linear-gradient(135deg, var(--ib-primary), var(--ib-accent));
+      color: #050517;
+      box-shadow: 0 14px 40px rgba(15,23,42,0.7);
+    }
+    .grok-panel {
+      position: fixed;
+      bottom: 4.5rem;
+      right: 1.5rem;
+      width: min(380px, 94vw);
+      max-height: 70vh;
+      z-index: 120;
+      background: rgba(7,7,24,0.98);
+      border-radius: 20px;
+      box-shadow: 0 24px 80px rgba(15,23,42,0.9);
+      border: 1px solid rgba(148,163,184,0.5);
+      display: flex;
+      flex-direction: column;
+    }
+    .grok-panel-header {
+      padding: 0.7rem 0.9rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.6rem;
+      border-bottom: 1px solid rgba(148,163,184,0.4);
+      font-size: 0.9rem;
+      color: var(--ib-muted);
+    }
+    .grok-panel-header strong {
+      color: var(--ib-text);
+      font-size: 0.95rem;
+    }
+    .grok-close {
+      border: none;
+      background: transparent;
+      color: var(--ib-muted);
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .grok-messages {
+      padding: 0.7rem 0.9rem;
+      overflow-y: auto;
+      max-height: 40vh;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      font-size: 0.88rem;
+    }
+    .grok-bubble {
+      padding: 0.6rem 0.8rem;
+      border-radius: 14px;
+      max-width: 80%;
+    }
+    .grok-bubble.user {
+      align-self: flex-end;
+      background: var(--ib-primary);
+      color: #050517;
+    }
+    .grok-bubble.bot {
+      align-self: flex-start;
+      background: rgba(15,23,42,0.95);
+      color: var(--ib-text);
+      border: 1px solid rgba(148,163,184,0.5);
+    }
+    .grok-form {
+      padding: 0.6rem 0.9rem 0.75rem;
+      border-top: 1px solid rgba(148,163,184,0.4);
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+    .grok-input {
+      flex: 1;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.5);
+      background: rgba(11,11,32,0.96);
+      color: var(--ib-text);
+      padding: 0.5rem 0.75rem;
+      font-size: 0.85rem;
+    }
+    .grok-status {
+      padding: 0 0.9rem 0.55rem;
+      font-size: 0.75rem;
+      color: var(--ib-muted);
+    }
+
     /* Responsive */
     @media (min-width: 880px) {
       .nav-toggle { display: none; }
@@ -1170,6 +1267,14 @@
       .metrics-row {
         flex-direction: column;
         align-items: flex-start;
+      }
+      .grok-toggle {
+        bottom: 1rem;
+        right: 1rem;
+      }
+      .grok-panel {
+        bottom: 4rem;
+        right: 1rem;
       }
     }
 
@@ -1220,7 +1325,7 @@
   }
   </script>
 </head>
-<body>
+<body data-theme="dark">
   <!-- Urgency / social proof bar -->
   <div class="scarcity-bar" aria-live="polite">
     Parents using InfantBites saved an average of <strong>$142</strong> recently — today’s bundle logic refreshes in
@@ -1350,7 +1455,7 @@
           </div>
         </div>
 
-        <aside class="hero-side">
+        <aside class="hero-side" aria-label="How InfantBites helps">
           <div class="hero-card">
             <h2 class="hero-card-title">What InfantBites AI does differently</h2>
             <p class="hero-note"><strong>Not</strong> a giant shopping list. <strong>Yes</strong> a tight, life-aware, JSON-backed plan.</p>
@@ -1584,7 +1689,7 @@
           <p class="deal-meta">Avoid the gadgets that collect dust</p>
         </article>
       </div>
-      <div class="container" style="text-align:center;">
+      <div class="container deals-cta">
         <a href="/deals.html" class="btn btn-secondary">View all current deals</a>
       </div>
     </section>
@@ -1669,7 +1774,7 @@
       </header>
 
       <div class="ai-layout">
-        <!-- AI Shell (merged design/logic) -->
+        <!-- AI Shell -->
         <section class="ai-shell" aria-label="AI baby registry builder">
           <div class="ai-shell-header">
             <div>
@@ -1865,6 +1970,35 @@
     </div>
   </footer>
 
+  <!-- Grok Floating Chat Widget -->
+  <button id="grok-toggle" class="grok-toggle" type="button" aria-expanded="false" aria-controls="grok-panel" aria-label="Open quick baby gear chat">
+    <span aria-hidden="true">💬</span>
+    <span>Quick gear Q&amp;A</span>
+  </button>
+
+  <section id="grok-panel" class="grok-panel" aria-label="Quick baby gear chat" hidden>
+    <header class="grok-panel-header">
+      <div>
+        <strong>Ask about any baby gear</strong><br>
+        <span>Powered by your Grok backend (demo here).</span>
+      </div>
+      <button id="grok-close" class="grok-close" type="button" aria-label="Close chat">✕</button>
+    </header>
+    <div id="grok-messages" class="grok-messages" aria-live="polite">
+      <div class="grok-bubble bot">
+        Ask things like “travel stroller for tiny trunk” or “what can I reuse for baby #2?”
+      </div>
+    </div>
+    <form id="grok-form" class="grok-form">
+      <label for="grok-input" class="visually-hidden">Ask a question about baby gear</label>
+      <input id="grok-input" class="grok-input" type="text" autocomplete="off" placeholder="Ask a quick question…" required>
+      <button type="submit" class="btn btn-secondary" style="padding-inline:1.1rem;">Send</button>
+    </form>
+    <div id="grok-status" class="grok-status" role="status" aria-live="polite">
+      Demo mode: this widget uses a mocked Grok reply. Wire it to /api/grok in production.
+    </div>
+  </section>
+
   <script>
     // ---- Helpers ----
     function storageAvailable() {
@@ -1882,7 +2016,7 @@
       GROQ_KEY: "YOUR_GROQ_KEY_HERE",
       KEEPA_KEY: "YOUR_KEEPA_KEY_HERE",
       AMAZON_TAG: "infantbites-20",
-      DEMO_MODE: true  // set false when wired to your backend
+      DEMO_MODE: true // set false when wired to your backend
     };
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -1891,15 +2025,22 @@
         const btn = document.getElementById("theme-toggle");
         if (!btn) return;
         const key = "ib_theme";
+
         function apply(theme) {
           document.body.setAttribute("data-theme", theme);
+          // icon text
           btn.firstElementChild.textContent = theme === "dark" ? "🌙" : "🌞";
         }
+
         let theme = "dark";
         if (HAS_STORAGE) {
-          theme = localStorage.getItem(key) || theme;
+          const stored = localStorage.getItem(key);
+          if (stored === "light" || stored === "dark") {
+            theme = stored;
+          }
         }
         apply(theme);
+
         btn.addEventListener("click", () => {
           theme = theme === "light" ? "dark" : "light";
           if (HAS_STORAGE) localStorage.setItem(key, theme);
@@ -1913,11 +2054,13 @@
         const closeBtn = banner?.querySelector(".disclosure-close");
         const KEY = "ib_disclosure_dismissed";
         if (!banner || !closeBtn) return;
+
         if (HAS_STORAGE && localStorage.getItem(KEY) === "true") {
           banner.hidden = true;
           banner.setAttribute("aria-hidden", "true");
           return;
         }
+
         closeBtn.addEventListener("click", () => {
           banner.hidden = true;
           banner.setAttribute("aria-hidden", "true");
@@ -1929,10 +2072,11 @@
       (function () {
         const el = document.querySelector(".scarcity-bar .countdown");
         if (!el) return;
-        const WINDOW = 4 * 60 * 60;
+        const WINDOW = 4 * 60 * 60; // seconds
         const KEY = "ib_countdown_end";
         const now = Date.now();
         let remaining;
+
         if (HAS_STORAGE) {
           const stored = Number(localStorage.getItem(KEY) || 0);
           if (stored > now) {
@@ -1945,12 +2089,14 @@
         } else {
           remaining = WINDOW;
         }
+
         function render(sec) {
-          const h = Math.floor(sec / 3600).toString().padStart(2,"0");
-          const m = Math.floor((sec % 3600) / 60).toString().padStart(2,"0");
-          const s = (sec % 60).toString().padStart(2,"0");
+          const h = Math.floor(sec / 3600).toString().padStart(2, "0");
+          const m = Math.floor((sec % 3600) / 60).toString().padStart(2, "0");
+          const s = (sec % 60).toString().padStart(2, "0");
           el.textContent = `${h}:${m}:${s}`;
         }
+
         render(remaining);
         setInterval(() => {
           remaining--;
@@ -1970,10 +2116,23 @@
         const toggle = document.querySelector(".nav-toggle");
         const nav = document.getElementById("main-nav");
         if (!toggle || !nav) return;
+
+        function closeNav() {
+          toggle.setAttribute("aria-expanded", "false");
+          nav.classList.remove("is-open");
+        }
+
         toggle.addEventListener("click", () => {
           const expanded = toggle.getAttribute("aria-expanded") === "true";
           toggle.setAttribute("aria-expanded", String(!expanded));
           nav.classList.toggle("is-open", !expanded);
+        });
+
+        // Close nav when clicking a link on small screens
+        nav.addEventListener("click", (e) => {
+          if (e.target.tagName === "A") {
+            closeNav();
+          }
         });
       })();
 
@@ -1983,6 +2142,7 @@
         if (!form) return;
         const input = document.getElementById("search-input");
         const status = document.getElementById("search-status");
+
         document.querySelectorAll(".suggestion-chip").forEach(chip => {
           chip.addEventListener("click", () => {
             const text = chip.getAttribute("data-suggest") || chip.textContent;
@@ -1991,6 +2151,7 @@
             if (status) status.textContent = "Loaded a suggested search. Edit it or press Search.";
           });
         });
+
         form.addEventListener("submit", evt => {
           evt.preventDefault();
           const q = input.value.trim();
@@ -2011,6 +2172,7 @@
         const chips = document.querySelectorAll(".filter-chip");
         const cards = document.querySelectorAll(".product-card");
         if (!chips.length || !cards.length) return;
+
         chips.forEach(chip => {
           chip.addEventListener("click", () => {
             const filter = chip.getAttribute("data-filter");
@@ -2019,6 +2181,7 @@
               c.classList.toggle("is-active", active);
               c.setAttribute("aria-pressed", String(active));
             });
+
             cards.forEach(card => {
               const cat = card.getAttribute("data-category");
               const show = !filter || filter === "all" || cat === filter;
@@ -2048,6 +2211,8 @@
         if (!form) return;
         const email = document.getElementById("newsletter-email");
         const status = document.getElementById("newsletter-status");
+        const initialText = status.textContent;
+
         form.addEventListener("submit", evt => {
           evt.preventDefault();
           const value = (email.value || "").trim();
@@ -2061,8 +2226,13 @@
             email.focus();
             return;
           }
+
+          // Demo: pretend submit succeeded
           status.textContent = "You’re in! Check your inbox for your newborn gear checklist.";
           email.value = "";
+          setTimeout(() => {
+            status.textContent = initialText;
+          }, 6000);
         });
       })();
 
@@ -2072,311 +2242,269 @@
         const hoursEl = document.getElementById("metric-hours");
         const savedEl = document.getElementById("metric-saved");
         if (!parentsEl || !hoursEl || !savedEl) return;
-        const targets = { parents: 4132, hours: 10240, saved: 142 };
-        let current = { parents: 0, hours: 0, saved: 0 };
-        const steps = 70;
-        let frame = 0;
-        const interval = setInterval(() => {
-          frame++;
-          const f = frame / steps;
-          if (f >= 1) {
-            parentsEl.textContent = targets.parents.toLocaleString();
-            hoursEl.textContent = targets.hours.toLocaleString();
-            savedEl.textContent = "$" + targets.saved.toString();
-            clearInterval(interval);
-            return;
-          }
-          current.parents = Math.round(targets.parents * f);
-          current.hours = Math.round(targets.hours * f);
-          current.saved = Math.round(targets.saved * f);
-          parentsEl.textContent = current.parents.toLocaleString();
-          hoursEl.textContent = current.hours.toLocaleString();
-          savedEl.textContent = "$" + current.saved.toString();
-        }, 26);
-      })();
 
-      // AI Registry (merged mock Groq + prices)
-      (function () {
-        const chatForm = document.getElementById("chat-form");
-        const chat = document.getElementById("chat");
-        const input = document.getElementById("user-input");
-        const status = document.getElementById("ai-status");
-        const results = document.getElementById("results");
-        const skeleton = document.getElementById("skeleton");
-        if (!chatForm || !chat || !input || !results || !skeleton) return;
-
-        function addMessage(html, role) {
-          const div = document.createElement("div");
-          div.className = "message " + role;
-          div.innerHTML = html;
-          chat.appendChild(div);
-          chat.scrollTop = chat.scrollHeight;
-          return div;
-        }
-
-        document.querySelectorAll(".prompt-chip").forEach(chip => {
-          chip.addEventListener("click", () => {
-            const text = chip.getAttribute("data-prompt") || chip.textContent;
-            input.value = text.trim();
-            input.focus();
-          });
-        });
-
-        function mockPayload() {
-          return {
-            summary: "For a small walk-up, mid-range budget and reflux concerns, this list focuses on compact, high-impact gear that earns its footprint.",
-            items: [
-              {
-                name: "Compact Travel System with Infant Car Seat",
-                asin: "B0EXAMPLE01",
-                why: "Lightweight stroller + infant car seat that fits small trunks and stairs, with one-hand fold for city errands.",
-                safety: "Have a certified tech check your car seat install; keep baby rear-facing as long as your seat allows."
-              },
-              {
-                name: "Soft Structured Carrier (Newborn to Toddler)",
-                asin: "B0EXAMPLE02",
-                why: "Hands-free stairs and dog walks with ergonomic support, plus good positioning options for refluxy babies.",
-                safety: "Keep airway visible, chin off chest and follow T.I.C.K.S. babywearing guidelines."
-              },
-              {
-                name: "Slim Folding High Chair",
-                asin: "B0EXAMPLE03",
-                why: "Easy-wipe surfaces and a fold-flat profile so it can live behind a door instead of in the middle of your living room.",
-                safety: "Always buckle the harness and never leave baby unattended while seated."
-              }
-            ],
-            skips: [
-              "Multiple fancy bottle warmers — one simple option is enough.",
-              "Full-size swing on day one — borrow or wait to see if baby likes motion."
-            ],
-            next: "Around 6–9 months, add a floor-friendly seat alternative, simple suction toys and a rolling cart to move supplies between rooms."
-          };
-        }
-
-        async function callGroq(prompt) {
-          if (IB_CONFIG.DEMO_MODE || !IB_CONFIG.GROQ_KEY || IB_CONFIG.GROQ_KEY === "YOUR_GROQ_KEY_HERE") {
-            return mockPayload();
-          }
-          const system = `You are InfantBites AI. Return ONLY valid JSON (no markdown):
-{
-  "summary": "1–2 sentence overview tailored to this family",
-  "items": [{
-    "name": "Exact product name",
-    "asin": "B0XXXXXXXX",
-    "why": "2–3 short sentences on why this fits their life",
-    "safety": "Critical safety note or empty string"
-  }],
-  "skips": ["item + short reason to skip"],
-  "next": "1–2 sentences on what to add at the next stage"
-}`;
-          const res = await fetch("/api/infantbites-groq", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ system, prompt })
-          });
-          if (!res.ok) throw new Error("Groq API error " + res.status);
-          return res.json();
-        }
-
-        async function fetchPrices(asins) {
-          if (!asins.length) return {};
-          if (IB_CONFIG.DEMO_MODE || !IB_CONFIG.KEEPA_KEY || IB_CONFIG.KEEPA_KEY === "YOUR_KEEPA_KEY_HERE") {
-            const fake = {};
-            asins.forEach((a, idx) => { fake[a] = (79.99 + idx * 35).toFixed(2); });
-            return fake;
-          }
-          const res = await fetch("/api/infantbites-prices", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ asins })
-          });
-          if (!res.ok) throw new Error("Price API error " + res.status);
-          return res.json();
-        }
-
-        async function renderResults(payload) {
-          const items = Array.isArray(payload.items) ? payload.items : [];
-          const skips = Array.isArray(payload.skips) ? payload.skips : [];
-          const summary = payload.summary || "Here’s a lean registry based on your situation.";
-          const next = payload.next || "";
-          const asins = items.map(i => i.asin).filter(Boolean);
-          let prices = {};
-          try {
-            prices = await fetchPrices(asins);
-          } catch (e) {
-            console.warn("Price fetch error", e);
-          }
-
-          let html = `
-            <div class="ai-results-header">
-              <div>
-                <h3>Your AI-built registry</h3>
-                <p style="margin:0;">${summary}</p>
-              </div>
-              <button type="button" class="btn btn-secondary" onclick="window.ibExport && window.ibExport()">
-                Export &amp; add to registry →
-              </button>
-            </div>
-            <div class="ai-results-grid">
-          `;
-
-          items.forEach(item => {
-            const asin = item.asin || "";
-            const price = asin && prices[asin] ? prices[asin] : "Check";
-            const url = asin
-              ? `https://www.amazon.com/dp/${asin}?tag=${encodeURIComponent(IB_CONFIG.AMAZON_TAG)}`
-              : "#";
-            html += `
-              <article class="ai-card">
-                <h4>${item.name || "Baby gear pick"}</h4>
-                ${item.why ? `<p>${item.why}</p>` : ""}
-                <p class="ai-price">
-                  ${price !== "Check" ? `$${price}` : "Check price"}
-                  <span class="ai-price-sub">
-                    ${price !== "Check" ? "Lowest slot today from your price API*" : "Click through to check the latest price."}
-                  </span>
-                </p>
-                ${item.safety ? `<p class="ai-safety">⚠️ ${item.safety}</p>` : ""}
-                <div class="ai-card-footer">
-                  <a href="${url}" target="_blank" rel="nofollow noopener noreferrer" class="btn" style="width:100%;justify-content:center;">
-                    Buy now on Amazon
-                  </a>
-                </div>
-              </article>
-            `;
-          });
-
-          html += `</div>`;
-
-          if (skips.length) {
-            html += `
-              <div class="ai-skips">
-                <strong>You can probably skip for now:</strong><br>
-                ${skips.map(s => "• " + s).join("<br>")}
-              </div>
-            `;
-          }
-
-          if (next) {
-            html += `<div class="ai-next"><strong>Next stage:</strong> ${next}</div>`;
-          }
-
-          results.innerHTML = html;
-        }
-
-        // Export hook
-        window.ibExport = function () {
-          const names = Array.from(document.querySelectorAll(".ai-card h4")).map(h => h.textContent.trim());
-          alert("In production, this would send these items to Babylist/Amazon/Target with your affiliate tags:\n\n" + names.join("\n"));
+        const targets = {
+          parents: 4132,
+          hours: 10240,
+          saved: 142
         };
 
-        chatForm.addEventListener("submit", async evt => {
-          evt.preventDefault();
-          const prompt = (input.value || "").trim();
-          if (!prompt) {
-            status.textContent = "Share a bit about your baby, home, car and budget to get started.";
+        function animateNumber(el, target, options = {}) {
+          const { prefix = "", duration = 1600 } = options;
+          const start = performance.now();
+
+          function frame(ts) {
+            const progress = Math.min(1, (ts - start) / duration);
+            const value = Math.floor(progress * target);
+            const formatted = value.toLocaleString();
+            el.textContent = prefix + formatted;
+            if (progress < 1) {
+              requestAnimationFrame(frame);
+            }
+          }
+          requestAnimationFrame(frame);
+        }
+
+        animateNumber(parentsEl, targets.parents);
+        animateNumber(hoursEl, targets.hours);
+        animateNumber(savedEl, targets.saved, { prefix: "$" });
+      })();
+
+      // AI quick prompts + chat demo
+      (function () {
+        const chat = document.getElementById("chat");
+        const form = document.getElementById("chat-form");
+        const input = document.getElementById("user-input");
+        const prompts = document.querySelectorAll(".prompt-chip");
+        const resultsContainer = document.getElementById("results");
+        const skeleton = document.getElementById("skeleton");
+        const status = document.getElementById("ai-status");
+
+        if (!chat || !form || !input || !resultsContainer || !skeleton || !status) return;
+
+        function scrollChatToBottom() {
+          chat.scrollTop = chat.scrollHeight;
+        }
+
+        function addMessage(text, from = "bot") {
+          const msg = document.createElement("div");
+          msg.className = "message " + (from === "user" ? "user" : "bot");
+          msg.innerHTML = (from === "user")
+            ? text
+            : `<strong>InfantBites AI</strong><br><br>${text}`;
+          chat.appendChild(msg);
+          scrollChatToBottom();
+        }
+
+        prompts.forEach(btn => {
+          btn.addEventListener("click", () => {
+            const prompt = btn.getAttribute("data-prompt") || btn.textContent;
+            input.value = prompt.trim();
             input.focus();
-            return;
+          });
+        });
+
+        function mockRegistryFrom(text) {
+          // Very simple demo, no real AI.
+          const lower = text.toLowerCase();
+          const budgetMatch = text.match(/\$?\s*([0-9]{2,5})/);
+          const budget = budgetMatch ? Number(budgetMatch[1]) : 1200;
+          const perItem = Math.max(40, Math.floor(budget / 5));
+
+          const constraints = [];
+          if (lower.includes("studio") || lower.includes("small") || lower.includes("500 sqft")) {
+            constraints.push("Small space · foldable or multi-use where possible.");
           }
-          addMessage(prompt.replace(/\n/g,"<br>"), "user");
+          if (lower.includes("twins")) {
+            constraints.push("Twins · prioritize double-duty gear and backup linens.");
+          }
+          if (lower.includes("reflux")) {
+            constraints.push("Reflux history · focus on paced-feeding bottles and easier burping.");
+          }
+          if (lower.includes("no car")) {
+            constraints.push("No car · lighter gear and carriers over travel systems.");
+          }
+          if (lower.includes("used")) {
+            constraints.push("Okay with used · new-only for car seats, safe sleep surfaces and some health gear.");
+          }
+
+          const items = [
+            {
+              title: "Primary car seat / travel solution",
+              desc: "A safe, easy-to-install seat that fits your vehicle (or ride share) and local laws.",
+              price: perItem + 40,
+              safety: "Always install per manual, check expiry/recalls and have a CPST check if you can.",
+              next: "Convertible seat later if you start with an infant seat."
+            },
+            {
+              title: "Realistic sleep setup",
+              desc: "A safe, flat sleep surface plus 2–3 sleep sacks appropriate for your baby’s size and season.",
+              price: perItem,
+              safety: "Follow safe sleep guidelines: firm, flat surface, no loose bedding, follow local guidance.",
+              next: "You can wait on a crib if baby will start in a bassinet in your room."
+            },
+            {
+              title: "Feeding kit that matches your plan",
+              desc: "A small bottle set, drying rack and brush that matches how often you expect to bottle-feed.",
+              price: perItem - 10,
+              safety: "Sterilize per instructions and replace nipples regularly; talk to your pediatrician about feeding issues.",
+              next: "You can skip full ‘feeding station’ gadgets until you see what actually helps."
+            },
+            {
+              title: "On-the-go carry system",
+              desc: "A carrier or wrap that matches your body and climate so you can move hands-free.",
+              price: perItem - 5,
+              safety: "Follow babywearing safety: visible, kissable, supported airway, and safe hip positioning.",
+              next: "You can wait on a second carrier style until you know what you like."
+            },
+            {
+              title: "Core health & safety kit",
+              desc: "A reliable thermometer, nasal suction, nail care and basic baby-proofing for your space.",
+              price: perItem - 15,
+              safety: "These help you act on your pediatrician’s advice—they don’t replace it.",
+              next: "You can delay big baby-proofing items until rolling and crawling take off."
+            }
+          ];
+
+          return { constraints, items, budget };
+        }
+
+        function renderResults(text) {
+          const { constraints, items, budget } = mockRegistryFrom(text);
+
+          resultsContainer.innerHTML = "";
+
+          const header = document.createElement("div");
+          header.className = "ai-results-header";
+          header.innerHTML = `
+            <div>
+              <h3>Your 5-item starter registry</h3>
+              <p>Based on what you shared, here’s a lean, safety-aware starting point. Treat this as a draft and always double-check safety + recalls.</p>
+            </div>
+            <div style="text-align:right;font-size:0.84rem;color:var(--ib-muted);">
+              <div>Approx. budget aligned: <strong>$${budget.toLocaleString()}</strong></div>
+              <div>Demo mode – prices &amp; links are placeholders</div>
+            </div>
+          `;
+          resultsContainer.appendChild(header);
+
+          if (constraints.length) {
+            const c = document.createElement("div");
+            c.className = "ai-next";
+            c.innerHTML = `<strong>What the AI prioritized:</strong><br>${constraints.join("<br>")}`;
+            resultsContainer.appendChild(c);
+          }
+
+          const grid = document.createElement("div");
+          grid.className = "ai-results-grid";
+
+          items.forEach((item, index) => {
+            const card = document.createElement("article");
+            card.className = "ai-card";
+            card.innerHTML = `
+              <h4>${index + 1}. ${item.title}</h4>
+              <p>${item.desc}</p>
+              <div class="ai-price">
+                ~ $${item.price.toLocaleString()}
+                <span class="ai-price-sub">Live prices fill in on your backend via Amazon / Keepa / retailer APIs.</span>
+              </div>
+              <div class="ai-safety">Safety note: ${item.safety}</div>
+              <div class="ai-card-footer">
+                <button type="button" class="btn btn-secondary" disabled>Connect to Amazon/Babylist demo</button>
+              </div>
+            `;
+            grid.appendChild(card);
+          });
+
+          const skips = document.createElement("div");
+          skips.className = "ai-skips";
+          skips.innerHTML = `
+            <strong>Things you can probably skip for now:</strong>
+            <ul>
+              <li>Multiple bouncers/swings at once—try one before adding more.</li>
+              <li>Warmers, sterilizers and gadgets you’re not sure you’ll use daily.</li>
+              <li>Large toy sets for later months—your baby won’t need them on day one.</li>
+            </ul>
+          `;
+
+          resultsContainer.appendChild(grid);
+          resultsContainer.appendChild(skips);
+        }
+
+        form.addEventListener("submit", (evt) => {
+          evt.preventDefault();
+          const text = input.value.trim();
+          if (!text) return;
+
+          addMessage(text, "user");
           input.value = "";
-          const thinking = addMessage("Thinking through your life, comparing options and wiring JSON…", "bot");
-          status.textContent = "Reasoning through your situation and requesting live price slots…";
+          status.textContent = "Thinking through your space, budget and priorities…";
           skeleton.style.display = "block";
-          try {
-            const data = await callGroq(prompt);
-            thinking.remove();
-            await renderResults(data);
-            status.textContent = "List updated. Add more details to refine your picks or regenerate.";
-          } catch (e) {
-            console.error(e);
-            thinking.remove();
-            addMessage("Something glitched on our side. Try again in a bit—this is usually lightning-fast ⚡", "bot");
-            status.textContent = "AI request failed. Check your connection or backend logs.";
-          } finally {
+          resultsContainer.innerHTML = "";
+
+          // Demo: mock latency
+          setTimeout(() => {
             skeleton.style.display = "none";
-          }
+            renderResults(text);
+            status.textContent = "Demo mode: this response was generated in your browser. In production, keep keys & logic on your backend.";
+          }, 900);
         });
       })();
-    });
-  </script>
-        // Grok floating chat widget
+
+      // Grok floating chat demo
       (function () {
         const toggle = document.getElementById("grok-toggle");
         const panel = document.getElementById("grok-panel");
-        const close = document.getElementById("grok-close");
+        const closeBtn = document.getElementById("grok-close");
         const form = document.getElementById("grok-form");
         const input = document.getElementById("grok-input");
         const messages = document.getElementById("grok-messages");
         const status = document.getElementById("grok-status");
-        if (!toggle || !panel || !form || !input || !messages) return;
 
-        function showPanel() {
-          panel.hidden = false;
-          toggle.setAttribute("aria-expanded", "true");
+        if (!toggle || !panel || !closeBtn || !form || !input || !messages || !status) return;
+
+        function setPanelOpen(isOpen) {
+          panel.hidden = !isOpen;
+          toggle.setAttribute("aria-expanded", String(isOpen));
+          if (isOpen) {
+            input.focus();
+          }
         }
-        function hidePanel() {
-          panel.hidden = true;
-          toggle.setAttribute("aria-expanded", "false");
-        }
 
-        toggle.addEventListener("click", () => {
-          if (panel.hidden) showPanel(); else hidePanel();
-        });
-        close?.addEventListener("click", hidePanel);
-
-        function addBubble(text, role) {
+        function appendBubble(text, from = "bot") {
           const div = document.createElement("div");
-          div.className = "grok-bubble " + role;
+          div.className = "grok-bubble " + (from === "user" ? "user" : "bot");
           div.textContent = text;
           messages.appendChild(div);
           messages.scrollTop = messages.scrollHeight;
         }
 
-        form.addEventListener("submit", async (evt) => {
+        toggle.addEventListener("click", () => {
+          const isOpen = toggle.getAttribute("aria-expanded") === "true";
+          setPanelOpen(!isOpen);
+        });
+
+        closeBtn.addEventListener("click", () => {
+          setPanelOpen(false);
+        });
+
+        form.addEventListener("submit", (evt) => {
           evt.preventDefault();
-          const q = (input.value || "").trim();
-          if (!q) return;
-          addBubble(q, "user");
+          const value = input.value.trim();
+          if (!value) return;
+
+          appendBubble(value, "user");
           input.value = "";
-          if (status) status.textContent = "Thinking with Grok about your situation…";
+          status.textContent = "Thinking… (demo reply only; connect to your backend for real answers)";
 
-          try {
-            if (IB_CONFIG.DEMO_MODE) {
-              await new Promise((r) => setTimeout(r, 700));
-              addBubble(
-                "Demo reply: In production, this widget would hit your /api/grok endpoint and return tailored baby gear suggestions.",
-                "bot"
-              );
-              if (status) {
-                status.textContent = "Demo mode: no real API call made.";
-              }
-              return;
-            }
-
-            const res = await fetch("/api/grok", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                type: "chat",
-                source: "floating-widget",
-                message: q
-              })
-            });
-            if (!res.ok) throw new Error("Grok API error " + res.status);
-            const data = await res.json();
-            const reply =
-              (data && (data.reply || data.message || data.text)) ||
-              "Thanks for your question — your Grok backend didn’t return a message field.";
-            addBubble(reply, "bot");
-            if (status) status.textContent = "Powered by your Grok backend.";
-          } catch (e) {
-            console.error(e);
-            addBubble("Something went wrong talking to Grok. Please try again.", "bot");
-            if (status) status.textContent = "Error reaching /api/grok.";
-          }
+          // Demo mock reply
+          setTimeout(() => {
+            appendBubble("This is a demo Grok reply. In production, this would be answered by your /api/grok backend with real gear suggestions.", "bot");
+            status.textContent = "Demo mode: wired to an in-browser mock. Replace with your /api/grok endpoint.";
+          }, 700);
         });
       })();
-</script>
+    });
+  </script>
 </body>
 </html>
