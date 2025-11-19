@@ -8,6 +8,11 @@
   <meta name="description" content="Learn how InfantBites uses AI to provide baby feeding guidance while keeping your data private, secure, and under your control.">
   <meta name="robots" content="index,follow">
 
+  <!-- Policy metadata / 2025 compliance + auto-update hook for Grok cron -->
+  <meta name="policy-version" content="2025.1">
+  <meta name="privacy-frameworks" content="GDPR, CCPA, COPPA">
+  <meta name="grok-policy-endpoint" content="/api/privacy/policy-version">
+
   <!-- Open Graph / Social -->
   <meta property="og:title" content="Privacy Policy | InfantBites">
   <meta property="og:description" content="See how InfantBites collects, uses, and protects information, including for AI-powered guidance and product recommendations.">
@@ -23,6 +28,29 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- FTC affiliate disclosure banner (site-wide) -->
+  <div
+    id="affiliate-disclosure-banner"
+    class="affiliate-disclosure-banner"
+    role="alert"
+    aria-live="polite"
+  >
+    <p>
+      <strong>Affiliate disclosure:</strong>
+      InfantBites sometimes recommends products using affiliate links. If you click a link and make a purchase,
+      we may earn a commission at no extra cost to you. This helps keep InfantBites running.
+      <a href="#section-affiliate-disclosure" class="banner-link">Learn more</a>
+      <button
+        type="button"
+        id="affiliate-banner-dismiss"
+        class="banner-dismiss-btn"
+        aria-label="Dismiss affiliate disclosure"
+      >
+        Got it
+      </button>
+    </p>
+  </div>
+
   <header class="page-header">
     <div class="page-header-inner">
       <h1>
@@ -32,7 +60,15 @@
       <p class="page-header-subtitle">
         Your child’s privacy and your peace of mind are our priority.
       </p>
-      <p class="page-meta">Last updated: November 17, 2025</p>
+      <p class="page-meta">
+        Last updated:
+        <time datetime="2025-11-17" data-policy-last-updated>
+          November 17, 2025
+        </time>
+        <span class="page-meta-secondary-tag" data-policy-version-display>
+          (Policy version 2025.1)
+        </span>
+      </p>
       <p class="page-meta-secondary">
         This Privacy Policy explains how we collect, use, and protect information when you use the InfantBites
         website, tools, and AI-powered guidance.
@@ -113,7 +149,7 @@
         <li><a href="#section-sharing">10. When We Share Information</a></li>
         <li><a href="#section-cookies">11. Cookies & Tracking</a></li>
         <li><a href="#section-retention">12. Data Retention</a></li>
-        <li><a href="#section-children">13. Children’s Privacy</a></li>
+        <li><a href="#section-children">13. Children’s Privacy (including COPPA)</a></li>
         <li><a href="#section-rights">14. Your Rights & Choices</a></li>
         <li><a href="#section-region-rights">15. Region-Specific Notices (GDPR / CCPA & Similar)</a></li>
         <li><a href="#section-requests">16. Submit a Data Request</a></li>
@@ -248,7 +284,7 @@
       </ul>
       <p>
         We use this primarily to understand which recommendations are helpful, improve our suggestions,
-        and receive credit from partners.
+        support compliance with FTC endorsement guidance, and receive credit from partners.
       </p>
 
       <h3>4.4 Aggregated and De-identified Data</h3>
@@ -298,7 +334,7 @@
               <td>Contract (to provide the Service); legitimate interests</td>
             </tr>
             <tr>
-              <td>AI prompts & context</td>
+              <td>AI prompts &amp; context</td>
               <td>Questions you ask, clarifications, follow-up details</td>
               <td>Provide responses, improve relevance and safety of AI outputs</td>
               <td>Contract; legitimate interests</td>
@@ -316,7 +352,7 @@
               <td>Legitimate interests</td>
             </tr>
             <tr>
-              <td>Support & feedback</td>
+              <td>Support &amp; feedback</td>
               <td>Support messages, survey responses, bug reports</td>
               <td>Resolve issues, improve UX, refine AI behavior</td>
               <td>Legitimate interests; contract</td>
@@ -374,7 +410,7 @@
 
     <!-- 7. How We Use AI -->
     <section id="section-ai" class="policy-section" aria-labelledby="ai-heading">
-      <h2 id="ai-heading">7. How We Use AI & Automated Systems</h2>
+      <h2 id="ai-heading">7. How We Use AI &amp; Automated Systems</h2>
       <p>
         InfantBites uses AI and other automated systems to generate guidance and recommendations. These tools
         help us deliver more personalized and context-aware support, but they do not replace professional
@@ -520,9 +556,9 @@
           outputs under our instructions, subject to contractual safeguards and technical controls.
         </li>
         <li>
-          <strong>Affiliate partners.</strong> We may share aggregated or de-identified statistics about
-          clicks and conversions. We do not share your email address with affiliates unless you 
-          explicitly agree.
+          <strong>Affiliate partners.</strong>
+          We may share aggregated or de-identified statistics about clicks and conversions. We do not share your
+          email address with affiliates unless you explicitly agree.
         </li>
         <li>
           <strong>Legal and safety.</strong> If required by law, or if we believe it is reasonably 
@@ -538,7 +574,7 @@
 
     <!-- 11. Cookies -->
     <section id="section-cookies" class="policy-section" aria-labelledby="cookies-heading">
-      <h2 id="cookies-heading">11. Cookies & Tracking Technologies</h2>
+      <h2 id="cookies-heading">11. Cookies &amp; Tracking Technologies</h2>
       <p>
         We may use cookies and similar technologies (such as local storage or pixels) to:
       </p>
@@ -576,9 +612,9 @@
       </p>
     </section>
 
-    <!-- 13. Children -->
+    <!-- 13. Children (with COPPA section) -->
     <section id="section-children" class="policy-section" aria-labelledby="children-heading">
-      <h2 id="children-heading">13. Children’s Privacy</h2>
+      <h2 id="children-heading">13. Children’s Privacy (including COPPA)</h2>
       <p>
         InfantBites is designed for use by adults (parents and caregivers), not children. 
         We do not knowingly collect personal information from children under 13 years of age.
@@ -592,11 +628,33 @@
         If you believe that a child under 13 has provided us with personal information, 
         please contact us using the details below so we can delete it.
       </p>
+
+      <h3>13.1 Parental consent and COPPA (U.S.)</h3>
+      <p>
+        For users in the United States, we aim to comply with the Children’s Online Privacy Protection Act 
+        (“COPPA”) where it applies. Our Service is directed to adults; we do not knowingly allow children 
+        under 13 to create accounts or provide personal information directly to us.
+      </p>
+      <p>
+        If we ever introduce features that are directed to children under 13 in the U.S., we will:
+      </p>
+      <ul>
+        <li>Obtain <strong>verifiable parental consent</strong> before collecting personal information from a child;</li>
+        <li>Provide parents with clear notice of what information is collected, how it is used, and with whom it may be shared;</li>
+        <li>Allow parents to review, delete, and refuse further collection or use of their child’s personal information;</li>
+        <li>Limit our collection to what is reasonably necessary for the activity or feature in question.</li>
+      </ul>
+      <p>
+        Parents or legal guardians who wish to review or delete information we may have collected in connection 
+        with a child, or to withdraw consent, can use the data request form below (indicating that the request 
+        relates to a child) or contact us directly at 
+        <a href="mailto:support@infantbites.com">support@infantbites.com</a>.
+      </p>
     </section>
 
     <!-- 14. Rights -->
     <section id="section-rights" class="policy-section" aria-labelledby="rights-heading">
-      <h2 id="rights-heading">14. Your Rights & Choices</h2>
+      <h2 id="rights-heading">14. Your Rights &amp; Choices</h2>
       <p>
         Depending on where you live, you may have some or all of the following rights regarding your personal information:
       </p>
@@ -612,7 +670,8 @@
       </ul>
       <p>
         You can exercise these rights by contacting us or using the form below. We may need to verify your
-        identity before fulfilling your request.
+        identity before fulfilling your request, and in some cases we may ask for additional information to
+        confirm that you are authorized (for example, if you are a parent acting on behalf of a child).
       </p>
       <div class="callout callout-note">
         <strong>Note:</strong> We will not discriminate against you for exercising your privacy rights.
@@ -621,7 +680,7 @@
 
     <!-- 15. Region-specific notices -->
     <section id="section-region-rights" class="policy-section" aria-labelledby="region-rights-heading">
-      <h2 id="region-rights-heading">15. Region-Specific Notices (GDPR / CCPA & Similar)</h2>
+      <h2 id="region-rights-heading">15. Region-Specific Notices (GDPR / CCPA &amp; Similar)</h2>
       <h3>15.1 European Economic Area (EEA), United Kingdom, and similar jurisdictions</h3>
       <p>
         If you are in the EEA, UK, or a jurisdiction with similar data protection laws, you may have additional
@@ -653,6 +712,28 @@
       <p>
         Use this form to request an export of your data or to ask us to delete the personal information we hold 
         under your email address. We’ll respond as soon as reasonably possible and within the time frames required by law.
+      </p>
+
+      <!-- GDPR/CCPA quick shortcuts -->
+      <div class="privacy-shortcuts">
+        <button
+          type="button"
+          id="gdpr-ccpa-delete-shortcut"
+          class="btn-secondary privacy-shortcut-btn"
+          aria-describedby="gdpr-ccpa-delete-helper"
+        >
+          GDPR / CCPA: Request deletion of my data
+        </button>
+        <button
+          type="button"
+          id="gdpr-ccpa-access-shortcut"
+          class="btn-secondary privacy-shortcut-btn"
+        >
+          GDPR / CCPA: Request a copy of my data
+        </button>
+      </div>
+      <p id="gdpr-ccpa-delete-helper" class="form-helper-text">
+        These shortcuts will preselect the appropriate option in the form below and scroll you to it.
       </p>
 
       <form id="privacy-request-form" class="privacy-form" novalidate>
@@ -697,7 +778,7 @@
             id="request-notes"
             name="notes"
             rows="3"
-            placeholder="Anything you’d like us to know (e.g., approximate dates of use)."></textarea>
+            placeholder="Anything you’d like us to know (e.g., approximate dates of use, if you are a parent acting for a child, or relevant region such as EU/California)."></textarea>
         </div>
 
         <button type="submit" id="privacy-request-submit" class="btn-primary">
@@ -834,7 +915,7 @@
       </details>
     </section>
 
-    <!-- 21. Contact -->
+    <!-- 21. Contact + Affiliate disclosure anchor -->
     <section id="section-contact" class="policy-section" aria-labelledby="contact-heading">
       <h2 id="contact-heading">21. Contact Us</h2>
       <p>
@@ -844,10 +925,19 @@
       <p>
         <strong>Email:</strong> <a href="mailto:support@infantbites.com">support@infantbites.com</a>
       </p>
-      <p>
-        If you are in a region with a data protection authority, you may also have the right to lodge
-        a complaint with that authority.
-      </p>
+      <section id="section-affiliate-disclosure" aria-label="Affiliate disclosure details">
+        <h3>Affiliate relationships and disclosures</h3>
+        <p>
+          From time to time, InfantBites may recommend products using affiliate links. This means we may receive
+          a commission if you click a link and make a purchase, at no additional cost to you. We include these links
+          only where we believe the products may be relevant to your needs.
+        </p>
+        <p>
+          We aim to follow applicable advertising and endorsement guidelines, including guidance from the U.S. Federal
+          Trade Commission (FTC). Our recommendations are not medical advice and are not sponsored by manufacturers
+          unless explicitly labeled as such.
+        </p>
+      </section>
       <div class="callout callout-warning">
         <strong>Important:</strong> This Privacy Policy is for informational purposes only and is not legal advice.
         You should consult a qualified attorney to review and adapt it for your specific circumstances,
@@ -898,7 +988,7 @@
             "name": "Is AI making decisions about my child’s health?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "No. InfantBites provides informational guidance only. It does not diagnose, treat, or make medical decisions. You remain responsible for decisions about your child’s health and should always consult your pediatrician or another qualified health provider."
+              "text": "No. InfantBites provides informational guidance only. It does not diagnose, treat, or make medical decisions. You remain responsible for decisions about your child's health and should always consult your pediatrician or another qualified health provider."
             }
           },
           {
@@ -925,7 +1015,13 @@
       const viewToggleButtons = document.querySelectorAll('.view-toggle-btn');
       const summaryGrid = document.querySelector('.summary-grid');
 
+      const gdprDeleteButton = document.getElementById('gdpr-ccpa-delete-shortcut');
+      const gdprAccessButton = document.getElementById('gdpr-ccpa-access-shortcut');
+      const affiliateBanner = document.getElementById('affiliate-disclosure-banner');
+      const affiliateDismiss = document.getElementById('affiliate-banner-dismiss');
+
       function setResponse(message, status) {
+        if (!responseEl) return;
         responseEl.textContent = message;
         responseEl.dataset.status = status || '';
       }
@@ -951,6 +1047,47 @@
           }
         });
       });
+
+      // GDPR/CCPA quick shortcuts
+      if (gdprDeleteButton && typeSelect && emailInput) {
+        gdprDeleteButton.addEventListener('click', () => {
+          typeSelect.value = 'delete';
+          document.getElementById('section-requests').scrollIntoView({ behavior: 'smooth', block: 'start' });
+          emailInput.focus();
+        });
+      }
+
+      if (gdprAccessButton && typeSelect && emailInput) {
+        gdprAccessButton.addEventListener('click', () => {
+          typeSelect.value = 'export';
+          document.getElementById('section-requests').scrollIntoView({ behavior: 'smooth', block: 'start' });
+          emailInput.focus();
+        });
+      }
+
+      // FTC affiliate disclosure banner dismiss + localStorage remember
+      if (affiliateBanner && affiliateDismiss) {
+        try {
+          if (window.localStorage && localStorage.getItem('affiliateBannerDismissed') === 'true') {
+            affiliateBanner.style.display = 'none';
+          }
+        } catch (e) {
+          // If localStorage isn't available, we just don't persist dismissal
+        }
+
+        affiliateDismiss.addEventListener('click', () => {
+          affiliateBanner.style.display = 'none';
+          try {
+            if (window.localStorage) {
+              localStorage.setItem('affiliateBannerDismissed', 'true');
+            }
+          } catch (e) {
+            // ignore storage errors
+          }
+        });
+      }
+
+      if (!form) return;
 
       form.addEventListener('submit', async function (event) {
         event.preventDefault();
@@ -1025,6 +1162,36 @@
         }
       });
     });
+
+    // Grok / cron-based auto-update hook:
+    // Backend cron can update JSON at /api/privacy/policy-version (e.g., { lastUpdated: "...", version: "..." }).
+    // This script will reflect those values in the UI when available.
+    (function syncPolicyVersionFromAPI() {
+      const endpointMeta = document.querySelector('meta[name="grok-policy-endpoint"]');
+      const endpoint = endpointMeta ? endpointMeta.content : null;
+      if (!endpoint || !window.fetch) return;
+
+      fetch(endpoint, { method: 'GET' })
+        .then(function (res) {
+          if (!res.ok) return null;
+          return res.json();
+        })
+        .then(function (data) {
+          if (!data) return;
+          const lastUpdatedEl = document.querySelector('[data-policy-last-updated]');
+          const versionDisplayEl = document.querySelector('[data-policy-version-display]');
+
+          if (data.lastUpdated && lastUpdatedEl) {
+            lastUpdatedEl.textContent = data.lastUpdatedHumanReadable || data.lastUpdated;
+          }
+          if (data.version && versionDisplayEl) {
+            versionDisplayEl.textContent = '(Policy version ' + data.version + ')';
+          }
+        })
+        .catch(function () {
+          // Fail silently if the API or network is unavailable
+        });
+    })();
   </script>
 </body>
 </html>
