@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
   <title>InfantBites – AI Baby Registry That Builds Itself (With Live Prices)</title>
-  <meta name="description" content="Tell InfantBites AI your space, car, budget, and baby details. Get a lean, safety-first baby registry with live prices, what to skip, and 1-click add to Amazon/Babylist/Target.">
+  <meta name="description" content="Tell InfantBites AI about your baby, home, car and budget. Get a lean, safety-first baby registry with live prices, what to skip, and 1-click add to Amazon, Babylist and Target.">
   <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
   <meta name="theme-color" content="#050517">
   <meta name="color-scheme" content="light dark">
@@ -17,7 +17,7 @@
   <!-- Social -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="InfantBites – AI Baby Registry That Builds Itself">
-  <meta property="og:description" content="AI turns 1,000+ baby products into your perfect, budget-aware registry with live prices and what to skip.">
+  <meta property="og:description" content="AI turns thousands of baby products into your perfect, budget-aware registry with live prices, safety notes and “skip this” callouts.">
   <meta property="og:url" content="https://www.infantbites.com/">
   <meta property="og:site_name" content="InfantBites">
   <meta property="og:image" content="https://www.infantbites.com/og.jpg">
@@ -27,7 +27,7 @@
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="InfantBites – AI Baby Registry That Builds Itself">
-  <meta name="twitter:description" content="Tell InfantBites AI your life. Get a focused, safety-first registry with live prices, “skip this” callouts, and zero fluff.">
+  <meta name="twitter:description" content="Tell InfantBites AI your life. Get a focused, safety-first registry with live prices, what to skip, and 1-click add to major retailers.">
   <meta name="twitter:image" content="https://www.infantbites.com/og.jpg">
   <meta name="twitter:site" content="@infantbites">
 
@@ -576,6 +576,25 @@
     }
     .step-card p {
       margin: 0;
+      color: var(--ib-muted);
+    }
+
+    /* Sample output section */
+    .sample-grid {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+      display: grid;
+      grid-template-columns: minmax(0, 1.8fr) minmax(0, 1.2fr);
+      gap: 1.3rem;
+      font-size: 0.92rem;
+    }
+    .sample-note {
+      background: rgba(11,11,32,0.98);
+      border-radius: 22px;
+      border: 1px solid rgba(148,163,184,0.32);
+      padding: 0.9rem 1.1rem 1rem;
+      box-shadow: 0 14px 40px rgba(15,23,42,0.7);
       color: var(--ib-muted);
     }
 
@@ -1276,12 +1295,16 @@
         bottom: 4rem;
         right: 1rem;
       }
+      .sample-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
     }
 
     @media (max-width: 640px) {
       .chat-window { height: 280px; }
       .hero-inner { gap: 1.6rem; }
       .ai-shell-header { flex-direction: column; align-items: flex-start; }
+      .ai-form { flex-direction: column; }
     }
   </style>
 
@@ -1328,7 +1351,7 @@
 <body data-theme="dark">
   <!-- Urgency / social proof bar -->
   <div class="scarcity-bar" aria-live="polite">
-    Parents using InfantBites saved an average of <strong>$142</strong> recently — today’s bundle logic refreshes in
+    Families using InfantBites recently saved an average of <strong>$142</strong> — today’s smart bundle logic refreshes in
     <span class="countdown">04:00:00</span>
   </div>
 
@@ -1362,9 +1385,9 @@
 
       <div class="header-right">
         <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle light and dark mode">
-          <span aria-hidden="true">🌞</span><span>Theme</span>
+          <span aria-hidden="true">🌙</span><span>Theme</span>
         </button>
-        <a href="#ai" class="header-cta btn btn-secondary">Ask the AI Registry Builder</a>
+        <a href="#ai" class="header-cta btn btn-secondary">Try the AI registry</a>
 
         <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-controls="main-nav" aria-expanded="false">
           <span class="nav-toggle-bar"></span>
@@ -1377,6 +1400,8 @@
     <nav id="main-nav" class="main-nav" aria-label="Primary navigation">
       <ul>
         <li><a href="#hero">Overview</a></li>
+        <li><a href="#how">How it works</a></li>
+        <li><a href="#sample">Sample output</a></li>
         <li><a href="#featured-products">Editor Picks</a></li>
         <li><a href="#categories">Categories</a></li>
         <li><a href="#deals">Deals</a></li>
@@ -1420,31 +1445,34 @@
     <section id="hero" class="hero" aria-labelledby="hero-title">
       <div class="container hero-inner">
         <div>
-          <p class="hero-eyebrow">AI baby registry • Live prices • Profit-aware, safety-first</p>
+          <p class="hero-eyebrow">Baby registry, done for you — in one message</p>
           <h1 id="hero-title">
-            Tell AI your life.<br>
-            <span class="hero-highlight">Get a registry that builds itself.</span>
+            Stop guessing what to buy.<br>
+            <span class="hero-highlight">Tell AI your life, get a lean registry.</span>
           </h1>
           <p class="hero-subtitle">
-            Share your baby’s timing, home, car and budget once. InfantBites AI turns 1,000+ product options
-            into a lean, safety-conscious registry with live prices, “skip this” callouts and 1-click export to Amazon/Babylist/Target.
+            Share your due date, home, car and budget once. InfantBites turns thousands of baby products
+            into a short list of what you’ll actually use — with safety notes, “skip this” callouts and
+            links to your favorite stores.
           </p>
           <div class="hero-actions">
-            <a href="#ai" class="btn">⚡ Build my AI registry →</a>
-            <a href="#newsletter" class="btn btn-secondary">Get the newborn checklist</a>
+            <a href="#ai" class="btn">⚡ Build my registry now</a>
+            <button type="button" class="btn btn-secondary" onclick="document.getElementById('newsletter').scrollIntoView({behavior:'smooth'})">
+              Get the 3-minute checklist
+            </button>
           </div>
           <ul class="hero-badges">
-            <li>✔ 3–7 must-haves per category, not 50</li>
-            <li>✔ Safety notes & recall reminders to check</li>
-            <li>✔ Hooks for Amazon/Babylist/Target 1-click add</li>
+            <li>✔ 5–15 must-haves, not 80 random “essentials”</li>
+            <li>✔ Fits your space, car and real budget</li>
+            <li>✔ Flags what to skip or buy used</li>
           </ul>
           <p class="hero-meta">
-            Trusted by <strong>thousands of new parents</strong> building registries, upgrading gear and shopping on real budgets.
+            Built for <strong>first-time parents, baby #2 and gift-givers</strong> who want clarity, not clutter.
           </p>
 
           <div class="metrics-row" aria-label="Registry impact metrics">
             <div class="metric-pill">
-              <strong id="metric-parents">0</strong><span>parents helped</span>
+              <strong id="metric-parents">0</strong><span>registries built</span>
             </div>
             <div class="metric-pill">
               <strong id="metric-hours">0</strong><span>hours of scrolling saved</span>
@@ -1455,27 +1483,41 @@
           </div>
         </div>
 
-        <aside class="hero-side" aria-label="How InfantBites helps">
+        <!-- Compact starter form in hero -->
+        <aside class="hero-side" aria-label="Start your AI registry">
           <div class="hero-card">
-            <h2 class="hero-card-title">What InfantBites AI does differently</h2>
-            <p class="hero-note"><strong>Not</strong> a giant shopping list. <strong>Yes</strong> a tight, life-aware, JSON-backed plan.</p>
-            <ul class="hero-list">
-              <li>Respects your space (studio vs. house, stairs vs. elevator)</li>
-              <li>Matches your car size & actual budget</li>
-              <li>Audits what you already own</li>
-              <li>Flags common regret-buys to skip</li>
-            </ul>
-            <p class="hero-note">Paste your existing registry or just write a paragraph. AI will clean it up into a focused, developer-friendly JSON plan.</p>
+            <h2 class="hero-card-title">Start your AI registry in one message</h2>
+            <p class="hero-note">
+              Tell InfantBites about your baby and home. You’ll get back a short, safety-aware starter list
+              you can tweak or export.
+            </p>
+            <form id="hero-ai-form" class="ai-form" style="padding:0;margin-top:0.6rem;border-top:none;background:transparent;flex-wrap:nowrap;">
+              <label for="hero-ai-input" class="visually-hidden">Describe your situation</label>
+              <textarea id="hero-ai-input"
+                        placeholder="e.g. Due in October, small apartment, hatchback, $800 budget, no car seat yet, prefer minimal stuff…"
+                        required
+                        style="min-height:3.3rem;"></textarea>
+              <button type="submit" class="btn">⚡ Build my 5-item list</button>
+            </form>
+            <p class="hero-note" style="margin-top:0.5rem;font-size:0.8rem;">
+              Demo: suggestions are examples only. Always check recalls, manuals and local laws (especially for car seats and sleep).
+            </p>
           </div>
 
           <div class="hero-card">
-            <h2 class="hero-card-title">Prefer a starting template?</h2>
+            <h2 class="hero-card-title">What you’ll see</h2>
             <ul class="hero-list">
-              <li><a href="/checklists/newborn-essentials.html">Newborn essentials checklist</a></li>
-              <li><a href="/checklists/first-3-months.html">First 3 months gear plan</a></li>
-              <li><a href="/checklists/travel-gear.html">Travel &amp; on-the-go kit</a></li>
+              <li>5 core items matched to your life & budget</li>
+              <li>Short “why this” explanations</li>
+              <li>What you can safely reuse or skip for now</li>
+              <li>Links you can add to Amazon / Babylist / Target</li>
             </ul>
-            <p class="hero-note">Use them as a registry blueprint—or a sanity check against what you already have.</p>
+            <p class="hero-note">
+              Prefer a starting template? Try our
+              <a href="/checklists/newborn-essentials.html" class="text-link">newborn essentials</a>,
+              <a href="/checklists/first-3-months.html" class="text-link">first 3 months</a> or
+              <a href="/checklists/travel-gear.html" class="text-link">travel kit</a>.
+            </p>
           </div>
         </aside>
       </div>
@@ -1485,7 +1527,7 @@
           <span>Made for:</span>
           <ul class="persona-list">
             <li>First-time parents</li>
-            <li>Registry builders</li>
+            <li>Parents expecting baby #2</li>
             <li>Budget-conscious families</li>
             <li>Gift-givers & baby shower planners</li>
           </ul>
@@ -1496,32 +1538,132 @@
     <!-- How it works -->
     <section id="how" class="section section-muted" aria-labelledby="how-title">
       <header class="section-header">
-        <h2 id="how-title">How your AI registry builds itself in under a second</h2>
+        <h2 id="how-title">How InfantBites builds your registry</h2>
         <p class="section-tagline">
-          Your story in → strict JSON → live prices & margin scores → registry-ready cards and export hooks.
+          One honest message in → lean list out: what you truly need, what can wait and what you can skip.
         </p>
       </header>
       <div class="how-grid">
         <article class="step-card">
           <div class="step-label">Step 1</div>
-          <h3>You text your real life, not fill a form</h3>
-          <p>One rich message covers due date, home (sqft, stairs, city/suburbs), car type, budget, twins, reflux, eco/used preferences.</p>
+          <h3>You tell us your real life</h3>
+          <p>Due date, home size, stairs or elevator, car type, budget, twins, pets, feeding plan, eco or used-gear preferences — all in one message.</p>
         </article>
         <article class="step-card">
           <div class="step-label">Step 2</div>
-          <h3>LLM returns strict, audited JSON</h3>
-          <p>Backend prompt enforces a schema: core items, ASINs, safety notes, “skips” and next-stage items. A safety layer blocks risky suggestions.</p>
+          <h3>AI turns it into a tight plan</h3>
+          <p>We pick a short list of core items that fit your space and budget, not a giant shopping list. Each pick comes with a plain-language “why this” explanation.</p>
         </article>
         <article class="step-card">
           <div class="step-label">Step 3</div>
-          <h3>Price engine &amp; profit brain kick in</h3>
-          <p>Live price APIs fill price slots. A profit-aware ranking model reorders equivalent products by margin—never touching safety-critical picks.</p>
+          <h3>Safety &amp; price checks</h3>
+          <p>We highlight safety points to double-check, plus live price slots so you can compare across stores. Affiliate logic never overrides safety or fit.</p>
         </article>
         <article class="step-card">
           <div class="step-label">Step 4</div>
-          <h3>Front-end turns JSON into money</h3>
-          <p>Cards render with “Add to registry / Buy now” hooks wired to Amazon/Babylist/Target using your affiliate tags, plus analytics events for every click.</p>
+          <h3>You tweak &amp; export</h3>
+          <p>Edit, swap or remove items, then send them to Amazon, Babylist or Target. Your registry stays focused, not flooded with stuff.</p>
         </article>
+      </div>
+    </section>
+
+    <!-- Sample output / example registry -->
+    <section id="sample" class="section" aria-labelledby="sample-title">
+      <header class="section-header">
+        <h2 id="sample-title">What an AI-built starter registry looks like</h2>
+        <p class="section-tagline">
+          Here’s a fictional example for a first-time parent in a small apartment with a compact car and ~$1,000 budget.
+        </p>
+      </header>
+
+      <div class="sample-grid">
+        <div>
+          <div class="ai-results-header">
+            <div>
+              <h3>5-item starter registry example</h3>
+              <p>Short list, clear reasons and safety notes you can double-check.</p>
+            </div>
+            <div style="text-align:right;font-size:0.84rem;color:var(--ib-muted);">
+              <div>Approx. budget covered: <strong>$1,000</strong></div>
+              <div>Real results adjust to <em>your</em> life and budget.</div>
+            </div>
+          </div>
+
+          <div class="ai-results-grid">
+            <article class="ai-card">
+              <h4>1. Everyday car seat</h4>
+              <p>Easy-to-install infant seat that fits a compact car and works with common stroller frames.</p>
+              <div class="ai-price">
+                ~ $260
+                <span class="ai-price-sub">Exact prices fill in from retailers when you build your list.</span>
+              </div>
+              <div class="ai-safety">
+                Safety note: Always follow the manual, check expiry and recalls, and if possible have a CPST check your install.
+              </div>
+            </article>
+
+            <article class="ai-card">
+              <h4>2. Simple sleep setup</h4>
+              <p>Bedside bassinet plus 2–3 sleep sacks that match your baby’s size and room temperature.</p>
+              <div class="ai-price">
+                ~ $220
+                <span class="ai-price-sub">You can delay the crib a bit if baby starts in your room.</span>
+              </div>
+              <div class="ai-safety">
+                Safety note: Follow safe sleep guidelines for a firm, flat surface and no loose bedding.
+              </div>
+            </article>
+
+            <article class="ai-card">
+              <h4>3. Realistic feeding kit</h4>
+              <p>Small bottle set, drying rack and brush sized for how often you’ll actually bottle-feed.</p>
+              <div class="ai-price">
+                ~ $140
+                <span class="ai-price-sub">You can skip giant “feeding station” bundles until you know what you use.</span>
+              </div>
+              <div class="ai-safety">
+                Safety note: Clean and sterilize parts per instructions and talk to your pediatrician about any feeding concerns.
+              </div>
+            </article>
+
+            <article class="ai-card">
+              <h4>4. Everyday carrier</h4>
+              <p>Comfortable carrier that works for your torso and climate so you can move hands-free without a bulky stroller.</p>
+              <div class="ai-price">
+                ~ $120
+                <span class="ai-price-sub">Many families use this daily for naps, errands and travel.</span>
+              </div>
+              <div class="ai-safety">
+                Safety note: Follow babywearing safety (visible, kissable, supported airway and healthy hip positioning).
+              </div>
+            </article>
+
+            <article class="ai-card">
+              <h4>5. Core health &amp; safety kit</h4>
+              <p>Reliable thermometer, nasal suction, nail care and basic baby-proofing for your space.</p>
+              <div class="ai-price">
+                ~ $120
+                <span class="ai-price-sub">These help you act on your pediatrician’s advice; they don’t replace it.</span>
+              </div>
+              <div class="ai-safety">
+                Safety note: Always follow product manuals and your pediatrician’s guidance for health decisions.
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <aside class="sample-note" aria-label="Skip list example">
+          <h3 style="margin:0 0 0.4rem;font-size:1rem;">What this example says to skip (for now)</h3>
+          <ul class="ai-side-list">
+            <li>Multiple swings or bouncers at once — try one before buying more.</li>
+            <li>Fancy warmers and sterilizers if you’re not sure you’ll use them daily.</li>
+            <li>Big toy sets for later months — newborns need much less than the internet suggests.</li>
+            <li>Duplicate gadgets that do the same job as something you already own.</li>
+          </ul>
+          <p style="margin-top:0.6rem;">
+            When you build your own registry, the skip list adjusts to your space, budget and what you already have.
+          </p>
+        </aside>
       </div>
     </section>
 
@@ -1617,7 +1759,7 @@
     <section id="categories" class="section" aria-label="Baby gear categories">
       <div class="section-header">
         <h2>Explore by category</h2>
-        <p class="section-tagline">Use AI-aware guides as a sanity check on what you actually need.</p>
+        <p class="section-tagline">Use these guides as a sanity check on what you actually need.</p>
       </div>
       <div class="category-grid">
         <section id="feed" class="category-card" aria-labelledby="feed-title">
@@ -1766,9 +1908,9 @@
     <section id="ai" class="section ai-section" aria-labelledby="ai-title">
       <header class="section-header">
         <h2 id="ai-title">InfantBites AI – Build My 5-Item Registry</h2>
-        <p class="section-tagline">Tell AI your life in one message → get a lean, safety- & profit-aware list with live price slots.</p>
+        <p class="section-tagline">Tell AI your life in one message → get a lean, safety-aware list with budget-aligned price slots.</p>
         <p class="section-disclaimer">
-          AI helps you research faster—not replace safety checks or medical advice.
+          InfantBites helps you research faster — it doesn’t replace medical advice or official safety guidelines.
           Always read manuals, check recalls, follow local laws (especially for car seats) and talk with your pediatrician.
         </p>
       </header>
@@ -1779,9 +1921,11 @@
           <div class="ai-shell-header">
             <div>
               <div class="ai-shell-title">🍼 InfantBites AI Registry Builder</div>
-              <div class="ai-shell-sub">Groq/OpenAI on your backend + live price APIs + your affiliate tags. JSON-first, developer-friendly.</div>
+              <div class="ai-shell-sub">
+                Share your situation once and get a tight starter registry, not an endless list. Demo runs in your browser.
+              </div>
             </div>
-            <span class="ai-pill">JSON-first · 0.6s median · Safety &amp; profit aware</span>
+            <span class="ai-pill">Fast · Lean list · Safety-aware</span>
           </div>
 
           <div class="chat-window" id="chat" aria-live="polite">
@@ -1813,7 +1957,7 @@
           <form id="chat-form" class="ai-form">
             <label for="user-input" class="visually-hidden">Describe your situation</label>
             <textarea id="user-input"
-                      placeholder="e.g. Due April 2026, 700 sqft walk-up in Chicago, compact SUV, $1500 budget, reflux history, eco where it matters, okay buying used except car seat…"
+                      placeholder="e.g. Due April 2026, 700 sqft walk-up, compact SUV, $1500 budget, reflux history, eco where it matters, okay buying used except car seat…"
                       required></textarea>
             <button type="submit" class="btn">⚡ Build my registry</button>
           </form>
@@ -1839,14 +1983,14 @@
           <div class="ai-side-card">
             <h3>How we think about safety & profit</h3>
             <p>We highlight common safety considerations (car seat install, safe sleep basics, babywearing positioning) that you should double-check.</p>
-            <p>Profit signals only reorder options that are already safe and solid. For critical categories like car seats and sleep, we ignore margin and rank purely on safety and quality.</p>
+            <p>Profit signals only reorder options that are already safe and solid. For critical categories like car seats and sleep, we ignore margin and focus on safety and quality.</p>
           </div>
 
           <div id="results" class="ai-results"></div>
 
           <!-- Skeleton loader -->
           <div id="skeleton" style="display:none;">
-            <p style="font-size:0.86rem;color:var(--ib-muted);margin:0.4rem 0 0.3rem;">Building your list &amp; pulling live price slots…</p>
+            <p style="font-size:0.86rem;color:var(--ib-muted);margin:0.4rem 0 0.3rem;">Building your list &amp; pulling price slots…</p>
             <div class="skeleton-row">
               <div class="skeleton-card">
                 <div class="skeleton-block img"></div>
@@ -1961,6 +2105,7 @@
           <li><a href="/terms.html">Terms</a></li>
           <li><a href="/support.html">Support</a></li>
           <li><a href="/contact.html">Contact</a></li>
+          <li><a href="/builders.html">For developers &amp; partners</a></li>
         </ul>
       </nav>
     </div>
@@ -2028,7 +2173,6 @@
 
         function apply(theme) {
           document.body.setAttribute("data-theme", theme);
-          // icon text
           btn.firstElementChild.textContent = theme === "dark" ? "🌙" : "🌞";
         }
 
@@ -2128,7 +2272,6 @@
           nav.classList.toggle("is-open", !expanded);
         });
 
-        // Close nav when clicking a link on small screens
         nav.addEventListener("click", (e) => {
           if (e.target.tagName === "A") {
             closeNav();
@@ -2270,7 +2413,7 @@
         animateNumber(savedEl, targets.saved, { prefix: "$" });
       })();
 
-      // AI quick prompts + chat demo
+      // AI quick prompts + chat demo + hero form wiring
       (function () {
         const chat = document.getElementById("chat");
         const form = document.getElementById("chat-form");
@@ -2279,6 +2422,9 @@
         const resultsContainer = document.getElementById("results");
         const skeleton = document.getElementById("skeleton");
         const status = document.getElementById("ai-status");
+
+        const heroForm = document.getElementById("hero-ai-form");
+        const heroInput = document.getElementById("hero-ai-input");
 
         if (!chat || !form || !input || !resultsContainer || !skeleton || !status) return;
 
@@ -2305,7 +2451,6 @@
         });
 
         function mockRegistryFrom(text) {
-          // Very simple demo, no real AI.
           const lower = text.toLowerCase();
           const budgetMatch = text.match(/\$?\s*([0-9]{2,5})/);
           const budget = budgetMatch ? Number(budgetMatch[1]) : 1200;
@@ -2325,44 +2470,39 @@
             constraints.push("No car · lighter gear and carriers over travel systems.");
           }
           if (lower.includes("used")) {
-            constraints.push("Okay with used · new-only for car seats, safe sleep surfaces and some health gear.");
+            constraints.push("Okay with used · new-only for car seats, sleep surfaces and some health gear.");
           }
 
           const items = [
             {
               title: "Primary car seat / travel solution",
-              desc: "A safe, easy-to-install seat that fits your vehicle (or ride share) and local laws.",
+              desc: "A safe, easy-to-install seat that fits your vehicle (or ride share) and your local laws.",
               price: perItem + 40,
-              safety: "Always install per manual, check expiry/recalls and have a CPST check if you can.",
-              next: "Convertible seat later if you start with an infant seat."
+              safety: "Always install per manual, check expiry/recalls and have a CPST check if you can."
             },
             {
               title: "Realistic sleep setup",
               desc: "A safe, flat sleep surface plus 2–3 sleep sacks appropriate for your baby’s size and season.",
               price: perItem,
-              safety: "Follow safe sleep guidelines: firm, flat surface, no loose bedding, follow local guidance.",
-              next: "You can wait on a crib if baby will start in a bassinet in your room."
+              safety: "Follow safe sleep guidelines: firm, flat surface, no loose bedding, follow local guidance."
             },
             {
               title: "Feeding kit that matches your plan",
               desc: "A small bottle set, drying rack and brush that matches how often you expect to bottle-feed.",
               price: perItem - 10,
-              safety: "Sterilize per instructions and replace nipples regularly; talk to your pediatrician about feeding issues.",
-              next: "You can skip full ‘feeding station’ gadgets until you see what actually helps."
+              safety: "Sterilize per instructions and replace nipples regularly; talk to your pediatrician about feeding issues."
             },
             {
               title: "On-the-go carry system",
               desc: "A carrier or wrap that matches your body and climate so you can move hands-free.",
               price: perItem - 5,
-              safety: "Follow babywearing safety: visible, kissable, supported airway, and safe hip positioning.",
-              next: "You can wait on a second carrier style until you know what you like."
+              safety: "Follow babywearing safety: visible, kissable, supported airway, and safe hip positioning."
             },
             {
               title: "Core health & safety kit",
               desc: "A reliable thermometer, nasal suction, nail care and basic baby-proofing for your space.",
               price: perItem - 15,
-              safety: "These help you act on your pediatrician’s advice—they don’t replace it.",
-              next: "You can delay big baby-proofing items until rolling and crawling take off."
+              safety: "These help you act on your pediatrician’s advice—they don’t replace it."
             }
           ];
 
@@ -2406,7 +2546,7 @@
               <p>${item.desc}</p>
               <div class="ai-price">
                 ~ $${item.price.toLocaleString()}
-                <span class="ai-price-sub">Live prices fill in on your backend via Amazon / Keepa / retailer APIs.</span>
+                <span class="ai-price-sub">Live prices fill in on your backend via retailer APIs.</span>
               </div>
               <div class="ai-safety">Safety note: ${item.safety}</div>
               <div class="ai-card-footer">
@@ -2431,24 +2571,38 @@
           resultsContainer.appendChild(skips);
         }
 
-        form.addEventListener("submit", (evt) => {
-          evt.preventDefault();
-          const text = input.value.trim();
+        function handleTextSubmit(text) {
           if (!text) return;
-
           addMessage(text, "user");
-          input.value = "";
           status.textContent = "Thinking through your space, budget and priorities…";
           skeleton.style.display = "block";
           resultsContainer.innerHTML = "";
 
-          // Demo: mock latency
           setTimeout(() => {
             skeleton.style.display = "none";
             renderResults(text);
             status.textContent = "Demo mode: this response was generated in your browser. In production, keep keys & logic on your backend.";
+            document.getElementById("ai").scrollIntoView({ behavior: "smooth" });
           }, 900);
+        }
+
+        form.addEventListener("submit", (evt) => {
+          evt.preventDefault();
+          const text = input.value.trim();
+          if (!text) return;
+          input.value = "";
+          handleTextSubmit(text);
         });
+
+        if (heroForm && heroInput) {
+          heroForm.addEventListener("submit", (evt) => {
+            evt.preventDefault();
+            const text = heroInput.value.trim();
+            if (!text) return;
+            heroInput.value = "";
+            handleTextSubmit(text);
+          });
+        }
       })();
 
       // Grok floating chat demo
@@ -2461,46 +2615,42 @@
         const messages = document.getElementById("grok-messages");
         const status = document.getElementById("grok-status");
 
-        if (!toggle || !panel || !closeBtn || !form || !input || !messages || !status) return;
+        if (!toggle || !panel || !form || !input || !messages || !status) return;
 
-        function setPanelOpen(isOpen) {
-          panel.hidden = !isOpen;
-          toggle.setAttribute("aria-expanded", String(isOpen));
-          if (isOpen) {
-            input.focus();
-          }
-        }
-
-        function appendBubble(text, from = "bot") {
-          const div = document.createElement("div");
-          div.className = "grok-bubble " + (from === "user" ? "user" : "bot");
-          div.textContent = text;
-          messages.appendChild(div);
+        function addGrokMessage(text, from = "bot") {
+          const bubble = document.createElement("div");
+          bubble.className = "grok-bubble " + (from === "user" ? "user" : "bot");
+          bubble.textContent = text;
+          messages.appendChild(bubble);
           messages.scrollTop = messages.scrollHeight;
         }
 
         toggle.addEventListener("click", () => {
-          const isOpen = toggle.getAttribute("aria-expanded") === "true";
-          setPanelOpen(!isOpen);
+          const isHidden = panel.hasAttribute("hidden");
+          if (isHidden) {
+            panel.removeAttribute("hidden");
+          } else {
+            panel.setAttribute("hidden", "hidden");
+          }
+          toggle.setAttribute("aria-expanded", String(isHidden));
         });
 
         closeBtn.addEventListener("click", () => {
-          setPanelOpen(false);
+          panel.setAttribute("hidden", "hidden");
+          toggle.setAttribute("aria-expanded", "false");
         });
 
         form.addEventListener("submit", (evt) => {
           evt.preventDefault();
-          const value = input.value.trim();
-          if (!value) return;
-
-          appendBubble(value, "user");
+          const text = input.value.trim();
+          if (!text) return;
+          addGrokMessage(text, "user");
           input.value = "";
-          status.textContent = "Thinking… (demo reply only; connect to your backend for real answers)";
+          status.textContent = "Thinking (demo)…";
 
-          // Demo mock reply
           setTimeout(() => {
-            appendBubble("This is a demo Grok reply. In production, this would be answered by your /api/grok backend with real gear suggestions.", "bot");
-            status.textContent = "Demo mode: wired to an in-browser mock. Replace with your /api/grok endpoint.";
+            addGrokMessage("This is a demo reply. In production, this widget can answer quick questions using your Grok backend (e.g. which stroller fits a tiny trunk, what can be reused for baby #2, etc.).", "bot");
+            status.textContent = "Demo mode: connect this to /api/grok to answer real questions.";
           }, 700);
         });
       })();
