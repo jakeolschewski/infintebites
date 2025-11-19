@@ -2300,5 +2300,83 @@
       })();
     });
   </script>
+        // Grok floating chat widget
+      (function () {
+        const toggle = document.getElementById("grok-toggle");
+        const panel = document.getElementById("grok-panel");
+        const close = document.getElementById("grok-close");
+        const form = document.getElementById("grok-form");
+        const input = document.getElementById("grok-input");
+        const messages = document.getElementById("grok-messages");
+        const status = document.getElementById("grok-status");
+        if (!toggle || !panel || !form || !input || !messages) return;
+
+        function showPanel() {
+          panel.hidden = false;
+          toggle.setAttribute("aria-expanded", "true");
+        }
+        function hidePanel() {
+          panel.hidden = true;
+          toggle.setAttribute("aria-expanded", "false");
+        }
+
+        toggle.addEventListener("click", () => {
+          if (panel.hidden) showPanel(); else hidePanel();
+        });
+        close?.addEventListener("click", hidePanel);
+
+        function addBubble(text, role) {
+          const div = document.createElement("div");
+          div.className = "grok-bubble " + role;
+          div.textContent = text;
+          messages.appendChild(div);
+          messages.scrollTop = messages.scrollHeight;
+        }
+
+        form.addEventListener("submit", async (evt) => {
+          evt.preventDefault();
+          const q = (input.value || "").trim();
+          if (!q) return;
+          addBubble(q, "user");
+          input.value = "";
+          if (status) status.textContent = "Thinking with Grok about your situation…";
+
+          try {
+            if (IB_CONFIG.DEMO_MODE) {
+              await new Promise((r) => setTimeout(r, 700));
+              addBubble(
+                "Demo reply: In production, this widget would hit your /api/grok endpoint and return tailored baby gear suggestions.",
+                "bot"
+              );
+              if (status) {
+                status.textContent = "Demo mode: no real API call made.";
+              }
+              return;
+            }
+
+            const res = await fetch("/api/grok", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                type: "chat",
+                source: "floating-widget",
+                message: q
+              })
+            });
+            if (!res.ok) throw new Error("Grok API error " + res.status);
+            const data = await res.json();
+            const reply =
+              (data && (data.reply || data.message || data.text)) ||
+              "Thanks for your question — your Grok backend didn’t return a message field.";
+            addBubble(reply, "bot");
+            if (status) status.textContent = "Powered by your Grok backend.";
+          } catch (e) {
+            console.error(e);
+            addBubble("Something went wrong talking to Grok. Please try again.", "bot");
+            if (status) status.textContent = "Error reaching /api/grok.";
+          }
+        });
+      })();
+</script>
 </body>
 </html>
