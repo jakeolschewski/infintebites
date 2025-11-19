@@ -1,5 +1,5 @@
 /* ==========================================================================
-   AI SYSTEM UI – DESIGN TOKENS & FOUNDATIONS
+   AI SYSTEM UI – DESIGN TOKENS & FOUNDATIONS (v2)
    ========================================================================== */
 
 /* Base tokens (default – dark leaning) */
@@ -236,10 +236,10 @@ body::before {
 }
 
 /* ==========================================================================
-   GLOBAL ACCESSIBILITY / FOCUS
+   GLOBAL ACCESSIBILITY & FOCUS (WCAG 2.2)
    ========================================================================== */
 
-/* Screen-reader utility */
+/* Screen-reader only utility */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -275,7 +275,7 @@ body::before {
   box-shadow: var(--shadow-focus-ring);
 }
 
-/* High-visibility focus ring for interactive elements */
+/* Strong focus ring on all key interactive elements */
 :where(
   a,
   button,
@@ -305,7 +305,7 @@ a:hover {
 }
 
 /* ==========================================================================
-   LAYOUT
+   LAYOUT (MOBILE-FIRST)
    ========================================================================== */
 
 main {
@@ -314,14 +314,14 @@ main {
   padding: var(--page-padding-y) var(--page-padding-x) 3.4rem;
 }
 
-/* Mobile-first stack helper */
+/* Generic mobile-first stack */
 .layout-stack {
   display: flex;
   flex-direction: column;
   gap: var(--space-lg);
 }
 
-/* Responsive grid helper for cards / sections */
+/* Responsive grid helper */
 .layout-grid {
   display: grid;
   gap: var(--space-md);
@@ -332,16 +332,17 @@ main {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
-@media (min-width: 992px) {
+
+@media (min-width: 960px) {
   .layout-grid--3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
-/* Split layout: main + side */
+/* Split layout for “main + side” */
 .split-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1.8fr) minmax(0, 1.2fr);
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.2fr);
   gap: var(--space-lg);
   align-items: flex-start;
 }
@@ -745,7 +746,7 @@ button:disabled {
 }
 
 /* ==========================================================================
-   BUNDLES / CARDS
+   BUNDLES / CARDS (GENERAL)
    ========================================================================== */
 
 .bundle {
@@ -909,8 +910,12 @@ button:disabled {
 }
 
 /* ==========================================================================
-   REGISTRY CARDS (NEW)
+   REGISTRY CARDS – MOBILE-FIRST COMPONENT
    ========================================================================== */
+
+.registry-section {
+  /* optional wrapper section if you use one */
+}
 
 .registry-grid {
   display: grid;
@@ -1009,10 +1014,10 @@ button:disabled {
 }
 
 /* ==========================================================================
-   RESPONSIVE VIDEO / MEDIA PLAYER (NEW)
+   RESPONSIVE VIDEO / MEDIA PLAYER
    ========================================================================== */
 
-.video-shell {
+.media-player {
   border-radius: var(--radius-xl);
   overflow: hidden;
   border: 1px solid rgba(148, 163, 184, 0.8);
@@ -1022,34 +1027,34 @@ button:disabled {
   flex-direction: column;
 }
 
-.video-shell__visual {
+.media-player__visual {
   position: relative;
   width: 100%;
   aspect-ratio: 16 / 9;
   background-color: #000;
 }
 
-.video-shell__visual > video,
-.video-shell__visual > iframe {
+.media-player__visual > video,
+.media-player__visual > iframe {
   width: 100%;
   height: 100%;
   border: 0;
   display: block;
 }
 
-/* Fallback */
+/* Fallback if aspect-ratio not supported */
 @supports not (aspect-ratio: 16 / 9) {
-  .video-shell__visual {
+  .media-player__visual {
     padding-top: 56.25%;
   }
-  .video-shell__visual > video,
-  .video-shell__visual > iframe {
+  .media-player__visual > video,
+  .media-player__visual > iframe {
     position: absolute;
     inset: 0;
   }
 }
 
-.video-shell__body {
+.media-player__body {
   padding: 0.9rem 1.1rem 1.1rem;
   display: flex;
   flex-direction: column;
@@ -1057,19 +1062,19 @@ button:disabled {
   font-size: var(--font-size-sm);
 }
 
-.video-title {
+.media-player__title {
   margin: 0;
   font-size: var(--font-size-md);
   font-weight: 600;
   color: var(--color-heading);
 }
 
-.video-meta {
+.media-player__meta {
   font-size: var(--font-size-xs);
   color: var(--color-text-muted);
 }
 
-.video-actions {
+.media-player__actions {
   margin-top: 0.6rem;
   display: flex;
   flex-wrap: wrap;
@@ -1077,7 +1082,7 @@ button:disabled {
 }
 
 /* ==========================================================================
-   QUIZ PANEL / PROGRESS (NEW)
+   QUIZ PANEL / PROGRESS
    ========================================================================== */
 
 .quiz-panel {
@@ -1142,12 +1147,12 @@ button:disabled {
 .quiz-progress-fill {
   position: absolute;
   inset: 0;
-  width: 0%; /* override via style/JS */
+  width: 0%; /* set via JS or inline style */
   border-radius: inherit;
   background-image: var(--gradient-primary);
 }
 
-/* Options as interactive cards */
+/* Quiz options (mobile-first) */
 .quiz-options {
   display: grid;
   gap: 0.6rem;
@@ -1214,7 +1219,7 @@ button:disabled {
 }
 
 /* ==========================================================================
-   FORUM THREADS (NEW)
+   FORUM THREADS
    ========================================================================== */
 
 .forum-threads {
@@ -1282,7 +1287,7 @@ button:disabled {
   padding: 0.12rem 0.6rem;
 }
 
-/* Optional sidebar card */
+/* Optional forum sidebar card */
 .forum-side-card {
   border-radius: var(--radius-lg);
   border: 1px solid rgba(148, 163, 184, 0.7);
@@ -1299,7 +1304,7 @@ button:disabled {
 }
 
 /* ==========================================================================
-   ALERTS / STATUS (NEW)
+   ALERTS / STATUS
    ========================================================================== */
 
 .alert {
